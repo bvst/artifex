@@ -1,0 +1,96 @@
+name: Flutter CI/CD
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  test:
+    name: Test Flutter App
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+    
+    - name: Get dependencies
+      working-directory: ./src/hello_app_world
+      run: flutter pub get
+    
+    - name: Analyze code
+      working-directory: ./src/hello_app_world
+      run: flutter analyze
+    
+    - name: Run tests
+      working-directory: ./src/hello_app_world
+      run: flutter test
+
+  build-android:
+    name: Build Android APK
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+    
+    - name: Get dependencies
+      working-directory: ./src/hello_app_world
+      run: flutter pub get
+    
+    - name: Build APK
+      working-directory: ./src/hello_app_world
+      run: flutter build apk --release
+    
+    - name: Upload APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: app-release
+        path: src/hello_app_world/build/app/outputs/flutter-apk/app-release.apk
+
+  build-ios:
+    name: Build iOS App
+    needs: test
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+    
+    - name: Get dependencies
+      working-directory: ./src/hello_app_world
+      run: flutter pub get
+    
+    - name: Build iOS (no signing)
+      working-directory: ./src/hello_app_world
+      run: flutter build ios --release --no-codesign
+    
+    - name: Upload iOS build
+      uses: actions/upload-artifact@v3
+      with:
+        name: ios-build
+        path: src/hello_app_world/build/ios/iphoneos/Runner.app
