@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -9,6 +8,8 @@ void setupGoldenTests() {
   const Size testWindowSize = Size(414, 896); // iPhone 11 Pro Max size
   final TestWidgetsFlutterBinding binding = 
       TestWidgetsFlutterBinding.instance;
+  addTearDown(binding.window.clearPhysicalSizeTestValue);
+  addTearDown(binding.window.clearDevicePixelRatioTestValue);
   binding.window.physicalSizeTestValue = testWindowSize;
   binding.window.devicePixelRatioTestValue = 3.0;
 }

@@ -4,7 +4,7 @@
 - **Type**: AI-powered photo transformation mobile application
 - **Framework**: Flutter with Dart
 - **Target Platforms**: iOS and Android (mobile only)
-- **Location**: `/src/artifex/`
+- **Location**: Repository root
 - **Git**: Repository initialized with proper .gitignore
 
 ## User Context
@@ -41,23 +41,22 @@
 
 ## Project Structure
 ```
-/home/bv/git/hello-app-world/
+/home/bv/git/artifex/
 ├── .git/                    # Git repository
 ├── .gitignore              # Flutter-specific gitignore
 ├── CLAUDE.md               # This file
-└── src/
-    └── artifex/            # Flutter project root
-        ├── lib/            # Dart source files
-        ├── android/        # Android platform files
-        ├── ios/           # iOS platform files
-        ├── test/          # Test files
-        └── pubspec.yaml   # Dependencies
+├── lib/                    # Dart source files
+├── android/                # Android platform files
+├── ios/                   # iOS platform files
+├── test/                  # Test files
+├── pubspec.yaml           # Dependencies
+└── docs/                  # Documentation
 ```
 
 ## Commands to Remember
 ```bash
 # Navigate to project
-cd /home/bv/git/hello-app-world/src/artifex
+cd /home/bv/git/artifex
 
 # Run the app
 flutter run

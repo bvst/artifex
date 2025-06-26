@@ -37,19 +37,19 @@ Finder findTextContaining(String text) {
 extension WidgetTesterExtensions on WidgetTester {
   Future<void> tapAndSettle(Finder finder) async {
     await tap(finder);
-    await pumpAndSettle();
+    await pumpAndSettle(this);
   }
 
   Future<void> enterTextAndSettle(Finder finder, String text) async {
     await enterText(finder, text);
-    await pumpAndSettle();
+    await pumpAndSettle(this);
   }
 
   Future<void> dragAndSettle(
     Finder finder,
     Offset offset, {
     int? pointer,
-    int buttons = kPrimaryButton,
+    int buttons = 1,
     double touchSlopX = kDragSlopDefault,
     double touchSlopY = kDragSlopDefault,
     Duration duration = const Duration(milliseconds: 300),
@@ -62,6 +62,6 @@ extension WidgetTesterExtensions on WidgetTester {
       touchSlopX: touchSlopX,
       touchSlopY: touchSlopY,
     );
-    await pumpAndSettle();
+    await pumpAndSettle(this);
   }
 }
