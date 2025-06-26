@@ -54,6 +54,14 @@
 - [ ] Add analytics/crash reporting
 - [ ] Set up local storage
 
+### Configuration & Code Quality
+- [ ] Configure stricter linting rules in analysis_options.yaml
+- [ ] Set up pre-commit hooks for code formatting
+- [ ] Configure VS Code settings (.vscode/settings.json)
+- [ ] Add EditorConfig for consistent code style
+- [ ] Create launch configurations (.vscode/launch.json)
+- [ ] Set up environment configuration (.env files)
+
 ### Deployment Preparation
 - [ ] Configure Android signing
 - [ ] Set up iOS provisioning (when on Mac)
@@ -106,6 +114,14 @@
 - Built splash screen with proper navigation logic
 - Added state persistence for onboarding completion
 - **Ready for next session**: Implement home screen with image input buttons
+
+### 2025-06-26 Session 3
+- Fixed remaining hello-app-world references throughout the codebase
+- Updated GitHub Actions CI/CD to work with new project structure
+- Added .flutter-version file for consistent Flutter version management
+- Updated workflow to automatically use Flutter version from .flutter-version file
+- Added configuration tasks to the todo list for future sessions
+- **Current**: Fixing GitHub Actions workflow to use correct Flutter version
 
 ---
 
