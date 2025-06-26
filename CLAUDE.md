@@ -1,10 +1,10 @@
-# Claude Context - Hello App World
+# Claude Context - Artifex
 
 ## Project Overview
-- **Type**: Cross-platform mobile application
+- **Type**: AI-powered photo transformation mobile application
 - **Framework**: Flutter with Dart
 - **Target Platforms**: iOS and Android (mobile only)
-- **Location**: `/src/hello_app_world/`
+- **Location**: `/src/artifex/`
 - **Git**: Repository initialized with proper .gitignore
 
 ## User Context
@@ -15,9 +15,20 @@
 
 ## Project Requirements
 - Mobile-only deployment (iOS/Android)
-- Should support simple game development
-- Camera and sensor integration needed
-- Performance not critical initially but game-capable
+- AI-powered photo transformation using DALL-E 3 API
+- Camera integration for photo capture
+- Photo upload from gallery
+- Filter-based transformations
+- Social sharing capabilities
+
+## Brand Identity
+- **Name**: Artifex
+- **Tagline**: "Your World, Reimagined"
+- **Mission**: Empower everyone to become a digital artist by transforming everyday photos into extraordinary works of art with AI
+- **Primary Colors**: 
+  - Artifex Amethyst (#1E192B)
+  - Generative Glow (#E6007A)
+  - Canvas White (#F4F4F6)
 
 ## Technical Decisions
 - **Flutter chosen because**:
@@ -35,7 +46,7 @@
 ├── .gitignore              # Flutter-specific gitignore
 ├── CLAUDE.md               # This file
 └── src/
-    └── hello_app_world/    # Flutter project root
+    └── artifex/            # Flutter project root
         ├── lib/            # Dart source files
         ├── android/        # Android platform files
         ├── ios/           # iOS platform files
@@ -46,7 +57,7 @@
 ## Commands to Remember
 ```bash
 # Navigate to project
-cd /home/bv/git/hello-app-world/src/hello_app_world
+cd /home/bv/git/hello-app-world/src/artifex
 
 # Run the app
 flutter run

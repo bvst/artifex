@@ -25,15 +25,15 @@ jobs:
         channel: 'stable'
     
     - name: Get dependencies
-      working-directory: ./src/hello_app_world
+      working-directory: ./src/artifex
       run: flutter pub get
     
     - name: Analyze code
-      working-directory: ./src/hello_app_world
+      working-directory: ./src/artifex
       run: flutter analyze
     
     - name: Run tests
-      working-directory: ./src/hello_app_world
+      working-directory: ./src/artifex
       run: flutter test
 
   build-android:
@@ -55,18 +55,18 @@ jobs:
         channel: 'stable'
     
     - name: Get dependencies
-      working-directory: ./src/hello_app_world
+      working-directory: ./src/artifex
       run: flutter pub get
     
     - name: Build APK
-      working-directory: ./src/hello_app_world
+      working-directory: ./src/artifex
       run: flutter build apk --release
     
     - name: Upload APK
       uses: actions/upload-artifact@v3
       with:
         name: app-release
-        path: src/hello_app_world/build/app/outputs/flutter-apk/app-release.apk
+        path: src/artifex/build/app/outputs/flutter-apk/app-release.apk
 
   build-ios:
     name: Build iOS App
@@ -82,15 +82,15 @@ jobs:
         channel: 'stable'
     
     - name: Get dependencies
-      working-directory: ./src/hello_app_world
+      working-directory: ./src/artifex
       run: flutter pub get
     
     - name: Build iOS (no signing)
-      working-directory: ./src/hello_app_world
+      working-directory: ./src/artifex
       run: flutter build ios --release --no-codesign
     
     - name: Upload iOS build
       uses: actions/upload-artifact@v3
       with:
         name: ios-build
-        path: src/hello_app_world/build/ios/iphoneos/Runner.app
+        path: src/artifex/build/ios/iphoneos/Runner.app
