@@ -1,11 +1,11 @@
 {
-    "name": "hello_app_world",
-    "short_name": "hello_app_world",
+    "name": "artifex",
+    "short_name": "artifex",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Your World, Reimagined - AI-powered photo transformation",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
