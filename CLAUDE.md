@@ -92,9 +92,7 @@ flutter run
 flutter pub get
 
 # Run tests and analysis together (CUSTOM COMMAND)
-flutter pub run artifex:check
-# or shorter alias:
-flutter pub run artifex:test_analyze
+dart run artifex:check
 
 # Run tests only
 flutter test

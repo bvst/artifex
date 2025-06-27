@@ -3,7 +3,7 @@
 // ignore_for_file: avoid_print
 
 /// Custom Flutter command to run tests and analysis together
-/// Usage: flutter pub run artifex:check
+/// Usage: dart run artifex:check
 /// 
 /// This command runs:
 /// 1. Flutter analyze - checks for code issues
