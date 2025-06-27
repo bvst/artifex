@@ -27,27 +27,52 @@ void main() {
     });
 
     group('AppTextStyles', () {
-      test('should have correct headline styles', () {
+      test('should have correct headline styles per brand guidelines', () {
+        // H1: 32px, 600 weight, 40px line-height, Lora font
         expect(AppTheme.textStyles.headlineLarge.fontSize, 32);
-        expect(AppTheme.textStyles.headlineLarge.fontWeight, FontWeight.bold);
-        expect(AppTheme.textStyles.headlineLarge.letterSpacing, -0.5);
+        expect(AppTheme.textStyles.headlineLarge.fontWeight, FontWeight.w600);
+        expect(AppTheme.textStyles.headlineLarge.height, 40/32);
+        expect(AppTheme.textStyles.headlineLarge.fontFamily, 'Lora');
 
+        // H2: 24px, 600 weight, 32px line-height, Lora font
         expect(AppTheme.textStyles.headlineMedium.fontSize, 24);
         expect(AppTheme.textStyles.headlineMedium.fontWeight, FontWeight.w600);
-        expect(AppTheme.textStyles.headlineMedium.letterSpacing, -0.25);
+        expect(AppTheme.textStyles.headlineMedium.height, 32/24);
+        expect(AppTheme.textStyles.headlineMedium.fontFamily, 'Lora');
+
+        // H3: 20px, 500 weight, 28px line-height, Lora font
+        expect(AppTheme.textStyles.headlineSmall.fontSize, 20);
+        expect(AppTheme.textStyles.headlineSmall.fontWeight, FontWeight.w500);
+        expect(AppTheme.textStyles.headlineSmall.height, 28/20);
+        expect(AppTheme.textStyles.headlineSmall.fontFamily, 'Lora');
       });
 
-      test('should have correct title styles', () {
-        expect(AppTheme.textStyles.titleLarge.fontSize, 20);
-        expect(AppTheme.textStyles.titleLarge.fontWeight, FontWeight.w600);
+      test('should have correct title styles per brand guidelines', () {
+        // H4: 18px, 500 weight, 24px line-height, Inter font
+        expect(AppTheme.textStyles.titleLarge.fontSize, 18);
+        expect(AppTheme.textStyles.titleLarge.fontWeight, FontWeight.w500);
+        expect(AppTheme.textStyles.titleLarge.height, 24/18);
+        expect(AppTheme.textStyles.titleLarge.fontFamily, 'Inter');
       });
 
-      test('should have correct body styles', () {
+      test('should have correct body styles per brand guidelines', () {
+        // Body: 16px, 400 weight, 24px line-height, Inter font
         expect(AppTheme.textStyles.bodyLarge.fontSize, 16);
-        expect(AppTheme.textStyles.bodyLarge.fontWeight, FontWeight.normal);
+        expect(AppTheme.textStyles.bodyLarge.fontWeight, FontWeight.w400);
+        expect(AppTheme.textStyles.bodyLarge.height, 24/16);
+        expect(AppTheme.textStyles.bodyLarge.fontFamily, 'Inter');
 
+        // Caption: 14px, 400 weight, 20px line-height, Inter font
         expect(AppTheme.textStyles.bodyMedium.fontSize, 14);
-        expect(AppTheme.textStyles.bodyMedium.fontWeight, FontWeight.normal);
+        expect(AppTheme.textStyles.bodyMedium.fontWeight, FontWeight.w400);
+        expect(AppTheme.textStyles.bodyMedium.height, 20/14);
+        expect(AppTheme.textStyles.bodyMedium.fontFamily, 'Inter');
+
+        // Small text: 12px, 400 weight, 16px line-height, Inter font
+        expect(AppTheme.textStyles.bodySmall.fontSize, 12);
+        expect(AppTheme.textStyles.bodySmall.fontWeight, FontWeight.w400);
+        expect(AppTheme.textStyles.bodySmall.height, 16/12);
+        expect(AppTheme.textStyles.bodySmall.fontFamily, 'Inter');
       });
     });
 

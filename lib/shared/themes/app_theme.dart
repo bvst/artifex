@@ -31,9 +31,11 @@ class AppTheme {
       textTheme: TextTheme(
         headlineLarge: textStyles.headlineLarge,
         headlineMedium: textStyles.headlineMedium,
+        headlineSmall: textStyles.headlineSmall,
         titleLarge: textStyles.titleLarge,
         bodyLarge: textStyles.bodyLarge,
         bodyMedium: textStyles.bodyMedium,
+        bodySmall: textStyles.bodySmall,
       ),
     );
   }
@@ -63,30 +65,59 @@ class AppColors {
 class AppTextStyles {
   const AppTextStyles();
   
+  // H1 - Brand Guidelines: 32px, 600 weight, 40px line-height
   TextStyle get headlineLarge => const TextStyle(
     fontSize: 32,
-    fontWeight: FontWeight.bold,
-    letterSpacing: -0.5,
+    fontWeight: FontWeight.w600,
+    height: 40/32, // line-height/font-size
+    fontFamily: 'Lora', // Headings use Lora per brand guidelines
   );
   
+  // H2 - Brand Guidelines: 24px, 600 weight, 32px line-height
   TextStyle get headlineMedium => const TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.w600,
-    letterSpacing: -0.25,
+    height: 32/24,
+    fontFamily: 'Lora',
   );
   
-  TextStyle get titleLarge => const TextStyle(
+  // H3 - Brand Guidelines: 20px, 500 weight, 28px line-height
+  TextStyle get headlineSmall => const TextStyle(
     fontSize: 20,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w500,
+    height: 28/20,
+    fontFamily: 'Lora',
   );
   
+  // H4 - Brand Guidelines: 18px, 500 weight, 24px line-height
+  TextStyle get titleLarge => const TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    height: 24/18,
+    fontFamily: 'Inter', // UI text uses Inter
+  );
+  
+  // Body - Brand Guidelines: 16px, 400 weight, 24px line-height
   TextStyle get bodyLarge => const TextStyle(
     fontSize: 16,
-    fontWeight: FontWeight.normal,
+    fontWeight: FontWeight.w400,
+    height: 24/16,
+    fontFamily: 'Inter',
   );
   
+  // Caption - Brand Guidelines: 14px, 400 weight, 20px line-height
   TextStyle get bodyMedium => const TextStyle(
     fontSize: 14,
-    fontWeight: FontWeight.normal,
+    fontWeight: FontWeight.w400,
+    height: 20/14,
+    fontFamily: 'Inter',
+  );
+  
+  // Additional small text style for captions and small UI elements
+  TextStyle get bodySmall => const TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    height: 16/12,
+    fontFamily: 'Inter',
   );
 }
