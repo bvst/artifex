@@ -21,6 +21,11 @@ class PhotoRepositoryImpl implements PhotoRepository {
       final photoModel = await _localDataSource.capturePhoto();
       return Right(photoModel.toEntity());
     } on FileException catch (e) {
+      // Check if user cancelled the operation
+      if (e.message.toLowerCase().contains('cancelled')) {
+        AppLogger.debug('PhotoRepository: User cancelled camera capture');
+        return const Left(UserCancelledFailure('Camera capture was cancelled'));
+      }
       AppLogger.error('PhotoRepository: File error during capture', e);
       return Left(FileNotFoundFailure(e.message));
     } on ValidationException catch (e) {
@@ -42,6 +47,11 @@ class PhotoRepositoryImpl implements PhotoRepository {
       final photoModel = await _localDataSource.pickImageFromGallery();
       return Right(photoModel.toEntity());
     } on FileException catch (e) {
+      // Check if user cancelled the operation
+      if (e.message.toLowerCase().contains('cancelled')) {
+        AppLogger.debug('PhotoRepository: User cancelled gallery selection');
+        return const Left(UserCancelledFailure('Gallery selection was cancelled'));
+      }
       AppLogger.error('PhotoRepository: File error during gallery pick', e);
       return Left(FileNotFoundFailure(e.message));
     } on ValidationException catch (e) {

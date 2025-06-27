@@ -6,7 +6,7 @@ part of 'photo_capture_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$photoCaptureHash() => r'c4ded381eea57384c959b232fac3f12a19a79a48';
+String _$photoCaptureHash() => r'0abf3749a10a497ef701e6f792c899afaa8fb68d';
 
 /// See also [PhotoCapture].
 @ProviderFor(PhotoCapture)

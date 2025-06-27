@@ -186,5 +186,43 @@ void main() {
       expect(find.byType(SnackBar), findsOneWidget);
       expect(find.text('Photo captured successfully!'), findsOneWidget);
     });
+
+    testWidgets('should not show error when camera capture is cancelled', (WidgetTester tester) async {
+      const failure = UserCancelledFailure('Camera capture was cancelled');
+      when(mockRepository.capturePhoto()).thenAnswer((_) async => left(failure));
+
+      await tester.pumpWidget(testWidget);
+
+      // Tap camera button
+      final cameraButton = find.widgetWithText(ImageInputButton, 'Take a Photo');
+      await tester.tap(cameraButton);
+      await tester.pumpAndSettle();
+
+      // Should NOT show any snackbar (no error for cancellation)
+      expect(find.byType(SnackBar), findsNothing);
+      
+      // Buttons should be enabled again
+      final cameraButtonWidget = tester.widget<ImageInputButton>(cameraButton);
+      expect(cameraButtonWidget.isEnabled, isTrue);
+    });
+
+    testWidgets('should not show error when gallery selection is cancelled', (WidgetTester tester) async {
+      const failure = UserCancelledFailure('Gallery selection was cancelled');
+      when(mockRepository.pickImageFromGallery()).thenAnswer((_) async => left(failure));
+
+      await tester.pumpWidget(testWidget);
+
+      // Tap gallery button
+      final galleryButton = find.widgetWithText(ImageInputButton, 'Upload Image');
+      await tester.tap(galleryButton);
+      await tester.pumpAndSettle();
+
+      // Should NOT show any snackbar (no error for cancellation)
+      expect(find.byType(SnackBar), findsNothing);
+      
+      // Buttons should be enabled again
+      final galleryButtonWidget = tester.widget<ImageInputButton>(galleryButton);
+      expect(galleryButtonWidget.isEnabled, isTrue);
+    });
   });
 }

@@ -195,5 +195,58 @@ void main() {
         expect(state.error, equals('An unexpected error occurred. Please try again.'));
       });
     });
+
+    group('user cancellation handling', () {
+      test('should reset to initial state when camera capture is cancelled', () async {
+        const failure = UserCancelledFailure('Camera capture was cancelled');
+        when(mockRepository.capturePhoto())
+            .thenAnswer((_) async => left(failure));
+
+        final notifier = container.read(photoCaptureProvider.notifier);
+        await notifier.captureFromCamera();
+        
+        final state = container.read(photoCaptureProvider);
+        expect(state.hasValue, isTrue);
+        expect(state.value, isNull);
+        expect(state.hasError, isFalse);
+      });
+
+      test('should reset to initial state when gallery selection is cancelled', () async {
+        const failure = UserCancelledFailure('Gallery selection was cancelled');
+        when(mockRepository.pickImageFromGallery())
+            .thenAnswer((_) async => left(failure));
+
+        final notifier = container.read(photoCaptureProvider.notifier);
+        await notifier.pickFromGallery();
+        
+        final state = container.read(photoCaptureProvider);
+        expect(state.hasValue, isTrue);
+        expect(state.value, isNull);
+        expect(state.hasError, isFalse);
+      });
+
+      test('should go through loading state even when cancelled', () async {
+        const failure = UserCancelledFailure('Gallery selection was cancelled');
+        when(mockRepository.pickImageFromGallery())
+            .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50), () => left(failure)));
+
+        final notifier = container.read(photoCaptureProvider.notifier);
+        
+        // Start the operation
+        final future = notifier.pickFromGallery();
+        
+        // Should be loading
+        expect(container.read(photoCaptureProvider).isLoading, isTrue);
+        
+        // Wait for completion
+        await future;
+        
+        // Should be reset to initial state (not error)
+        final state = container.read(photoCaptureProvider);
+        expect(state.hasValue, isTrue);
+        expect(state.value, isNull);
+        expect(state.hasError, isFalse);
+      });
+    });
   });
 }

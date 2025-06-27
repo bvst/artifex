@@ -18,7 +18,13 @@ class PhotoCapture extends _$PhotoCapture {
     final result = await useCase();
     
     state = result.fold(
-      (failure) => AsyncValue.error(_mapFailureToMessage(failure), StackTrace.current),
+      (failure) {
+        // Handle user cancellation gracefully - just reset to initial state
+        if (failure is UserCancelledFailure) {
+          return const AsyncValue.data(null);
+        }
+        return AsyncValue.error(_mapFailureToMessage(failure), StackTrace.current);
+      },
       (photo) => AsyncValue.data(photo),
     );
   }
@@ -30,7 +36,13 @@ class PhotoCapture extends _$PhotoCapture {
     final result = await useCase();
     
     state = result.fold(
-      (failure) => AsyncValue.error(_mapFailureToMessage(failure), StackTrace.current),
+      (failure) {
+        // Handle user cancellation gracefully - just reset to initial state
+        if (failure is UserCancelledFailure) {
+          return const AsyncValue.data(null);
+        }
+        return AsyncValue.error(_mapFailureToMessage(failure), StackTrace.current);
+      },
       (photo) => AsyncValue.data(photo),
     );
   }

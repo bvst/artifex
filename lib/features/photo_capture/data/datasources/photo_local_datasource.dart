@@ -42,12 +42,17 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
       );
 
       if (image == null) {
-        throw const FileException('No image captured');
+        AppLogger.debug('User cancelled camera capture');
+        throw const FileException('User cancelled camera capture');
       }
 
       final File imageFile = File(image.path);
       return await _processAndSaveImage(imageFile);
     } catch (e) {
+      // Don't log cancellations as errors - they're normal user actions
+      if (e is FileException && e.message.toLowerCase().contains('cancelled')) {
+        rethrow;
+      }
       AppLogger.error('Error capturing photo', e);
       if (e is FileException) rethrow;
       throw FileException('Failed to capture photo: $e');
@@ -67,12 +72,17 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
       );
 
       if (image == null) {
-        throw const FileException('No image selected');
+        AppLogger.debug('User cancelled gallery selection');
+        throw const FileException('User cancelled gallery selection');
       }
 
       final File imageFile = File(image.path);
       return await _processAndSaveImage(imageFile);
     } catch (e) {
+      // Don't log cancellations as errors - they're normal user actions
+      if (e is FileException && e.message.toLowerCase().contains('cancelled')) {
+        rethrow;
+      }
       AppLogger.error('Error picking image from gallery', e);
       if (e is FileException) rethrow;
       throw FileException('Failed to pick image: $e');

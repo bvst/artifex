@@ -45,6 +45,11 @@ class FileNotFoundFailure extends Failure {
   const FileNotFoundFailure([super.message = 'File not found']);
 }
 
+// User action failures (not actually errors)
+class UserCancelledFailure extends Failure {
+  const UserCancelledFailure([super.message = 'User cancelled operation']);
+}
+
 // API specific failures
 class ApiFailure extends Failure {
   const ApiFailure([super.message = 'API request failed']);
