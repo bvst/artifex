@@ -59,3 +59,13 @@ class PermissionException implements Exception {
   @override
   String toString() => 'PermissionException: $message';
 }
+
+class APIException implements Exception {
+  final String message;
+  final int? statusCode;
+  
+  const APIException(this.message, [this.statusCode]);
+  
+  @override
+  String toString() => 'APIException: $message${statusCode != null ? ' (Status: $statusCode)' : ''}';
+}

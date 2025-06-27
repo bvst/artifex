@@ -58,3 +58,11 @@ class ApiFailure extends Failure {
   const ApiFailure.unauthorized() : super('Unauthorized access');
   const ApiFailure.badRequest() : super('Invalid request');
 }
+
+class APIFailure extends Failure {
+  const APIFailure([super.message = 'API request failed']);
+}
+
+class UnknownFailure extends Failure {
+  const UnknownFailure([super.message = 'An unknown error occurred']);
+}
