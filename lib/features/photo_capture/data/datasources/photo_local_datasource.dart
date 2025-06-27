@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as img;
@@ -26,6 +27,12 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
   Future<PhotoModel> capturePhoto() async {
     try {
       AppLogger.debug('Capturing photo from camera');
+      
+      // Check if we're on a platform that supports camera
+      if (!_isCameraSupported()) {
+        AppLogger.warning('Camera not supported on this platform, falling back to gallery');
+        return await pickImageFromGallery();
+      }
       
       final XFile? image = await _imagePicker.pickImage(
         source: ImageSource.camera,
@@ -238,5 +245,12 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
   bool _isImageFile(String path) {
     final extension = path.toLowerCase().split('.').last;
     return AppConstants.allowedImageExtensions.contains(extension);
+  }
+
+  bool _isCameraSupported() {
+    // Camera is supported on mobile platforms (iOS/Android)
+    // Desktop platforms (Linux, Windows, macOS) don't have reliable camera support
+    if (kIsWeb) return false;
+    return Platform.isAndroid || Platform.isIOS;
   }
 }

@@ -1,16 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mockito/mockito.dart';
+import 'package:mockito/annotations.dart';
+import 'package:dartz/dartz.dart';
+
 import 'package:artifex/features/home/presentation/widgets/image_input_section.dart';
 import 'package:artifex/features/home/presentation/widgets/image_input_button.dart';
+import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
+import 'package:artifex/features/photo_capture/domain/repositories/photo_repository.dart';
+import 'package:artifex/features/photo_capture/presentation/providers/photo_providers.dart';
+import 'package:artifex/core/errors/failures.dart';
 
+import 'image_input_section_test.mocks.dart';
+
+@GenerateMocks([PhotoRepository])
 void main() {
   group('ImageInputSection Tests', () {
+    late MockPhotoRepository mockRepository;
     late Widget testWidget;
 
     setUp(() {
-      testWidget = const ProviderScope(
-        child: MaterialApp(
+      mockRepository = MockPhotoRepository();
+      testWidget = ProviderScope(
+        overrides: [
+          photoRepositoryProvider.overrideWithValue(mockRepository),
+        ],
+        child: const MaterialApp(
           home: Scaffold(
             body: ImageInputSection(),
           ),
@@ -30,21 +46,16 @@ void main() {
       expect(find.byType(ImageInputButton), findsNWidgets(2));
     });
 
-    testWidgets('should have camera button with correct text', (WidgetTester tester) async {
-      await tester.pumpWidget(testWidget);
+    testWidgets('should capture photo when camera button is pressed', (WidgetTester tester) async {
+      final photo = Photo(
+        id: 'test-id',
+        path: '/test/path.jpg',
+        name: 'test.jpg',
+        size: 1024,
+        createdAt: DateTime.now(),
+      );
+      when(mockRepository.capturePhoto()).thenAnswer((_) async => right(photo));
 
-      expect(find.text('Take a Photo'), findsOneWidget);
-      expect(find.text('Capture with your camera'), findsOneWidget);
-    });
-
-    testWidgets('should have gallery button with correct text', (WidgetTester tester) async {
-      await tester.pumpWidget(testWidget);
-
-      expect(find.text('Upload Image'), findsOneWidget);
-      expect(find.text('Choose from gallery'), findsOneWidget);
-    });
-
-    testWidgets('should show snackbar when camera button is pressed', (WidgetTester tester) async {
       await tester.pumpWidget(testWidget);
 
       // Find and tap the camera button
@@ -52,11 +63,20 @@ void main() {
       await tester.tap(cameraButton);
       await tester.pump();
 
-      expect(find.text('Camera feature coming soon!'), findsOneWidget);
-      expect(find.byType(SnackBar), findsOneWidget);
+      // Verify repository method was called
+      verify(mockRepository.capturePhoto()).called(1);
     });
 
-    testWidgets('should show snackbar when gallery button is pressed', (WidgetTester tester) async {
+    testWidgets('should pick from gallery when gallery button is pressed', (WidgetTester tester) async {
+      final photo = Photo(
+        id: 'gallery-id',
+        path: '/gallery/path.jpg',
+        name: 'gallery.jpg',
+        size: 2048,
+        createdAt: DateTime.now(),
+      );
+      when(mockRepository.pickImageFromGallery()).thenAnswer((_) async => right(photo));
+
       await tester.pumpWidget(testWidget);
 
       // Find and tap the gallery button
@@ -64,40 +84,107 @@ void main() {
       await tester.tap(galleryButton);
       await tester.pump();
 
-      expect(find.text('Gallery feature coming soon!'), findsOneWidget);
-      expect(find.byType(SnackBar), findsOneWidget);
+      // Verify repository method was called
+      verify(mockRepository.pickImageFromGallery()).called(1);
     });
 
-    testWidgets('should use correct layout', (WidgetTester tester) async {
-      await tester.pumpWidget(testWidget);
-
-      // Find the main Column
-      final column = tester.widget<Column>(find.byType(Column).first);
-      expect(column.mainAxisAlignment, MainAxisAlignment.center);
-    });
-
-    testWidgets('should have correct spacing', (WidgetTester tester) async {
-      await tester.pumpWidget(testWidget);
-
-      // Find the main Column in ImageInputSection (it's the first one)
-      final columnFinder = find.descendant(
-        of: find.byType(ImageInputSection),
-        matching: find.byType(Column),
+    testWidgets('should show loading indicator when capturing photo', (WidgetTester tester) async {
+      // Return a delayed future to simulate loading
+      when(mockRepository.capturePhoto()).thenAnswer(
+        (_) => Future.delayed(const Duration(milliseconds: 100), () => right(
+          Photo(
+            id: 'test-id',
+            path: '/test/path.jpg',
+            name: 'test.jpg',
+            size: 1024,
+            createdAt: DateTime.now(),
+          ),
+        )),
       );
-      
-      // Get the first Column which is the main container
-      final column = tester.widget<Column>(columnFinder.first);
-      
-      // The column should have 5 children: Text, SizedBox(32), Button, SizedBox(20), Button
-      expect(column.children.length, 5);
-      
-      // Check first SizedBox (after heading)
-      final firstSpacer = column.children[1] as SizedBox;
-      expect(firstSpacer.height, 32);
-      
-      // Check second SizedBox (between buttons)
-      final secondSpacer = column.children[3] as SizedBox;
-      expect(secondSpacer.height, 20);
+
+      await tester.pumpWidget(testWidget);
+
+      // Tap camera button
+      final cameraButton = find.widgetWithText(ImageInputButton, 'Take a Photo');
+      await tester.tap(cameraButton);
+      await tester.pump(); // Pump to update state
+
+      // Should show loading indicator
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.text('Processing...'), findsOneWidget);
+
+      // Wait for completion
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('should disable buttons when loading', (WidgetTester tester) async {
+      // Return a delayed future to simulate loading
+      when(mockRepository.capturePhoto()).thenAnswer(
+        (_) => Future.delayed(const Duration(milliseconds: 100), () => right(
+          Photo(
+            id: 'test-id',
+            path: '/test/path.jpg',
+            name: 'test.jpg',
+            size: 1024,
+            createdAt: DateTime.now(),
+          ),
+        )),
+      );
+
+      await tester.pumpWidget(testWidget);
+
+      // Tap camera button to start loading
+      final cameraButton = find.widgetWithText(ImageInputButton, 'Take a Photo');
+      await tester.tap(cameraButton);
+      await tester.pump();
+
+      // Buttons should be disabled (with reduced opacity)
+      final cameraButtonWidget = tester.widget<ImageInputButton>(cameraButton);
+      expect(cameraButtonWidget.isEnabled, isFalse);
+
+      final galleryButton = find.widgetWithText(ImageInputButton, 'Upload Image');
+      final galleryButtonWidget = tester.widget<ImageInputButton>(galleryButton);
+      expect(galleryButtonWidget.isEnabled, isFalse);
+
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('should show error snackbar on capture failure', (WidgetTester tester) async {
+      const failure = ValidationFailure('Invalid camera settings');
+      when(mockRepository.capturePhoto()).thenAnswer((_) async => left(failure));
+
+      await tester.pumpWidget(testWidget);
+
+      // Tap camera button
+      final cameraButton = find.widgetWithText(ImageInputButton, 'Take a Photo');
+      await tester.tap(cameraButton);
+      await tester.pumpAndSettle();
+
+      // Should show error snackbar
+      expect(find.byType(SnackBar), findsOneWidget);
+      expect(find.text('Invalid camera settings'), findsOneWidget);
+    });
+
+    testWidgets('should show success snackbar on successful capture', (WidgetTester tester) async {
+      final photo = Photo(
+        id: 'success-id',
+        path: '/success/path.jpg',
+        name: 'success.jpg',
+        size: 1536,
+        createdAt: DateTime.now(),
+      );
+      when(mockRepository.capturePhoto()).thenAnswer((_) async => right(photo));
+
+      await tester.pumpWidget(testWidget);
+
+      // Tap camera button
+      final cameraButton = find.widgetWithText(ImageInputButton, 'Take a Photo');
+      await tester.tap(cameraButton);
+      await tester.pumpAndSettle();
+
+      // Should show success snackbar
+      expect(find.byType(SnackBar), findsOneWidget);
+      expect(find.text('Photo captured successfully!'), findsOneWidget);
     });
   });
 }
