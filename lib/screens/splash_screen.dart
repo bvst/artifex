@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 import '../utils/preferences_helper.dart';
@@ -5,25 +6,40 @@ import 'onboarding_screen.dart';
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  final Duration splashDuration;
+  
+  const SplashScreen({
+    super.key,
+    this.splashDuration = const Duration(seconds: 2),
+  });
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  Timer? _timer;
+
   @override
   void initState() {
     super.initState();
-    _checkOnboardingStatus();
+    _startSplashTimer();
   }
 
-  Future<void> _checkOnboardingStatus() async {
-    await Future.delayed(const Duration(seconds: 2)); // Show splash for 2 seconds
-    
-    final isOnboardingComplete = await PreferencesHelper.isOnboardingComplete();
-    
-    if (mounted) {
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startSplashTimer() {
+    _timer = Timer(widget.splashDuration, () async {
+      if (!mounted) return;
+      
+      final isOnboardingComplete = await PreferencesHelper.isOnboardingComplete();
+      
+      if (!mounted) return;
+      
       if (isOnboardingComplete) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const HomeScreen()),
@@ -33,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
           MaterialPageRoute(builder: (context) => const OnboardingScreen()),
         );
       }
-    }
+    });
   }
 
   @override

@@ -120,8 +120,12 @@
 - Updated GitHub Actions CI/CD to work with new project structure
 - Added .flutter-version file for consistent Flutter version management
 - Updated workflow to automatically use Flutter version from .flutter-version file
-- Added configuration tasks to the todo list for future sessions
-- **Current**: Fixing GitHub Actions workflow to use correct Flutter version
+- Fixed all deprecation warnings (withOpacity → withValues, window API → tester.view)
+- Fixed SplashScreen timer implementation to be cancellable (prevents memory leaks)
+- Made splash duration configurable for better testability
+- Fixed all failing tests - tests no longer depend on hardcoded durations
+- Added pre-commit checklist to CLAUDE.md
+- **Ready for next session**: Create home screen with image input functionality
 
 ---
 
