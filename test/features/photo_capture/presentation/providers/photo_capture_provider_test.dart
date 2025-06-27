@@ -7,9 +7,10 @@ import 'package:mockito/annotations.dart';
 import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
 import 'package:artifex/features/photo_capture/domain/repositories/photo_repository.dart';
 import 'package:artifex/features/photo_capture/presentation/providers/photo_capture_provider.dart';
-import 'package:artifex/features/photo_capture/presentation/providers/photo_providers.dart';
 import 'package:artifex/core/errors/failures.dart';
 
+import '../../../../fixtures/test_data.dart';
+import '../../../../helpers/test_builders.dart';
 import 'photo_capture_provider_test.mocks.dart';
 
 @GenerateMocks([PhotoRepository])
@@ -20,11 +21,9 @@ void main() {
 
     setUp(() {
       mockRepository = MockPhotoRepository();
-      container = ProviderContainer(
-        overrides: [
-          photoRepositoryProvider.overrideWithValue(mockRepository),
-        ],
-      );
+      container = TestScenarios
+        .containerWithPhotoRepository(mockRepository)
+        .build();
     });
 
     tearDown(() {
@@ -42,15 +41,8 @@ void main() {
 
     group('captureFromCamera', () {
       test('should emit loading then data when successful', () async {
-        final photo = Photo(
-          id: 'test-id',
-          path: '/test/path.jpg',
-          name: 'test.jpg',
-          size: 1024,
-          createdAt: DateTime.now(),
-        );
-        when(mockRepository.capturePhoto())
-            .thenAnswer((_) async => right(photo));
+        final photo = TestData.createCameraPhoto();
+        when(mockRepository.capturePhoto()).thenAnswer((_) async => right(photo));
 
         final notifier = container.read(photoCaptureProvider.notifier);
         
@@ -72,12 +64,10 @@ void main() {
       });
 
       test('should emit loading then error when capture fails', () async {
-        const failure = ValidationFailure('Invalid image format');
         when(mockRepository.capturePhoto())
-            .thenAnswer((_) async => left(failure));
+            .thenAnswer((_) async => left(TestData.validationFailure));
 
         final notifier = container.read(photoCaptureProvider.notifier);
-        
         await notifier.captureFromCamera();
         
         final state = container.read(photoCaptureProvider);
@@ -88,12 +78,10 @@ void main() {
       });
 
       test('should emit loading then error when permission denied', () async {
-        const failure = PermissionFailure('Camera permission denied');
         when(mockRepository.capturePhoto())
-            .thenAnswer((_) async => left(failure));
+            .thenAnswer((_) async => left(TestData.permissionFailure));
 
         final notifier = container.read(photoCaptureProvider.notifier);
-        
         await notifier.captureFromCamera();
         
         final state = container.read(photoCaptureProvider);
@@ -104,18 +92,11 @@ void main() {
 
     group('pickFromGallery', () {
       test('should emit loading then data when successful', () async {
-        final photo = Photo(
-          id: 'gallery-id',
-          path: '/gallery/path.jpg',
-          name: 'gallery.jpg',
-          size: 2048,
-          createdAt: DateTime.now(),
-        );
+        final photo = TestData.createGalleryPhoto();
         when(mockRepository.pickImageFromGallery())
             .thenAnswer((_) async => right(photo));
 
         final notifier = container.read(photoCaptureProvider.notifier);
-        
         await notifier.pickFromGallery();
         
         final state = container.read(photoCaptureProvider);
@@ -126,12 +107,10 @@ void main() {
       });
 
       test('should emit loading then error when gallery pick fails', () async {
-        const failure = FileNotFoundFailure('No image selected');
         when(mockRepository.pickImageFromGallery())
-            .thenAnswer((_) async => left(failure));
+            .thenAnswer((_) async => left(TestData.fileNotFoundFailure));
 
         final notifier = container.read(photoCaptureProvider.notifier);
-        
         await notifier.pickFromGallery();
         
         final state = container.read(photoCaptureProvider);
@@ -198,9 +177,8 @@ void main() {
 
     group('user cancellation handling', () {
       test('should reset to initial state when camera capture is cancelled', () async {
-        const failure = UserCancelledFailure('Camera capture was cancelled');
         when(mockRepository.capturePhoto())
-            .thenAnswer((_) async => left(failure));
+            .thenAnswer((_) async => left(TestData.userCancelledFailure));
 
         final notifier = container.read(photoCaptureProvider.notifier);
         await notifier.captureFromCamera();
@@ -212,9 +190,8 @@ void main() {
       });
 
       test('should reset to initial state when gallery selection is cancelled', () async {
-        const failure = UserCancelledFailure('Gallery selection was cancelled');
         when(mockRepository.pickImageFromGallery())
-            .thenAnswer((_) async => left(failure));
+            .thenAnswer((_) async => left(TestData.userCancelledFailure));
 
         final notifier = container.read(photoCaptureProvider.notifier);
         await notifier.pickFromGallery();
@@ -226,9 +203,11 @@ void main() {
       });
 
       test('should go through loading state even when cancelled', () async {
-        const failure = UserCancelledFailure('Gallery selection was cancelled');
         when(mockRepository.pickImageFromGallery())
-            .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50), () => left(failure)));
+            .thenAnswer((_) => Future.delayed(
+              const Duration(milliseconds: 50), 
+              () => left(TestData.userCancelledFailure),
+            ));
 
         final notifier = container.read(photoCaptureProvider.notifier);
         

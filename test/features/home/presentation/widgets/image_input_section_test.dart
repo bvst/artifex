@@ -12,6 +12,7 @@ import 'package:artifex/features/photo_capture/domain/repositories/photo_reposit
 import 'package:artifex/features/photo_capture/presentation/providers/photo_providers.dart';
 import 'package:artifex/core/errors/failures.dart';
 
+import '../../../../fixtures/test_data.dart';
 import 'image_input_section_test.mocks.dart';
 
 @GenerateMocks([PhotoRepository])
@@ -47,59 +48,44 @@ void main() {
     });
 
     testWidgets('should capture photo when camera button is pressed', (WidgetTester tester) async {
-      final photo = Photo(
-        id: 'test-id',
-        path: '/test/path.jpg',
-        name: 'test.jpg',
-        size: 1024,
-        createdAt: DateTime.now(),
-      );
+      // Given: A successful camera photo (using factory)
+      final photo = TestData.createCameraPhoto();
       when(mockRepository.capturePhoto()).thenAnswer((_) async => right(photo));
 
       await tester.pumpWidget(testWidget);
 
-      // Find and tap the camera button
+      // When: User taps the camera button
       final cameraButton = find.widgetWithText(ImageInputButton, 'Take a Photo');
       await tester.tap(cameraButton);
       await tester.pump();
 
-      // Verify repository method was called
+      // Then: Repository method should be called
       verify(mockRepository.capturePhoto()).called(1);
     });
 
     testWidgets('should pick from gallery when gallery button is pressed', (WidgetTester tester) async {
-      final photo = Photo(
-        id: 'gallery-id',
-        path: '/gallery/path.jpg',
-        name: 'gallery.jpg',
-        size: 2048,
-        createdAt: DateTime.now(),
-      );
+      // Given: A successful gallery photo (using factory)
+      final photo = TestData.createGalleryPhoto();
       when(mockRepository.pickImageFromGallery()).thenAnswer((_) async => right(photo));
 
       await tester.pumpWidget(testWidget);
 
-      // Find and tap the gallery button
+      // When: User taps the gallery button
       final galleryButton = find.widgetWithText(ImageInputButton, 'Upload Image');
       await tester.tap(galleryButton);
       await tester.pump();
 
-      // Verify repository method was called
+      // Then: Repository method should be called
       verify(mockRepository.pickImageFromGallery()).called(1);
     });
 
     testWidgets('should show loading indicator when capturing photo', (WidgetTester tester) async {
-      // Return a delayed future to simulate loading
+      // Given: Camera operation will take some time (using factory)
       when(mockRepository.capturePhoto()).thenAnswer(
-        (_) => Future.delayed(const Duration(milliseconds: 100), () => right(
-          Photo(
-            id: 'test-id',
-            path: '/test/path.jpg',
-            name: 'test.jpg',
-            size: 1024,
-            createdAt: DateTime.now(),
-          ),
-        )),
+        (_) => Future.delayed(
+          const Duration(milliseconds: 100), 
+          () => right(TestData.createCameraPhoto()),
+        ),
       );
 
       await tester.pumpWidget(testWidget);
@@ -166,13 +152,8 @@ void main() {
     });
 
     testWidgets('should show success snackbar on successful capture', (WidgetTester tester) async {
-      final photo = Photo(
-        id: 'success-id',
-        path: '/success/path.jpg',
-        name: 'success.jpg',
-        size: 1536,
-        createdAt: DateTime.now(),
-      );
+      // Given: A successful photo capture (using factory)
+      final photo = TestData.createCameraPhoto();
       when(mockRepository.capturePhoto()).thenAnswer((_) async => right(photo));
 
       await tester.pumpWidget(testWidget);
