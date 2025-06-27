@@ -1,0 +1,15 @@
+# Analysis options for bin/ scripts
+# Scripts are allowed to use print() and other development patterns
+
+include: ../analysis_options.yaml
+
+analyzer:
+  exclude:
+    - '**'
+
+linter:
+  rules:
+    # Allow print statements in CLI scripts
+    avoid_print: false
+    # Allow dangling library doc comments in scripts
+    dangling_library_doc_comments: false

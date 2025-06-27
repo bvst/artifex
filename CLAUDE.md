@@ -91,10 +91,15 @@ flutter run
 # Get dependencies
 flutter pub get
 
-# Run tests
+# Run tests and analysis together (CUSTOM COMMAND)
+flutter pub run artifex:check
+# or shorter alias:
+flutter pub run artifex:test_analyze
+
+# Run tests only
 flutter test
 
-# Analyze code
+# Analyze code only
 flutter analyze
 
 # Build for release
