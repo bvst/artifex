@@ -121,28 +121,24 @@ void main() {
 
     group('reset', () {
       test('should reset state to initial data(null)', () async {
-        // First capture a photo
-        final photo = Photo(
-          id: 'test-id',
-          path: '/test/path.jpg',
-          name: 'test.jpg',
-          size: 1024,
-          createdAt: DateTime.now(),
-        );
+        // Given: A captured photo
+        final photo = TestData.createCameraPhoto();
         when(mockRepository.capturePhoto())
             .thenAnswer((_) async => right(photo));
 
         final notifier = container.read(photoCaptureProvider.notifier);
+        
+        // When: First capture a photo, then reset
         await notifier.captureFromCamera();
         
         // Verify we have photo data
         expect(container.read(photoCaptureProvider).hasValue, isTrue);
         expect(container.read(photoCaptureProvider).value, isNotNull);
         
-        // Reset
+        // Reset the state
         notifier.reset();
         
-        // Should be back to initial state
+        // Then: Should be back to initial state
         final state = container.read(photoCaptureProvider);
         expect(state.hasValue, isTrue);
         expect(state.value, isNull);

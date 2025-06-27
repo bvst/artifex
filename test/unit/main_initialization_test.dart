@@ -4,82 +4,103 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:artifex/core/utils/error_boundary.dart';
 
 void main() {
-  group('Main Initialization Tests', () {
-    testWidgets('WidgetsFlutterBinding should be initialized properly', (WidgetTester tester) async {
-      // This test verifies that WidgetsFlutterBinding.ensureInitialized() works correctly
-      expect(WidgetsBinding.instance, isNotNull);
-      expect(WidgetsBinding.instance, isA<WidgetsBinding>());
+  group('App Initialization', () {
+    group('Flutter Framework', () {
+      testWidgets('initializes WidgetsFlutterBinding correctly', (tester) async {
+        // Given: Flutter framework initialization
+        // Then: WidgetsBinding should be properly initialized
+        expect(WidgetsBinding.instance, isNotNull,
+            reason: 'WidgetsBinding must be initialized for Flutter apps');
+        expect(WidgetsBinding.instance, isA<WidgetsBinding>(),
+            reason: 'Should be a valid WidgetsBinding instance');
+      });
+
     });
 
-    testWidgets('ProviderScope should be properly initialized', (WidgetTester tester) async {
-      // Test that ProviderScope can be created and contains a child widget
-      await tester.pumpWidget(
-        ProviderScope(
-          child: ErrorBoundary(
-            child: MaterialApp(
-              home: Scaffold(
-                body: const Text('Test App'),
+    group('Riverpod Integration', () {
+      testWidgets('initializes ProviderScope correctly', (tester) async {
+        // Given: App with ProviderScope and ErrorBoundary
+        await tester.pumpWidget(
+          ProviderScope(
+            child: ErrorBoundary(
+              child: MaterialApp(
+                home: Scaffold(
+                  body: const Text('Test App'),
+                ),
               ),
             ),
           ),
-        ),
-      );
+        );
 
-      expect(find.text('Test App'), findsOneWidget);
-    });
+        // Then: Should render child content successfully
+        expect(find.text('Test App'), findsOneWidget);
+      });
 
-    testWidgets('ErrorBoundary should render child widget normally', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ErrorBoundary(
-            child: Scaffold(
-              body: const Text('Protected Content'),
+      testWidgets('renders content through ErrorBoundary', (tester) async {
+        // Given: Widget wrapped in ErrorBoundary
+        await tester.pumpWidget(
+          MaterialApp(
+            home: ErrorBoundary(
+              child: Scaffold(
+                body: const Text('Protected Content'),
+              ),
             ),
           ),
-        ),
-      );
-
-      expect(find.text('Protected Content'), findsOneWidget);
-    });
-
-    test('FlutterError.onError can be set without issues', () {
-      final originalHandler = FlutterError.onError;
-      
-      try {
-        // Test setting a custom error handler
-        FlutterError.onError = (FlutterErrorDetails details) {
-          // Mock error handler
-        };
-        
-        expect(FlutterError.onError, isNotNull);
-        expect(FlutterError.onError, isNot(equals(originalHandler)));
-      } finally {
-        // Restore original handler
-        FlutterError.onError = originalHandler;
-      }
-    });
-
-    test('Error handler should be callable with FlutterErrorDetails', () {
-      bool handlerCalled = false;
-      final originalHandler = FlutterError.onError;
-      
-      try {
-        FlutterError.onError = (FlutterErrorDetails details) {
-          handlerCalled = true;
-        };
-        
-        // Create a mock error
-        final testError = FlutterErrorDetails(
-          exception: Exception('Test error'),
-          stack: StackTrace.current,
         );
+
+        // Then: Should display protected content normally
+        expect(find.text('Protected Content'), findsOneWidget);
+      });
+    });
+
+    group('Error Handling', () {
+      test('allows custom error handler configuration', () {
+        // Given: Original error handler
+        final originalHandler = FlutterError.onError;
         
-        FlutterError.onError!(testError);
+        try {
+          // When: Setting a custom error handler
+          FlutterError.onError = (FlutterErrorDetails details) {
+            // Mock error handler implementation
+          };
+          
+          // Then: Should accept custom handler
+          expect(FlutterError.onError, isNotNull,
+              reason: 'Error handler should be set');
+          expect(FlutterError.onError, isNot(equals(originalHandler)),
+              reason: 'Should replace original handler');
+        } finally {
+          // Cleanup: Restore original handler
+          FlutterError.onError = originalHandler;
+        }
+      });
+
+      test('invokes custom error handler with FlutterErrorDetails', () {
+        // Given: Custom error handler setup
+        bool handlerCalled = false;
+        final originalHandler = FlutterError.onError;
         
-        expect(handlerCalled, isTrue);
-      } finally {
-        FlutterError.onError = originalHandler;
-      }
+        try {
+          // When: Setting up error handler and triggering error
+          FlutterError.onError = (FlutterErrorDetails details) {
+            handlerCalled = true;
+          };
+          
+          final testError = FlutterErrorDetails(
+            exception: Exception('Test error'),
+            stack: StackTrace.current,
+          );
+          
+          FlutterError.onError!(testError);
+          
+          // Then: Should invoke our custom handler
+          expect(handlerCalled, isTrue,
+              reason: 'Custom error handler should be called');
+        } finally {
+          // Cleanup: Restore original handler
+          FlutterError.onError = originalHandler;
+        }
+      });
     });
   });
 }

@@ -59,40 +59,7 @@ Finder findTextContaining(String text) {
   );
 }
 
-extension WidgetTesterExtensions on WidgetTester {
-  /// Tap and wait for animations to complete
-  Future<void> tapAndSettle(Finder finder) async {
-    await tap(finder);
-    await pumpAndSettle(this);
-  }
-
-  /// Enter text and wait for animations to complete
-  Future<void> enterTextAndSettle(Finder finder, String text) async {
-    await enterText(finder, text);
-    await pumpAndSettle(this);
-  }
-
-  /// Drag and wait for animations to complete
-  Future<void> dragAndSettle(
-    Finder finder,
-    Offset offset, {
-    int? pointer,
-    int buttons = 1,
-    double touchSlopX = kDragSlopDefault,
-    double touchSlopY = kDragSlopDefault,
-    Duration duration = const Duration(milliseconds: 300),
-  }) async {
-    await drag(
-      finder,
-      offset,
-      pointer: pointer,
-      buttons: buttons,
-      touchSlopX: touchSlopX,
-      touchSlopY: touchSlopY,
-    );
-    await pumpAndSettle(this);
-  }
-
+extension WidgetTesterHelpers on WidgetTester {
   /// Wait for a widget with a timer to complete
   /// Useful for splash screens or widgets with Future.delayed
   Future<void> waitForTimer(Duration duration) async {

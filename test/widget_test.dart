@@ -6,80 +6,90 @@ import 'package:artifex/screens/splash_screen.dart';
 import 'package:artifex/screens/onboarding_screen.dart';
 import 'package:artifex/utils/app_theme.dart';
 import 'helpers/test_helpers.dart';
+import 'extensions/test_extensions.dart';
 
 void main() {
-  setUpAll(() {
-    // Initialize SharedPreferences with test values
-    SharedPreferences.setMockInitialValues({});
-  });
+  group('App Screens', () {
+    setUpAll(() {
+      // Given: Clean SharedPreferences for testing
+      SharedPreferences.setMockInitialValues({});
+    });
 
-  testWidgets('Splash screen displays correctly', (WidgetTester tester) async {
-    // Use a minimal duration for testing to make tests fast
-    await tester.pumpWidget(
-      MaterialApp(
-        theme: AppTheme.lightTheme,
-        home: const SplashScreen(
-          splashDuration: Duration(milliseconds: 10),
-        ),
-      ),
-    );
+    group('Splash Screen', () {
+      testWidgets('displays brand elements correctly', (tester) async {
+        // Given: Splash screen with minimal duration for testing
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: AppTheme.lightTheme,
+            home: const SplashScreen(
+              splashDuration: Duration(milliseconds: 10),
+            ),
+          ),
+        );
 
-    // Verify splash screen shows
-    expect(find.text('Artifex'), findsOneWidget);
-    expect(find.text('Your World, Reimagined'), findsOneWidget);
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-  });
+        // Then: Should show all brand elements
+        tester.expectWidget(find.text('Artifex'));
+        tester.expectWidget(find.text('Your World, Reimagined'));
+        tester.expectWidget(find.byType(CircularProgressIndicator));
+      });
   
-  testWidgets('Splash screen timer can be cancelled on dispose', (WidgetTester tester) async {
-    // Test that timer is properly cancelled when widget is disposed
-    await tester.pumpWidget(
-      makeTestableScreen(
-        screen: const SplashScreen(
-          splashDuration: Duration(seconds: 10), // Long duration
-        ),
-      ),
-    );
-    
-    // Dispose the widget before timer completes using our helper
-    await tester.disposeWidget();
-    
-    // Should not throw any errors about pending timers
-  });
+      testWidgets('cancels timer properly on dispose', (tester) async {
+        // Given: Splash screen with long duration
+        await tester.pumpWidget(
+          makeTestableScreen(
+            screen: const SplashScreen(
+              splashDuration: Duration(seconds: 10),
+            ),
+          ),
+        );
+        
+        // When: Widget is disposed before timer completes
+        await tester.disposeWidget();
+        
+        // Then: Should not throw errors about pending timers
+        // (implicit - test passes if no exception thrown)
+      });
+    });
 
-  testWidgets('Onboarding screen displays correctly', (WidgetTester tester) async {
-    // Test the onboarding screen directly
-    await tester.pumpWidget(
-      makeTestableScreen(screen: const OnboardingScreen()),
-    );
+    group('Onboarding Screen', () {
+      testWidgets('displays first page content and navigation', (tester) async {
+        // Given: Onboarding screen
+        await tester.pumpWidget(
+          makeTestableScreen(screen: const OnboardingScreen()),
+        );
 
-    // Verify onboarding screen shows first page
-    expect(find.text('Capture Your World'), findsOneWidget);
-    expect(find.text('Skip'), findsOneWidget);
-    expect(find.text('Next'), findsOneWidget);
-    
-    // Test page navigation using our helper
-    await tester.tapAndSettle(find.text('Next'));
-    
-    // Should show second page
-    expect(find.text('Choose Your Vision'), findsOneWidget);
-  });
+        // Then: Should show first page content
+        tester.expectWidget(find.text('Capture Your World'));
+        tester.expectWidget(find.text('Skip'));
+        tester.expectWidget(find.text('Next'));
+        
+        // When: User taps Next
+        await tester.tapAndSettle(find.text('Next'));
+        
+        // Then: Should navigate to second page
+        tester.expectWidget(find.text('Choose Your Vision'));
+      });
+    });
 
-  testWidgets('Splash screen navigates based on onboarding status', (WidgetTester tester) async {
-    // Test navigation when onboarding is not complete
-    SharedPreferences.setMockInitialValues({'onboarding_complete': false});
-    
-    await tester.pumpWidget(
-      makeTestableScreen(
-        screen: const SplashScreen(
-          splashDuration: Duration(milliseconds: 100),
-        ),
-      ),
-    );
-    
-    // Wait for timer to complete
-    await tester.waitForTimer(const Duration(milliseconds: 100));
-    
-    // Should navigate to onboarding
-    expect(find.text('Capture Your World'), findsOneWidget);
+    group('Navigation', () {
+      testWidgets('navigates to onboarding when not completed', (tester) async {
+        // Given: Onboarding not completed
+        SharedPreferences.setMockInitialValues({'onboarding_complete': false});
+        
+        await tester.pumpWidget(
+          makeTestableScreen(
+            screen: const SplashScreen(
+              splashDuration: Duration(milliseconds: 100),
+            ),
+          ),
+        );
+        
+        // When: Splash timer completes
+        await tester.waitForTimer(const Duration(milliseconds: 100));
+        
+        // Then: Should navigate to onboarding screen
+        tester.expectWidget(find.text('Capture Your World'));
+      });
+    });
   });
 }
