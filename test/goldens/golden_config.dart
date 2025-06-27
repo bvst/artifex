@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+// Constants for golden test configuration
+const Size goldenTestWindowSize = Size(414, 896); // iPhone 11 Pro Max size
+const double goldenTestDevicePixelRatio = 3.0;
+
 void setupGoldenTests() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  
-  // Set a consistent window size for golden tests
-  const Size testWindowSize = Size(414, 896); // iPhone 11 Pro Max size
-  final TestWidgetsFlutterBinding binding = 
-      TestWidgetsFlutterBinding.instance;
-  addTearDown(binding.window.clearPhysicalSizeTestValue);
-  addTearDown(binding.window.clearDevicePixelRatioTestValue);
-  binding.window.physicalSizeTestValue = testWindowSize;
-  binding.window.devicePixelRatioTestValue = 3.0;
+  // Any global test setup can go here
+}
+
+// Helper to configure golden test view size
+Future<void> configureGoldenTestView(WidgetTester tester) async {
+  tester.view.physicalSize = goldenTestWindowSize;
+  tester.view.devicePixelRatio = goldenTestDevicePixelRatio;
+  addTearDown(() {
+    tester.view.resetPhysicalSize();
+    tester.view.resetDevicePixelRatio();
+  });
 }
 
 Widget wrapForGolden(Widget widget, {ThemeData? theme}) {

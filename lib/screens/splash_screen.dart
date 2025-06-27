@@ -69,7 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Text(
               'Your World, Reimagined',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: AppColors.canvasWhite.withOpacity(0.7),
+                color: AppColors.canvasWhite.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 48),

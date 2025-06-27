@@ -40,7 +40,7 @@ class OnboardingPage extends StatelessWidget {
           Text(
             data.description,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: AppColors.canvasWhite.withOpacity(0.8),
+              color: AppColors.canvasWhite.withValues(alpha: 0.8),
             ),
             textAlign: TextAlign.center,
             maxLines: 3,

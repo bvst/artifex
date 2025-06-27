@@ -74,7 +74,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   child: Text(
                     'Skip',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.canvasWhite.withOpacity(0.7),
+                      color: AppColors.canvasWhite.withValues(alpha: 0.7),
                     ),
                   ),
                 ),
@@ -113,7 +113,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           shape: BoxShape.circle,
                           color: _currentPage == index
                               ? AppColors.primaryAccent
-                              : AppColors.canvasWhite.withOpacity(0.3),
+                              : AppColors.canvasWhite.withValues(alpha: 0.3),
                         ),
                       ),
                     ),

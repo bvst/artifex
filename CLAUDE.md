@@ -74,6 +74,9 @@ flutter analyze
 flutter build apk --release        # Android APK
 flutter build appbundle --release  # Android App Bundle
 flutter build ios --release        # iOS
+
+# Clean build cache (useful after project restructuring)
+flutter clean
 ```
 
 ## Flutter Best Practices
@@ -127,14 +130,34 @@ flutter build ios --release        # iOS
 - Run tests before pushing
 - Use conventional commits
 
+### Pre-commit Checklist
+Always run these before committing:
+```bash
+flutter analyze       # Check for code issues
+flutter test         # Run all tests
+flutter format .     # Format code (optional: --set-exit-if-changed)
+```
+
 ## CI/CD Status
 - ✅ GitHub Actions configured
 - ✅ Automated testing on push
 - ✅ APK builds for Android
 - ✅ iOS builds (unsigned)
 
+## Version Management
+- Flutter version is specified in `.flutter-version` file (currently 3.32.4)
+- GitHub Actions automatically uses this version via `flutter-version-file` parameter
+- This ensures CI/CD stays in sync with local development environment
+
+## Configuration Files
+- `.flutter-version` - Specifies Flutter SDK version for the project
+- `analysis_options.yaml` - Dart/Flutter linting rules
+- `.gitignore` - Properly configured for Flutter projects
+- `.github/workflows/flutter-ci.yml` - CI/CD pipeline configuration
+
 ## Notes
 - User prefers concise responses
 - Focus on practical implementation
 - Keep documentation minimal unless requested
 - Update docs/progress.md for session continuity
+- Run `flutter clean` after major project restructuring to clear CMake cache
