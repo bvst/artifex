@@ -3,11 +3,12 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import '../utils/logger.dart';
+import 'database_config.dart';
 
 /// Database helper for SQLite operations
 class DatabaseHelper {
-  static const String _databaseName = 'artifex.db';
-  static const int _databaseVersion = 1;
+  static const String _databaseName = DatabaseConfig.sqliteDbName;
+  static const int _databaseVersion = DatabaseConfig.sqliteVersion;
   
   static Database? _database;
 
@@ -41,22 +42,14 @@ class DatabaseHelper {
   static Future<void> _onCreate(Database db, int version) async {
     AppLogger.info('Creating database tables');
     
-    // Create transformations table
-    await db.execute('''
-      CREATE TABLE transformations (
-        id TEXT PRIMARY KEY,
-        imageUrl TEXT NOT NULL,
-        thumbnailUrl TEXT NOT NULL,
-        prompt TEXT NOT NULL,
-        style TEXT NOT NULL,
-        createdAt TEXT NOT NULL,
-        localPath TEXT
-      )
-    ''');
+    // Execute migration SQL from config
+    for (final sql in DatabaseConfig.migrationSql) {
+      await db.execute(sql);
+    }
     
     // Create photos table (for local photo storage)
     await db.execute('''
-      CREATE TABLE photos (
+      CREATE TABLE IF NOT EXISTS photos (
         id TEXT PRIMARY KEY,
         path TEXT NOT NULL,
         name TEXT NOT NULL,

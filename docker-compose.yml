@@ -1,0 +1,62 @@
+services:
+  # Development database
+  artifex-dev-db:
+    image: postgres:15-alpine
+    container_name: artifex-dev-db
+    environment:
+      POSTGRES_DB: artifex_dev
+      POSTGRES_USER: artifex_user
+      POSTGRES_PASSWORD: artifex_dev_password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5430:5432"
+    volumes:
+      - artifex_dev_data:/var/lib/postgresql/data
+      - ./docker/init-dev.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U artifex_user -d artifex_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Test database (ephemeral)
+  artifex-test-db:
+    image: postgres:15-alpine
+    container_name: artifex-test-db
+    environment:
+      POSTGRES_DB: artifex_test
+      POSTGRES_USER: artifex_test_user
+      POSTGRES_PASSWORD: artifex_test_password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./docker/init-test.sql:/docker-entrypoint-initdb.d/init.sql
+    # No volume mount - test DB is ephemeral
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U artifex_test_user -d artifex_test"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  # Redis for caching (optional, for future use)
+  artifex-redis:
+    image: redis:7-alpine
+    container_name: artifex-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - artifex_redis_data:/data
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+volumes:
+  artifex_dev_data:
+    driver: local
+  artifex_redis_data:
+    driver: local
+
+networks:
+  default:
+    name: artifex-network

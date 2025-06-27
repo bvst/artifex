@@ -11,6 +11,23 @@ jobs:
     name: Test Flutter App
     runs-on: ubuntu-latest
     
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: artifex_test
+          POSTGRES_USER: artifex_test_user
+          POSTGRES_PASSWORD: artifex_test_password
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5433:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd "pg_isready -U artifex_test_user -d artifex_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
     steps:
     - uses: actions/checkout@v4
     
@@ -27,11 +44,29 @@ jobs:
     - name: Get dependencies
       run: flutter pub get
     
+    - name: Initialize test database
+      run: |
+        # Wait for PostgreSQL to be ready
+        until pg_isready -h localhost -p 5433 -U artifex_test_user -d artifex_test; do
+          echo "Waiting for PostgreSQL to be ready..."
+          sleep 2
+        done
+        
+        # Initialize database schema
+        PGPASSWORD=artifex_test_password psql -h localhost -p 5433 -U artifex_test_user -d artifex_test -f docker/init-test.sql
+    
     - name: Analyze code
       run: flutter analyze
     
-    - name: Run tests
+    - name: Run tests (including integration tests)
       run: flutter test
+      env:
+        # Ensure tests can connect to the PostgreSQL service
+        POSTGRES_TEST_HOST: localhost
+        POSTGRES_TEST_PORT: 5433
+        POSTGRES_TEST_DB: artifex_test
+        POSTGRES_TEST_USER: artifex_test_user
+        POSTGRES_TEST_PASSWORD: artifex_test_password
 
   build-android:
     name: Build Android APK

@@ -72,6 +72,18 @@
 ├── android/                # Android platform files
 ├── ios/                   # iOS platform files
 ├── test/                  # Test files
+│   ├── integration/       # Database integration tests
+│   └── ...               # Unit and widget tests
+├── docker/                # Database containers for development
+│   ├── docker-compose.yml # Container orchestration
+│   ├── Makefile          # Database management commands
+│   ├── init-dev.sql      # Development database setup
+│   ├── init-test.sql     # Test database setup
+│   └── README.md         # Docker setup documentation
+├── scripts/               # Utility scripts
+│   └── test-containers.sh # Container testing script
+├── bin/                   # Custom Flutter commands
+│   └── check.dart        # Custom test + analyze command
 ├── pubspec.yaml           # Dependencies
 └── docs/                  # Documentation
     ├── PLAN.md             # Development plan and progress tracking
@@ -97,6 +109,11 @@ dart run artifex:check
 # Run tests only
 flutter test
 
+# Run integration tests (requires database containers)
+cd docker && make test-up
+flutter test test/integration/
+cd docker && make test-down
+
 # Analyze code only
 flutter analyze
 
@@ -113,6 +130,19 @@ flutter packages pub run build_runner build --delete-conflicting-outputs
 
 # Watch mode for code generation during development
 flutter packages pub run build_runner watch --delete-conflicting-outputs
+
+# Database Development Commands
+cd docker
+make dev-up      # Start development database (with sample data)
+make test-up     # Start test database (clean)
+make dev-down    # Stop development database
+make test-down   # Stop test database
+make clean       # Remove all containers and volumes
+make reset-dev   # Reset development database with fresh sample data
+make logs        # View database logs
+
+# Test database containers
+./scripts/test-containers.sh
 ```
 
 ## Flutter Best Practices
