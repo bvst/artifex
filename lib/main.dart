@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/network/dio_client.dart';
 import 'core/utils/logger.dart';
 import 'core/utils/error_boundary.dart';
-import 'utils/app_theme.dart';
+import 'shared/themes/app_theme.dart';
 import 'screens/splash_screen.dart';
 
 void main() async {

@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../utils/app_colors.dart';
+import '../shared/themes/app_theme.dart';
 import '../utils/preferences_helper.dart';
 import 'onboarding_screen.dart';
-import 'home_screen.dart';
+import '../features/home/presentation/screens/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   final Duration splashDuration;
@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primaryBackground,
+      backgroundColor: AppTheme.colors.primary,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -65,32 +65,33 @@ class _SplashScreenState extends State<SplashScreen> {
               width: 120,
               height: 120,
               decoration: BoxDecoration(
-                color: AppColors.cardBackground,
+                color: AppTheme.colors.background,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.auto_awesome,
                 size: 60,
-                color: AppColors.primaryAccent,
+                color: AppTheme.colors.secondary,
               ),
             ),
             const SizedBox(height: 32),
             Text(
               'Artifex',
-              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+              style: AppTheme.textStyles.headlineLarge.copyWith(
+                color: AppTheme.colors.onPrimary,
                 fontFamily: 'Lora',
               ),
             ),
             const SizedBox(height: 8),
             Text(
               'Your World, Reimagined',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: AppColors.canvasWhite.withValues(alpha: 0.7),
+              style: AppTheme.textStyles.bodyLarge.copyWith(
+                color: AppTheme.colors.onPrimary.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 48),
-            const CircularProgressIndicator(
-              color: AppColors.primaryAccent,
+            CircularProgressIndicator(
+              color: AppTheme.colors.secondary,
             ),
           ],
         ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 import '../utils/preferences_helper.dart';
 import '../widgets/onboarding_page.dart';
-import 'home_screen.dart';
+import '../features/home/presentation/screens/home_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});

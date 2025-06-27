@@ -206,3 +206,7 @@ flutter packages pub run build_runner build --delete-conflicting-outputs
 - **ALWAYS update docs/PLAN.md** after completing work (see .claude/commands/update-plan.md)
 - **Use near-null-free programming**: Prefer Option<T>, Either<L,R>, and safe defaults over nullable types
 - Run `flutter clean` after major project restructuring to clear CMake cache
+- **CRITICAL: Write tests for ALL new code - NO EXCEPTIONS!**
+  - Every new file must have corresponding test file
+  - Test structure mirrors source: `lib/[path]` → `test/[path]`
+  - Current test count: 64 tests (all passing)
