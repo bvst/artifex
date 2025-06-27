@@ -44,8 +44,11 @@ class AppConstants {
   
   // Feature Flags
   static const bool enableOfflineMode = true;
-  static const bool enableAnalytics = false;
-  static const bool enableCrashReporting = false;
+  static const bool enableAnalytics = bool.fromEnvironment('ENABLE_ANALYTICS', defaultValue: false);
+  static const bool enableCrashReporting = bool.fromEnvironment('ENABLE_CRASH_REPORTING', defaultValue: false);
+  
+  // Computed flags
+  static bool get enableDebugAnalytics => isDebug && enableAnalytics;
   
   // Environment
   static bool get isProduction => const bool.fromEnvironment('dart.vm.product');
