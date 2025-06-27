@@ -39,6 +39,15 @@
   - Hot reload for fast development
   - Google-backed with massive community
 
+## Architecture Implementation
+- **State Management**: Riverpod with code generation (@riverpod annotations)
+- **Architecture Pattern**: Clean Architecture + Repository Pattern
+- **Project Structure**: Feature-based organization (features/[feature_name]/{data,domain,presentation})
+- **Error Handling**: Either pattern with Dartz, custom Failure classes
+- **Networking**: Dio client with interceptors, retry logic, and environment-based configuration
+- **Dependency Injection**: Riverpod providers with generated code
+- **Logging**: Logger package with environment-based levels and structured output
+
 ## Project Structure
 ```
 /home/bv/git/artifex/
@@ -46,11 +55,28 @@
 ├── .gitignore              # Flutter-specific gitignore
 ├── CLAUDE.md               # This file
 ├── lib/                    # Dart source files
+│   ├── core/               # Core infrastructure
+│   │   ├── errors/         # Custom failures and exceptions
+│   │   ├── network/        # Dio client and network setup
+│   │   ├── constants/      # App-wide constants
+│   │   └── utils/          # Utilities (logger, etc.)
+│   ├── features/           # Feature-based organization
+│   │   └── photo_capture/  # Photo capture feature
+│   │       ├── data/       # Data layer (repositories, datasources, models)
+│   │       ├── domain/     # Domain layer (entities, use cases, interfaces)
+│   │       └── presentation/ # UI layer (screens, widgets, providers)
+│   ├── screens/            # Legacy screens (to be moved to features)
+│   ├── widgets/            # Shared UI components
+│   └── utils/              # Legacy utils (to be moved to core)
 ├── android/                # Android platform files
 ├── ios/                   # iOS platform files
 ├── test/                  # Test files
 ├── pubspec.yaml           # Dependencies
 └── docs/                  # Documentation
+    ├── PLAN.md             # Development plan and progress tracking
+    ├── architecture-strategy.md # Comprehensive architecture guide
+    ├── artifex-checklist.md # Feature requirements
+    └── brand-guidelines.md # Brand identity guide
 ```
 
 ## Commands to Remember
@@ -77,19 +103,30 @@ flutter build ios --release        # iOS
 
 # Clean build cache (useful after project restructuring)
 flutter clean
+
+# Code generation (for Riverpod providers, JSON serialization)
+flutter packages pub run build_runner build --delete-conflicting-outputs
+
+# Watch mode for code generation during development
+flutter packages pub run build_runner watch --delete-conflicting-outputs
 ```
 
 ## Flutter Best Practices
 
-### Project Structure
-- **lib/** - All Dart code goes here
-  - `main.dart` - App entry point only
-  - `screens/` - Full page widgets
+### Project Structure (Updated Architecture)
+- **lib/core/** - Core infrastructure and utilities
+  - `errors/` - Custom failure classes and exceptions
+  - `network/` - Dio client setup with interceptors
+  - `constants/` - App-wide configuration constants
+  - `utils/` - Logging and helper utilities
+- **lib/features/** - Feature-based organization
+  - `[feature_name]/data/` - Models, datasources, repository implementations
+  - `[feature_name]/domain/` - Entities, use cases, repository interfaces
+  - `[feature_name]/presentation/` - UI screens, widgets, Riverpod providers
+- **lib/shared/** - Shared components across features
   - `widgets/` - Reusable UI components
-  - `models/` - Data models
-  - `services/` - API, database, device services
-  - `utils/` - Helper functions and constants
-  - `providers/` or `blocs/` - State management
+  - `themes/` - App theming
+- **Generated files** - Build runner creates `.g.dart` files for providers
 
 ### Code Style
 - Use `const` constructors whenever possible for performance
@@ -100,11 +137,14 @@ flutter clean
   - Classes: PascalCase
   - Files/folders: snake_case
   - Variables/functions: camelCase
+- Use `@riverpod` annotations for dependency injection
+- Implement Either<Failure, Success> pattern for error handling
 
-### State Management
-- Options: Provider, Riverpod, Bloc, GetX
-- Start simple with Provider or Riverpod
-- Keep business logic separate from UI
+### State Management (Implemented)
+- **Riverpod** with code generation (@riverpod annotations)
+- Provider-based dependency injection for clean testing
+- Separate providers for different concerns (data, business logic, UI state)
+- StateNotifier pattern for complex state management
 
 ### Performance
 - Use `const` widgets to prevent rebuilds
@@ -136,6 +176,8 @@ Always run these before committing:
 flutter analyze       # Check for code issues
 flutter test         # Run all tests
 flutter format .     # Format code (optional: --set-exit-if-changed)
+# If you've modified @riverpod providers, run:
+flutter packages pub run build_runner build --delete-conflicting-outputs
 ```
 
 ## CI/CD Status
@@ -159,5 +201,5 @@ flutter format .     # Format code (optional: --set-exit-if-changed)
 - User prefers concise responses
 - Focus on practical implementation
 - Keep documentation minimal unless requested
-- Update docs/progress.md for session continuity
+- **ALWAYS update docs/PLAN.md** after completing work (see .claude/commands/update-plan.md)
 - Run `flutter clean` after major project restructuring to clear CMake cache
