@@ -1,0 +1,117 @@
+import 'package:dartz/dartz.dart';
+import '../../../../core/errors/exceptions.dart';
+import '../../../../core/errors/failures.dart';
+import '../../../../core/utils/logger.dart';
+import '../../domain/entities/photo.dart';
+import '../../domain/repositories/photo_repository.dart';
+import '../datasources/photo_local_datasource.dart';
+import '../models/photo_model.dart';
+
+class PhotoRepositoryImpl implements PhotoRepository {
+  const PhotoRepositoryImpl({
+    required PhotoLocalDataSource localDataSource,
+  }) : _localDataSource = localDataSource;
+
+  final PhotoLocalDataSource _localDataSource;
+
+  @override
+  Future<Either<Failure, Photo>> capturePhoto() async {
+    try {
+      AppLogger.debug('PhotoRepository: Capturing photo');
+      final photoModel = await _localDataSource.capturePhoto();
+      return Right(photoModel.toEntity());
+    } on FileException catch (e) {
+      AppLogger.error('PhotoRepository: File error during capture', e);
+      return Left(FileNotFoundFailure(e.message));
+    } on ValidationException catch (e) {
+      AppLogger.error('PhotoRepository: Validation error during capture', e);
+      return Left(ValidationFailure(e.message));
+    } on PermissionException catch (e) {
+      AppLogger.error('PhotoRepository: Permission error during capture', e);
+      return Left(PermissionFailure(e.message));
+    } catch (e) {
+      AppLogger.error('PhotoRepository: Unexpected error during capture', e);
+      return Left(CacheFailure('Failed to capture photo: ${e.toString()}'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Photo>> pickImageFromGallery() async {
+    try {
+      AppLogger.debug('PhotoRepository: Picking image from gallery');
+      final photoModel = await _localDataSource.pickImageFromGallery();
+      return Right(photoModel.toEntity());
+    } on FileException catch (e) {
+      AppLogger.error('PhotoRepository: File error during gallery pick', e);
+      return Left(FileNotFoundFailure(e.message));
+    } on ValidationException catch (e) {
+      AppLogger.error('PhotoRepository: Validation error during gallery pick', e);
+      return Left(ValidationFailure(e.message));
+    } on PermissionException catch (e) {
+      AppLogger.error('PhotoRepository: Permission error during gallery pick', e);
+      return Left(PermissionFailure(e.message));
+    } catch (e) {
+      AppLogger.error('PhotoRepository: Unexpected error during gallery pick', e);
+      return Left(CacheFailure('Failed to pick image: ${e.toString()}'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Photo>>> getRecentPhotos({int limit = 10}) async {
+    try {
+      AppLogger.debug('PhotoRepository: Getting recent photos (limit: $limit)');
+      final photoModels = await _localDataSource.getRecentPhotos(limit: limit);
+      final photos = photoModels.map((model) => model.toEntity()).toList();
+      return Right(photos);
+    } on CacheException catch (e) {
+      AppLogger.error('PhotoRepository: Cache error getting recent photos', e);
+      return Left(CacheFailure(e.message));
+    } catch (e) {
+      AppLogger.error('PhotoRepository: Unexpected error getting recent photos', e);
+      return Left(CacheFailure('Failed to get recent photos: ${e.toString()}'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deletePhoto(String photoId) async {
+    try {
+      AppLogger.debug('PhotoRepository: Deleting photo: $photoId');
+      await _localDataSource.deletePhoto(photoId);
+      return const Right(null);
+    } on FileException catch (e) {
+      AppLogger.error('PhotoRepository: File error during delete', e);
+      return Left(FileNotFoundFailure(e.message));
+    } catch (e) {
+      AppLogger.error('PhotoRepository: Unexpected error during delete', e);
+      return Left(CacheFailure('Failed to delete photo: ${e.toString()}'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Photo>> savePhoto(Photo photo) async {
+    try {
+      AppLogger.debug('PhotoRepository: Saving photo: ${photo.id}');
+      // Convert to model for data layer
+      final photoModel = PhotoModel.fromJson({
+        'id': photo.id,
+        'path': photo.path,
+        'name': photo.name,
+        'size': photo.size,
+        'created_at': photo.createdAt.toIso8601String(),
+        'width': photo.width,
+        'height': photo.height,
+        'mime_type': photo.mimeType,
+      });
+      
+      final savedModel = await _localDataSource.savePhoto(photoModel);
+      return Right(savedModel.toEntity());
+    } on FileException catch (e) {
+      AppLogger.error('PhotoRepository: File error during save', e);
+      return Left(FileNotFoundFailure(e.message));
+    } catch (e) {
+      AppLogger.error('PhotoRepository: Unexpected error during save', e);
+      return Left(CacheFailure('Failed to save photo: ${e.toString()}'));
+    }
+  }
+}
+
