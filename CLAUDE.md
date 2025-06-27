@@ -44,6 +44,7 @@
 - **Architecture Pattern**: Clean Architecture + Repository Pattern
 - **Project Structure**: Feature-based organization (features/[feature_name]/{data,domain,presentation})
 - **Error Handling**: Either pattern with Dartz, custom Failure classes
+- **Null Safety**: Near-null-free programming with Option pattern and safe defaults
 - **Networking**: Dio client with interceptors, retry logic, and environment-based configuration
 - **Dependency Injection**: Riverpod providers with generated code
 - **Logging**: Logger package with environment-based levels and structured output
@@ -139,6 +140,7 @@ flutter packages pub run build_runner watch --delete-conflicting-outputs
   - Variables/functions: camelCase
 - Use `@riverpod` annotations for dependency injection
 - Implement Either<Failure, Success> pattern for error handling
+- **Near-null-free programming**: Minimize null usage with Option pattern and safe defaults
 
 ### State Management (Implemented)
 - **Riverpod** with code generation (@riverpod annotations)
@@ -202,4 +204,5 @@ flutter packages pub run build_runner build --delete-conflicting-outputs
 - Focus on practical implementation
 - Keep documentation minimal unless requested
 - **ALWAYS update docs/PLAN.md** after completing work (see .claude/commands/update-plan.md)
+- **Use near-null-free programming**: Prefer Option<T>, Either<L,R>, and safe defaults over nullable types
 - Run `flutter clean` after major project restructuring to clear CMake cache

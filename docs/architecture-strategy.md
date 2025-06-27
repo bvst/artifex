@@ -238,7 +238,54 @@ class ErrorHandler {
 }
 ```
 
-## 6. Performance Optimizations
+## 6. Null Safety Strategy
+
+### Near-Null-Free Programming
+Artifex follows a near-null-free programming approach to minimize runtime null reference errors and improve code safety.
+
+### Key Principles
+- **Prefer Option<T>**: Use `Option<T>` from Dartz for truly optional values
+- **Safe defaults**: Provide sensible defaults instead of null values
+- **Either pattern**: Replace nullable returns with `Either<Failure, Success>`
+- **Functional composition**: Chain operations safely without null checks
+
+### Implementation Examples
+```dart
+// Instead of nullable fields
+class Photo {
+  final int? width;  // Still needed for optional data
+  
+  // But provide safe accessors
+  Option<int> get widthOption => width != null ? some(width!) : none();
+  bool get hasDimensions => width != null && height != null;
+  String get displayDimensions => hasDimensions ? '${width}x$height' : 'Unknown';
+}
+
+// Instead of nullable returns
+Either<Failure, Photo> capturePhoto(); // Not: Photo? capturePhoto()
+
+// Safe configuration with defaults
+static const String apiKey = String.fromEnvironment('API_KEY', defaultValue: '');
+static bool get hasApiKey => apiKey.isNotEmpty;
+```
+
+### Extension Methods for Safety
+```dart
+// Convert nullable to Option
+extension NullableToOption<T> on T? {
+  Option<T> get toOption => this != null ? some(this as T) : none();
+}
+
+// Safe operations
+extension SafeOperations<T> on T? {
+  T orElse(T defaultValue) => this ?? defaultValue;
+  void ifPresent(void Function(T) action) {
+    if (this != null) action(this as T);
+  }
+}
+```
+
+## 7. Performance Optimizations
 
 ### Image Handling
 - **Caching**: Use `cached_network_image` for network images

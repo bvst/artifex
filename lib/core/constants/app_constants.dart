@@ -1,11 +1,18 @@
 class AppConstants {
-  // API Configuration
+  // API Configuration - No nulls, always have defaults
   static const String baseUrl = String.fromEnvironment(
     'API_BASE_URL',
     defaultValue: 'https://api.openai.com/v1',
   );
   
-  static const String dalleApiKey = String.fromEnvironment('DALLE_API_KEY');
+  static const String dalleApiKey = String.fromEnvironment(
+    'DALLE_API_KEY',
+    defaultValue: '', // Default to empty string instead of null
+  );
+  
+  // Safe API key access
+  static bool get hasApiKey => dalleApiKey.isNotEmpty;
+  static String get safeApiKey => hasApiKey ? dalleApiKey : throw Exception('DALLE_API_KEY not configured');
   
   // Image Configuration
   static const int maxImageSizeBytes = 10 * 1024 * 1024; // 10MB

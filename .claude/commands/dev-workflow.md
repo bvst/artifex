@@ -38,8 +38,11 @@ flutter format .
 ## Feature Development Pattern
 1. Create feature folder: `lib/features/[feature_name]/`
 2. Implement domain layer first (entities, repositories, use cases)
+   - **Use near-null-free programming**: Option<T>, Either<L,R>, safe defaults
 3. Implement data layer (models, datasources, repository implementations)
+   - **Avoid nullable returns**: Use Either<Failure, Success> pattern
 4. Create presentation layer (screens, widgets, providers)
+   - **Provide safe accessors** for any nullable fields
 5. Write tests for each layer
 6. Update PLAN.md with completed work
 
