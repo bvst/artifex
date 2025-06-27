@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../data/datasources/photo_local_datasource.dart';
 import '../../data/repositories/photo_repository_impl.dart';
@@ -10,11 +11,11 @@ part 'photo_providers.g.dart';
 
 // External dependencies
 @riverpod
-ImagePicker imagePicker(ImagePickerRef ref) => ImagePicker();
+ImagePicker imagePicker(Ref ref) => ImagePicker();
 
 // Data sources
 @riverpod
-PhotoLocalDataSource photoLocalDataSource(PhotoLocalDataSourceRef ref) {
+PhotoLocalDataSource photoLocalDataSource(Ref ref) {
   return PhotoLocalDataSourceImpl(
     imagePicker: ref.read(imagePickerProvider),
   );
@@ -22,7 +23,7 @@ PhotoLocalDataSource photoLocalDataSource(PhotoLocalDataSourceRef ref) {
 
 // Repositories
 @riverpod
-PhotoRepository photoRepository(PhotoRepositoryRef ref) {
+PhotoRepository photoRepository(Ref ref) {
   return PhotoRepositoryImpl(
     localDataSource: ref.read(photoLocalDataSourceProvider),
   );
@@ -30,17 +31,17 @@ PhotoRepository photoRepository(PhotoRepositoryRef ref) {
 
 // Use cases
 @riverpod
-CapturePhotoUseCase capturePhotoUseCase(CapturePhotoUseCaseRef ref) {
+CapturePhotoUseCase capturePhotoUseCase(Ref ref) {
   return CapturePhotoUseCase(ref.read(photoRepositoryProvider));
 }
 
 @riverpod
-PickImageFromGalleryUseCase pickImageFromGalleryUseCase(PickImageFromGalleryUseCaseRef ref) {
+PickImageFromGalleryUseCase pickImageFromGalleryUseCase(Ref ref) {
   return PickImageFromGalleryUseCase(ref.read(photoRepositoryProvider));
 }
 
 @riverpod
-GetRecentPhotosUseCase getRecentPhotosUseCase(GetRecentPhotosUseCaseRef ref) {
+GetRecentPhotosUseCase getRecentPhotosUseCase(Ref ref) {
   return GetRecentPhotosUseCase(ref.read(photoRepositoryProvider));
 }
 

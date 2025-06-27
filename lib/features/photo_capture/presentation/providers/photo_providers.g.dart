@@ -6,7 +6,7 @@ part of 'photo_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$imagePickerHash() => r'320373cd7a3964d1cabeb291795bcfcd6e7d4267';
+String _$imagePickerHash() => r'7740c09b2d6b395ce466f1b72b93b31db7bfd740';
 
 /// See also [imagePicker].
 @ProviderFor(imagePicker)
@@ -23,7 +23,7 @@ final imagePickerProvider = AutoDisposeProvider<ImagePicker>.internal(
 // ignore: unused_element
 typedef ImagePickerRef = AutoDisposeProviderRef<ImagePicker>;
 String _$photoLocalDataSourceHash() =>
-    r'106f38cd062e66fe251f361fef58ac34b60f380c';
+    r'0bfe310b86b465b63a0e80a1d90204a5a51b369f';
 
 /// See also [photoLocalDataSource].
 @ProviderFor(photoLocalDataSource)
@@ -41,7 +41,7 @@ final photoLocalDataSourceProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef PhotoLocalDataSourceRef = AutoDisposeProviderRef<PhotoLocalDataSource>;
-String _$photoRepositoryHash() => r'bb67bc5c2d357525d40a6d3291b75ff2649b2612';
+String _$photoRepositoryHash() => r'15978b948017a8784d4bbbfe307451fca103fb0e';
 
 /// See also [photoRepository].
 @ProviderFor(photoRepository)
@@ -59,7 +59,7 @@ final photoRepositoryProvider = AutoDisposeProvider<PhotoRepository>.internal(
 // ignore: unused_element
 typedef PhotoRepositoryRef = AutoDisposeProviderRef<PhotoRepository>;
 String _$capturePhotoUseCaseHash() =>
-    r'287f141ab5aa6e9b1e3b26ea380f11a9c45925ef';
+    r'2dfe7d42bec08a4a34d701bb1300b9c078ee7c26';
 
 /// See also [capturePhotoUseCase].
 @ProviderFor(capturePhotoUseCase)
@@ -78,7 +78,7 @@ final capturePhotoUseCaseProvider =
 // ignore: unused_element
 typedef CapturePhotoUseCaseRef = AutoDisposeProviderRef<CapturePhotoUseCase>;
 String _$pickImageFromGalleryUseCaseHash() =>
-    r'57fb11780e14b93a2d67bc35852ec616ccd8524e';
+    r'2efed415535057efb095bf873de8c3d2c711adf6';
 
 /// See also [pickImageFromGalleryUseCase].
 @ProviderFor(pickImageFromGalleryUseCase)
@@ -98,7 +98,7 @@ final pickImageFromGalleryUseCaseProvider =
 typedef PickImageFromGalleryUseCaseRef
     = AutoDisposeProviderRef<PickImageFromGalleryUseCase>;
 String _$getRecentPhotosUseCaseHash() =>
-    r'95e1844659b1ac1c3a0a695d9c1172470ed485e9';
+    r'8b6756bed8af75c88ee86f44ac76b05bf102e323';
 
 /// See also [getRecentPhotosUseCase].
 @ProviderFor(getRecentPhotosUseCase)

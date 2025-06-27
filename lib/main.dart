@@ -2,30 +2,54 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/network/dio_client.dart';
 import 'core/utils/logger.dart';
+import 'core/utils/error_boundary.dart';
 import 'utils/app_theme.dart';
 import 'screens/splash_screen.dart';
 
 void main() async {
+  // Initialize Flutter binding first
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Set up global error handling for keyboard assertion errors
+  FlutterError.onError = (FlutterErrorDetails details) {
+    // Filter out known harmless keyboard assertion errors
+    if (details.exception.toString().contains('HardwareKeyboard._assertEventIsRegular') ||
+        details.exception.toString().contains('_AssertionError')) {
+      AppLogger.debug('Filtered keyboard assertion error: ${details.exception}');
+      return;
+    }
+    
+    // Log other errors normally
+    AppLogger.error(
+      'Flutter error: ${details.exception}',
+      details.exception,
+      details.stack,
+    );
+  };
   
   // Initialize core services
   await _initializeApp();
   
   runApp(
-    const ProviderScope(
-      child: ArtifexApp(),
+    ProviderScope(
+      child: ErrorBoundary(
+        onError: (error, stackTrace) {
+          AppLogger.error('App-level error caught', error, stackTrace);
+        },
+        child: const ArtifexApp(),
+      ),
     ),
   );
 }
 
 Future<void> _initializeApp() async {
   try {
-    AppLogger.info('Initializing Artifex application');
+    AppLogger.debug('Initializing Artifex application');
     
     // Initialize network client
     DioClient().initialize();
     
-    AppLogger.info('Application initialization completed');
+    AppLogger.debug('Application initialization completed');
   } catch (e, stackTrace) {
     AppLogger.error('Failed to initialize application', e, stackTrace);
     rethrow;
