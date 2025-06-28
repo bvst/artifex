@@ -1,8 +1,8 @@
 # Artifex - Development Plan & Progress
 
 ## Current Status
-- **Date**: 2025-06-27
-- **Phase**: Home Screen UI Complete - Ready for Camera Integration
+- **Date**: 2025-06-28
+- **Phase**: Integration Tests Internationalization-Ready
 - **Developer**: Solo C# developer learning Flutter
 - **App**: AI-powered photo transformation app
 
@@ -31,20 +31,33 @@
 - [x] **Implemented image input section with Take Photo and Upload buttons**
 - [x] **Added proper navigation from onboarding to home screen**
 
+### Camera & Photo Features
+- [x] **Implemented camera integration functionality** (Session 5)
+- [x] **Implemented photo gallery selection** (Session 5)
+- [x] **Created photo capture architecture with repository pattern**
+- [x] **Added platform-specific camera fallback for Linux/desktop**
+- [x] **Fixed image picker cancellation handling**
+
+### Testing & Quality
+- [x] **Set up containerized test databases** (PostgreSQL + Redis)
+- [x] **Made all integration tests language-agnostic** (Session 6)
+- [x] **Fixed all integration test failures** - 142 tests passing
+- [x] **Added error handling for corrupted preferences**
+
 ## In Progress 🔄
 
-### Next Priority: Camera & Gallery Integration
-- [ ] Implement camera integration functionality  
-- [ ] Implement photo gallery selection
-- [ ] Connect photo capture to transformation pipeline
+### Next Priority: Internationalization Support
+- [ ] Add internationalization support (English + Norwegian)
+- [ ] Implement locale switching functionality
+- [ ] Create language selection in settings
 
 ## Upcoming Tasks 📋
 
 ### Core Features
 - [x] ~~Implement basic navigation structure~~ ✅ 
 - [x] ~~Create home screen with brand colors~~ ✅
-- [ ] Add camera integration for photo capture
-- [ ] Implement photo upload from gallery
+- [x] ~~Add camera integration for photo capture~~ ✅ (Session 5)
+- [x] ~~Implement photo upload from gallery~~ ✅ (Session 5)
 - [ ] Create filter selection UI
 - [ ] Integrate DALL-E 3 API
 - [ ] Build processing/loading screen
@@ -54,6 +67,9 @@
 - [x] Set up state management (Riverpod) ✅
 - [ ] Configure app icons and splash screen
 - [x] Implement error handling ✅
+- [x] ~~Set up database infrastructure (Docker/PostgreSQL)~~ ✅ (Session 6)
+- [x] ~~Make integration tests language-agnostic~~ ✅ (Session 6)
+- [ ] Add internationalization support (English + Norwegian)
 - [ ] Implement comprehensive analytics strategy (see docs/analytics-strategy.md)
   - [ ] Phase 1: Analytics foundation with Firebase Analytics
   - [ ] Phase 2: Core event tracking (onboarding, photo capture, transformations)
@@ -229,6 +245,33 @@
 - **Updated development workflow** to enforce testing requirements
 - **All 64 tests passing** ✅
 - **Ready for next session**: Implement camera integration and gallery selection functionality
+
+### 2025-06-28 Session 6 - Database Containers & Integration Tests
+- **Set up Docker infrastructure** for containerized databases (PostgreSQL + Redis)
+- **Created separate database containers** for development (persistent) and testing (ephemeral)
+- **Fixed Docker configuration issues**:
+  - Removed obsolete version warning
+  - Changed dev database port from 5432 to 5430 to avoid conflicts
+  - Updated all configuration files with new port
+- **Enhanced check script** to automatically manage test database lifecycle
+- **Updated GitHub Actions** with PostgreSQL service container for CI/CD
+- **Fixed integration test reliability**:
+  - Updated all tests to use real app screens instead of placeholders
+  - Fixed text content mismatches with actual UI
+  - Made main app splashDuration non-nullable per user request
+  - Added proper error handling for corrupted SharedPreferences
+  - Fixed last failing test with waitForSplashNavigation helper
+- **Made all integration tests language-agnostic** for internationalization:
+  - Replaced text-based assertions with widget type and icon finders
+  - Used structural widget identification (buttons by type, page indicators by shape)
+  - Removed hardcoded text expectations that would break with locale changes
+  - Applied internationalization-friendly patterns to all 18 integration tests
+- **Test results**: 
+  - All 142 tests passing ✅ (increased from 64)
+  - 10 app flow integration tests passing
+  - 8 photo capture integration tests passing
+  - Zero text dependencies in integration tests
+- **Ready for next session**: Implement internationalization support (English + Norwegian)
 
 ---
 
