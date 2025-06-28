@@ -43,11 +43,13 @@
 - **State Management**: Riverpod with code generation (@riverpod annotations)
 - **Architecture Pattern**: Clean Architecture + Repository Pattern
 - **Project Structure**: Feature-based organization (features/[feature_name]/{data,domain,presentation})
-- **Error Handling**: Either pattern with Dartz, custom Failure classes
+- **Error Handling**: Flutter global error handlers + Either pattern with Dartz, custom Failure classes
 - **Null Safety**: Near-null-free programming with Option pattern and safe defaults
 - **Networking**: Dio client with interceptors, retry logic, and environment-based configuration
 - **Dependency Injection**: Riverpod providers with generated code
 - **Logging**: Logger package with environment-based levels and structured output
+- **Database**: SQLite for production, PostgreSQL v3 for integration testing with transactions
+- **Testing**: Language-agnostic tests, 142 tests passing, integration tests with database isolation
 
 ## Project Structure
 ```
@@ -103,19 +105,29 @@ flutter run
 # Get dependencies
 flutter pub get
 
-# Run tests, analysis, and formatting together (CUSTOM COMMAND)
-dart run artifex:check
+# Quality Assurance (CUSTOM COMMANDS)
+dart run artifex:check           # Fast mode (format, analyze, unit/widget tests ~30s)
+dart run artifex:check --all     # Full mode (includes dependencies, integration tests ~2min)
 
-# Run tests only
-flutter test
+# Individual Commands
+flutter test                     # Run all tests (unit, widget, integration)
+flutter test test/features       # Run only feature tests
+flutter test test/unit           # Run only unit tests  
+flutter test test/widget         # Run only widget tests
+flutter test test/integration/   # Run only integration tests (needs database)
+flutter analyze                 # Static code analysis only
+dart format .                    # Format code only
 
-# Run integration tests (requires database containers)
-cd docker && make test-up
-flutter test test/integration/
-cd docker && make test-down
+# Integration Testing (Database Required)
+cd docker && make test-up       # Start test database container
+flutter test test/integration/  # Run integration tests
+cd docker && make test-down     # Stop test database container
 
-# Analyze code only
-flutter analyze
+# Dependency Management
+flutter pub get                 # Install dependencies
+flutter pub outdated           # Check for outdated packages
+flutter pub upgrade            # Update compatible versions
+flutter pub deps               # Show dependency tree
 
 # Build for release
 flutter build apk --release        # Android APK
@@ -208,7 +220,8 @@ make logs        # View database logs
 ### Pre-commit Checklist
 Always run these before committing:
 ```bash
-dart run artifex:check  # Run formatting + analysis + tests (recommended)
+dart run artifex:check      # Fast check (recommended for development)
+dart run artifex:check --all # Full check (recommended before commits)
 # OR individually:
 dart format .           # Format code
 flutter analyze         # Check for code issues
@@ -230,24 +243,32 @@ flutter packages pub run build_runner build --delete-conflicting-outputs
 - [ ] No implementation detail testing
 - [ ] Focus on user behavior and interactions
 - [ ] All async states tested (loading, success, error)
-- [ ] Tests pass: `dart run artifex:check`
+- [ ] Tests pass: `dart run artifex:check --all`
 
 ## CI/CD Status
-- ✅ GitHub Actions configured
-- ✅ Automated testing on push
+- ✅ GitHub Actions configured with enhanced reporting
+- ✅ Automated testing on push (unit, widget, integration)
+- ✅ PostgreSQL v3 integration testing in CI
+- ✅ Dependency vulnerability scanning
+- ✅ Outdated package reporting
 - ✅ APK builds for Android
 - ✅ iOS builds (unsigned)
+- ✅ Static analysis with strict linting rules (Very Good Analysis standards)
 
-## Version Management
-- Flutter version is specified in `.flutter-version` file (currently 3.32.4)
-- GitHub Actions automatically uses this version via `flutter-version-file` parameter
-- This ensures CI/CD stays in sync with local development environment
+## Version Management & Dependencies
+- Flutter version: 3.32.4 (specified in `.flutter-version`)
+- All direct dependencies up to date
+- Major updates completed: go_router v15.2.4, intl v0.20.2, postgres v3.5.6
+- Removed unused dependencies for cleaner builds
+- GitHub Actions automatically syncs with Flutter version
 
 ## Configuration Files
-- `.flutter-version` - Specifies Flutter SDK version for the project
-- `analysis_options.yaml` - Dart/Flutter linting rules
+- `.flutter-version` - Flutter SDK version specification
+- `analysis_options.yaml` - Strict linting rules (86.2% of Very Good Analysis rules enabled)
+- `pubspec.yaml` - Clean dependency management, no unused packages
 - `.gitignore` - Properly configured for Flutter projects
-- `.github/workflows/flutter-ci.yml` - CI/CD pipeline configuration
+- `.github/workflows/flutter-ci.yml` - Enhanced CI/CD with warning capture
+- `bin/check.dart` - Custom quality assurance command with fast/full modes
 
 ## Notes
 - User prefers concise responses

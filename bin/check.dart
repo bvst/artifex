@@ -2,27 +2,37 @@
 // ignore_for_file: avoid_print
 
 /// Custom Flutter command to run tests, analysis, and formatting together
-/// Usage: dart run artifex:check
+/// Usage:
+///   dart run artifex:check           # Fast check (format, analyze, unit tests)
+///   dart run artifex:check --all     # Full check (includes dependencies, integration tests)
 ///
-/// This command runs:
-/// 1. Dart format - formats all code consistently
-/// 2. Flutter analyze - checks for code issues
-/// 3. Check outdated dependencies - shows which packages need updates
-/// 4. Start test database container
-/// 5. Flutter test - runs all tests (including integration tests)
-/// 6. Stop test database container
+/// Fast mode (default) runs:
+/// 1. dart format . - formats all code consistently
+/// 2. flutter analyze - checks for code issues
+/// 3. flutter test test/features test/unit test/widget - runs unit/widget tests only
+///
+/// Full mode (--all) additionally runs:
+/// 4. flutter pub outdated - checks for outdated dependencies
+/// 5. make -C docker test-up - starts test database container
+/// 6. flutter test test/integration/ - runs integration tests
+/// 7. make -C docker test-down - stops test database container
 ///
 /// Exits with code 0 if all pass, 1 if any fails
 
 import 'dart:io';
 
 void main(List<String> arguments) async {
-  print('🔍 Running Artifex Code Quality Check...\n');
+  final fullMode = arguments.contains('--all');
+  final modeText = fullMode ? 'Full' : 'Fast';
+  final totalSteps = fullMode ? 7 : 3;
+
+  print('🔍 Running Artifex Code Quality Check ($modeText Mode)...\n');
 
   var hasErrors = false;
+  var currentStep = 1;
 
   // Run Dart format
-  print('✨ Step 1/5: Formatting code...');
+  print('✨ Step ${currentStep++}/$totalSteps: Formatting code...');
   final formatResult = await Process.run('dart', ['format', '.']);
 
   if (formatResult.exitCode == 0) {
@@ -39,7 +49,7 @@ void main(List<String> arguments) async {
   }
 
   // Run Flutter analyze
-  print('📊 Step 2/6: Running static analysis...');
+  print('📊 Step ${currentStep++}/$totalSteps: Running static analysis...');
   final analyzeResult = await Process.run('flutter', ['analyze']);
 
   if (analyzeResult.exitCode == 0) {
@@ -55,8 +65,55 @@ void main(List<String> arguments) async {
     print('');
   }
 
-  // Check for outdated dependencies
-  print('📦 Step 3/6: Checking for outdated dependencies...');
+  // Step 3: Run unit/widget tests (excluding integration directory)
+  print(
+    '🧪 Step ${currentStep++}/$totalSteps: Running unit and widget tests...',
+  );
+  final unitTestResult = await Process.run('flutter', [
+    'test',
+    'test/features',
+    'test/shared',
+    'test/unit',
+    'test/widget',
+    'test/widget_test.dart',
+    '--reporter=compact',
+  ]);
+
+  if (unitTestResult.exitCode == 0) {
+    // Extract test count from output
+    final output = unitTestResult.stdout.toString();
+    final testCountMatch = RegExp(r'(\d+) tests?').firstMatch(output);
+    final testCount = testCountMatch?.group(1) ?? 'All';
+    print('✅ Unit/widget tests passed - $testCount tests successful\n');
+  } else {
+    print('❌ Unit/widget tests failed:');
+    print(unitTestResult.stdout);
+    if (unitTestResult.stderr.isNotEmpty) {
+      print('Error output:');
+      print(unitTestResult.stderr);
+    }
+    hasErrors = true;
+    print('');
+  }
+
+  // Only run full mode steps if --all flag is provided
+  if (!fullMode) {
+    // Summary for fast mode
+    if (hasErrors) {
+      print('💥 Code quality check FAILED');
+      print('   Please fix the issues above before committing.');
+      exit(1);
+    } else {
+      print('🎉 Code quality check PASSED');
+      print('   Your code is ready for commit!');
+      exit(0);
+    }
+  }
+
+  // Full mode continues with dependency check and integration tests
+  print(
+    '📦 Step ${currentStep++}/$totalSteps: Checking for outdated dependencies...',
+  );
   final outdatedResult = await Process.run('flutter', ['pub', 'outdated']);
 
   if (outdatedResult.exitCode == 0) {
@@ -132,7 +189,9 @@ void main(List<String> arguments) async {
   }
 
   // Start test database container
-  print('🐳 Step 4/6: Starting test database container...');
+  print(
+    '🐳 Step ${currentStep++}/$totalSteps: Starting test database container...',
+  );
   final testDbStartResult = await Process.run('make', [
     '-C',
     'docker',
@@ -152,48 +211,43 @@ void main(List<String> arguments) async {
     print('');
   }
 
-  // Run Flutter test (only if database started successfully)
-  bool testsRan = false;
+  // Run integration tests (only if database started successfully)
+  bool integrationTestsRan = false;
   if (!hasErrors) {
-    print('🧪 Step 5/6: Running tests...');
-    final testResult = await Process.run('flutter', [
+    print('🧪 Step ${currentStep++}/$totalSteps: Running integration tests...');
+    final integrationTestResult = await Process.run('flutter', [
       'test',
+      'test/integration/',
       '--reporter=compact',
     ]);
-    testsRan = true;
+    integrationTestsRan = true;
 
-    if (testResult.exitCode == 0) {
+    if (integrationTestResult.exitCode == 0) {
       // Extract test count from output
-      final output = testResult.stdout.toString();
-      final lines = output.split('\n');
-      final lastLine = lines
-          .where((line) => line.contains('All tests passed!'))
-          .firstOrNull;
-
-      if (lastLine != null) {
-        // Find the test count in the output
-        final testCountMatch = RegExp(r'(\d+) tests?').firstMatch(output);
-        final testCount = testCountMatch?.group(1) ?? 'All';
-        print('✅ Tests passed - $testCount tests successful\n');
-      } else {
-        print('✅ Tests passed\n');
-      }
+      final output = integrationTestResult.stdout.toString();
+      final testCountMatch = RegExp(r'(\d+) tests?').firstMatch(output);
+      final testCount = testCountMatch?.group(1) ?? 'All';
+      print('✅ Integration tests passed - $testCount tests successful\n');
     } else {
-      print('❌ Tests failed:');
-      print(testResult.stdout);
-      if (testResult.stderr.isNotEmpty) {
+      print('❌ Integration tests failed:');
+      print(integrationTestResult.stdout);
+      if (integrationTestResult.stderr.isNotEmpty) {
         print('Error output:');
-        print(testResult.stderr);
+        print(integrationTestResult.stderr);
       }
       hasErrors = true;
       print('');
     }
   } else {
-    print('⏭️  Step 5/6: Skipping tests due to previous errors\n');
+    print(
+      '⏭️  Step ${currentStep++}/$totalSteps: Skipping integration tests due to previous errors\n',
+    );
   }
 
   // Stop test database container (always run cleanup)
-  print('🛑 Step 6/6: Stopping test database container...');
+  print(
+    '🛑 Step $currentStep/$totalSteps: Stopping test database container...',
+  );
   final testDbStopResult = await Process.run('make', [
     '-C',
     'docker',
@@ -218,7 +272,7 @@ void main(List<String> arguments) async {
   if (hasErrors) {
     print('💥 Code quality check FAILED');
     print('   Please fix the issues above before committing.');
-    if (testsRan) {
+    if (integrationTestsRan) {
       print('   Note: Test database has been automatically cleaned up.');
     }
     exit(1);
