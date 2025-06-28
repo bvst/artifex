@@ -56,7 +56,7 @@ class ImageInputSection extends ConsumerWidget {
           if (!_isCameraSupported()) ...[
             const SizedBox(height: 8),
             Text(
-              'Camera opens gallery on desktop',
+              l10n.cameraFallbackMessage,
               style: AppTheme.textStyles.bodyMedium.copyWith(
                 color: AppTheme.colors.onSurface.withValues(alpha: 0.6),
                 fontStyle: FontStyle.italic,
@@ -85,7 +85,7 @@ class ImageInputSection extends ConsumerWidget {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  'Processing...',
+                  l10n.processing,
                   style: AppTheme.textStyles.bodyMedium.copyWith(
                     color: AppTheme.colors.onSurface.withValues(alpha: 0.7),
                   ),
@@ -118,6 +118,7 @@ class ImageInputSection extends ConsumerWidget {
   }
 
   void _showErrorMessage(BuildContext context, String message) {
+    final l10n = AppLocalizations.of(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -125,7 +126,7 @@ class ImageInputSection extends ConsumerWidget {
         behavior: SnackBarBehavior.floating,
         margin: const EdgeInsets.all(16),
         action: SnackBarAction(
-          label: 'Retry',
+          label: l10n.retry,
           textColor: Colors.white,
           onPressed: () {
             // Clear error state

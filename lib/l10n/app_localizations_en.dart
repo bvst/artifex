@@ -47,4 +47,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String photoCaptureError(String error) {
     return 'Error capturing photo: $error';
   }
+
+  @override
+  String get cameraPermissionRequired =>
+      'Camera permission is required. Please allow access in settings.';
+
+  @override
+  String get unexpectedErrorOccurred =>
+      'An unexpected error occurred. Please try again.';
+
+  @override
+  String get cameraFallbackMessage => 'Camera opens gallery on desktop';
+
+  @override
+  String get processing => 'Processing...';
+
+  @override
+  String get retry => 'Retry';
 }

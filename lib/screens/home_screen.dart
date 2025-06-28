@@ -1,42 +1,47 @@
-import 'package:artifex/utils/app_colors.dart';
+import 'package:artifex/l10n/app_localizations.dart';
+import 'package:artifex/shared/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    backgroundColor: AppColors.primaryBackground,
-    appBar: AppBar(
-      backgroundColor: AppColors.primaryBackground,
-      title: Text(
-        'Artifex',
-        style: Theme.of(
-          context,
-        ).textTheme.headlineSmall?.copyWith(fontFamily: 'Lora'),
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Scaffold(
+      backgroundColor: AppTheme.colors.surface,
+      appBar: AppBar(
+        backgroundColor: AppTheme.colors.surface,
+        title: Text(l10n.appTitle, style: AppTheme.textStyles.headlineSmall),
+        centerTitle: true,
+        elevation: 0,
       ),
-      centerTitle: true,
-      elevation: 0,
-    ),
-    body: const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Welcome to Artifex!',
-            style: TextStyle(
-              color: AppColors.canvasWhite,
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              l10n.welcomeTitle,
+              style: AppTheme.textStyles.headlineMedium.copyWith(
+                color: AppTheme.colors.onSurface,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
             ),
-          ),
-          SizedBox(height: 16),
-          Text(
-            'Your creative journey begins here.',
-            style: TextStyle(color: AppColors.canvasWhite, fontSize: 16),
-          ),
-        ],
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              child: Text(
+                l10n.welcomeDescription,
+                style: AppTheme.textStyles.bodyLarge.copyWith(
+                  color: AppTheme.colors.onSurface,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

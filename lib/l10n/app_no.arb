@@ -11,5 +11,10 @@
   "choosePhotoPrompt": "Hvordan vil du legge til et bilde?",
   "photoCaptureFailed": "Kunne ikke ta bilde",
   "photoCaptureSuccess": "Bilde tatt!",
-  "photoCaptureError": "Feil ved bildeopptaking: {error}"
+  "photoCaptureError": "Feil ved bildeopptaking: {error}",
+  "cameraPermissionRequired": "Kameraløyve kreves. Tillat tilgang i innstillinger.",
+  "unexpectedErrorOccurred": "En uventet feil oppstod. Prøv igjen.",
+  "cameraFallbackMessage": "Kamera åpner galleri på datamaskin",
+  "processing": "Behandler...",
+  "retry": "Prøv igjen"
 }

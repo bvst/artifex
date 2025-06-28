@@ -47,4 +47,20 @@ class AppLocalizationsNo extends AppLocalizations {
   String photoCaptureError(String error) {
     return 'Feil ved bildeopptaking: $error';
   }
+
+  @override
+  String get cameraPermissionRequired =>
+      'Kameraløyve kreves. Tillat tilgang i innstillinger.';
+
+  @override
+  String get unexpectedErrorOccurred => 'En uventet feil oppstod. Prøv igjen.';
+
+  @override
+  String get cameraFallbackMessage => 'Kamera åpner galleri på datamaskin';
+
+  @override
+  String get processing => 'Behandler...';
+
+  @override
+  String get retry => 'Prøv igjen';
 }

@@ -103,7 +103,7 @@ class ArtifexApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-    title: 'Artifex',
+    onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
     theme: AppTheme.lightTheme,
     debugShowCheckedModeBanner: false,
 

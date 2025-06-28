@@ -53,5 +53,25 @@
         "description": "The error message"
       }
     }
+  },
+  "cameraPermissionRequired": "Camera permission is required. Please allow access in settings.",
+  "@cameraPermissionRequired": {
+    "description": "Message when camera permission is needed"
+  },
+  "unexpectedErrorOccurred": "An unexpected error occurred. Please try again.",
+  "@unexpectedErrorOccurred": {
+    "description": "Generic error message for unexpected errors"
+  },
+  "cameraFallbackMessage": "Camera opens gallery on desktop",
+  "@cameraFallbackMessage": {
+    "description": "Message shown when camera falls back to gallery on desktop"
+  },
+  "processing": "Processing...",
+  "@processing": {
+    "description": "Loading message when processing photo"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button text"
   }
 }

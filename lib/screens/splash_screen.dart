@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:artifex/features/home/presentation/screens/home_screen.dart';
+import 'package:artifex/l10n/app_localizations.dart';
 import 'package:artifex/screens/onboarding_screen.dart';
 import 'package:artifex/shared/themes/app_theme.dart';
 import 'package:artifex/utils/preferences_helper.dart';
@@ -56,45 +57,48 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    backgroundColor: AppTheme.colors.primary,
-    body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Logo placeholder - will be replaced with actual logo
-          Container(
-            width: 120,
-            height: 120,
-            decoration: BoxDecoration(
-              color: AppTheme.colors.background,
-              shape: BoxShape.circle,
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Scaffold(
+      backgroundColor: AppTheme.colors.primary,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Logo placeholder - will be replaced with actual logo
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                color: AppTheme.colors.background,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.auto_awesome,
+                size: 60,
+                color: AppTheme.colors.secondary,
+              ),
             ),
-            child: Icon(
-              Icons.auto_awesome,
-              size: 60,
-              color: AppTheme.colors.secondary,
+            const SizedBox(height: 32),
+            Text(
+              l10n.appTitle,
+              style: AppTheme.textStyles.headlineLarge.copyWith(
+                color: AppTheme.colors.onPrimary,
+                fontFamily: 'Lora',
+              ),
             ),
-          ),
-          const SizedBox(height: 32),
-          Text(
-            'Artifex',
-            style: AppTheme.textStyles.headlineLarge.copyWith(
-              color: AppTheme.colors.onPrimary,
-              fontFamily: 'Lora',
+            const SizedBox(height: 8),
+            Text(
+              l10n.appTagline,
+              style: AppTheme.textStyles.bodyLarge.copyWith(
+                color: AppTheme.colors.onPrimary.withValues(alpha: 0.7),
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Your World, Reimagined',
-            style: AppTheme.textStyles.bodyLarge.copyWith(
-              color: AppTheme.colors.onPrimary.withValues(alpha: 0.7),
-            ),
-          ),
-          const SizedBox(height: 48),
-          CircularProgressIndicator(color: AppTheme.colors.secondary),
-        ],
+            const SizedBox(height: 48),
+            CircularProgressIndicator(color: AppTheme.colors.secondary),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

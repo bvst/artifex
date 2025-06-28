@@ -169,6 +169,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error capturing photo: {error}'**
   String photoCaptureError(String error);
+
+  /// Message when camera permission is needed
+  ///
+  /// In en, this message translates to:
+  /// **'Camera permission is required. Please allow access in settings.'**
+  String get cameraPermissionRequired;
+
+  /// Generic error message for unexpected errors
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred. Please try again.'**
+  String get unexpectedErrorOccurred;
+
+  /// Message shown when camera falls back to gallery on desktop
+  ///
+  /// In en, this message translates to:
+  /// **'Camera opens gallery on desktop'**
+  String get cameraFallbackMessage;
+
+  /// Loading message when processing photo
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get processing;
+
+  /// Retry button text
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
 }
 
 class _AppLocalizationsDelegate
