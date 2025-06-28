@@ -11,12 +11,7 @@ void main() {
       test('should create valid request with all parameters', () {
         const request = OpenAIImageRequest(
           prompt: 'A futuristic cityscape',
-          model: 'dall-e-3',
-          n: 1,
           quality: 'hd',
-          responseFormat: 'url',
-          size: '1024x1024',
-          style: 'vivid',
           user: 'test-user',
         );
 

@@ -28,8 +28,6 @@ void main() {
         photoPath: '/test/photo.jpg',
         prompt: 'Make this artistic',
         style: 'artistic',
-        quality: 1024,
-        size: '1024x1024',
       );
 
       test(

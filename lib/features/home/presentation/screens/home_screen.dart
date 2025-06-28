@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../shared/themes/app_theme.dart';
-import '../widgets/image_input_section.dart';
-import '../widgets/welcome_section.dart';
+import 'package:artifex/shared/themes/app_theme.dart';
+import 'package:artifex/features/home/presentation/widgets/image_input_section.dart';
+import 'package:artifex/features/home/presentation/widgets/welcome_section.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -12,15 +12,15 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: AppTheme.colors.background,
-      body: SafeArea(
+      body: const SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const WelcomeSection(),
-              const SizedBox(height: 40),
-              const Expanded(child: ImageInputSection()),
+              WelcomeSection(),
+              SizedBox(height: 40),
+              Expanded(child: ImageInputSection()),
             ],
           ),
         ),

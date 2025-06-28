@@ -114,7 +114,7 @@ class PhotoFactory {
       path: '/test/old.jpg',
       name: 'old.jpg',
       size: 800_000,
-      createdAt: DateTime(2020, 1, 1),
+      createdAt: DateTime(2020),
       width: 1024,
       height: 768,
       mimeType: 'image/jpeg',

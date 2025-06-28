@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../shared/themes/app_theme.dart';
-import '../utils/preferences_helper.dart';
-import 'onboarding_screen.dart';
-import '../features/home/presentation/screens/home_screen.dart';
+import 'package:artifex/shared/themes/app_theme.dart';
+import 'package:artifex/utils/preferences_helper.dart';
+import 'package:artifex/screens/onboarding_screen.dart';
+import 'package:artifex/features/home/presentation/screens/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   final Duration splashDuration;
@@ -43,11 +43,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
       if (isOnboardingComplete) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute<void>(builder: (context) => const HomeScreen()),
         );
       } else {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+          MaterialPageRoute<void>(
+            builder: (context) => const OnboardingScreen(),
+          ),
         );
       }
     });

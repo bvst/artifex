@@ -94,17 +94,17 @@ void main() {
         ),
       );
 
-      // Find the Container with gradient
-      final container = tester.widget<Container>(
+      // Find the DecoratedBox with gradient
+      final decoratedBox = tester.widget<DecoratedBox>(
         find
             .descendant(
               of: find.byType(ImageInputButton),
-              matching: find.byType(Container),
+              matching: find.byType(DecoratedBox),
             )
             .first,
       );
 
-      final decoration = container.decoration as BoxDecoration;
+      final decoration = decoratedBox.decoration as BoxDecoration;
       expect(decoration.gradient, isNotNull);
       expect(decoration.borderRadius, BorderRadius.circular(16));
     });

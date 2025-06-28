@@ -19,7 +19,6 @@ void main() {
         'artifex_test',
         username: 'artifex_test_user',
         password: 'artifex_test_password',
-        useSSL: false,
       );
       await connection.open();
 
@@ -283,7 +282,6 @@ Future<void> _waitForDatabase() async {
         'artifex_test',
         username: 'artifex_test_user',
         password: 'artifex_test_password',
-        useSSL: false,
       );
       await connection.open();
 
@@ -305,7 +303,7 @@ Future<void> _waitForDatabase() async {
       debugPrint(
         '⏳ Waiting for test database... (attempt $attempt/$maxAttempts)',
       );
-      await Future.delayed(delayBetweenAttempts);
+      await Future<void>.delayed(delayBetweenAttempts);
     }
   }
 }

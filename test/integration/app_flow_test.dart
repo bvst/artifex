@@ -39,10 +39,8 @@ void main() {
           await mockPrefs.clear();
 
           await tester.pumpWidget(
-            ProviderScope(
-              child: ArtifexApp(
-                splashDuration: const Duration(milliseconds: 1),
-              ),
+            const ProviderScope(
+              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
             ),
           );
 
@@ -107,10 +105,8 @@ void main() {
           await PreferencesHelper.setOnboardingComplete();
 
           await tester.pumpWidget(
-            ProviderScope(
-              child: ArtifexApp(
-                splashDuration: const Duration(milliseconds: 1),
-              ),
+            const ProviderScope(
+              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
             ),
           );
 
@@ -135,8 +131,8 @@ void main() {
         await mockPrefs.clear();
 
         await tester.pumpWidget(
-          ProviderScope(
-            child: ArtifexApp(splashDuration: const Duration(milliseconds: 1)),
+          const ProviderScope(
+            child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
           ),
         );
 
@@ -173,10 +169,8 @@ void main() {
         'Home screen displays welcome content and photo input options',
         (WidgetTester tester) async {
           await tester.pumpWidget(
-            ProviderScope(
-              child: ArtifexApp(
-                splashDuration: const Duration(milliseconds: 1),
-              ),
+            const ProviderScope(
+              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
             ),
           );
 
@@ -200,10 +194,8 @@ void main() {
         'Photo capture button shows proper UI feedback',
         (WidgetTester tester) async {
           await tester.pumpWidget(
-            ProviderScope(
-              child: ArtifexApp(
-                splashDuration: const Duration(milliseconds: 1),
-              ),
+            const ProviderScope(
+              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
             ),
           );
 
@@ -239,10 +231,8 @@ void main() {
         'Gallery upload button shows proper UI feedback',
         (WidgetTester tester) async {
           await tester.pumpWidget(
-            ProviderScope(
-              child: ArtifexApp(
-                splashDuration: const Duration(milliseconds: 1),
-              ),
+            const ProviderScope(
+              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
             ),
           );
 
@@ -279,10 +269,8 @@ void main() {
           await mockPrefs.clear();
 
           await tester.pumpWidget(
-            ProviderScope(
-              child: ArtifexApp(
-                splashDuration: const Duration(milliseconds: 1),
-              ),
+            const ProviderScope(
+              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
             ),
           );
 
@@ -308,10 +296,8 @@ void main() {
 
           // Simulate app restart by rebuilding the widget tree
           await tester.pumpWidget(
-            ProviderScope(
-              child: ArtifexApp(
-                splashDuration: const Duration(milliseconds: 1),
-              ),
+            const ProviderScope(
+              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
             ),
           );
 
@@ -332,10 +318,8 @@ void main() {
           await mockPrefs.clear();
 
           await tester.pumpWidget(
-            ProviderScope(
-              child: ArtifexApp(
-                splashDuration: const Duration(milliseconds: 1),
-              ),
+            const ProviderScope(
+              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
             ),
           );
 
@@ -383,10 +367,8 @@ void main() {
           await mockPrefs.setString('onboarding_complete', 'invalid_boolean');
 
           await tester.pumpWidget(
-            ProviderScope(
-              child: ArtifexApp(
-                splashDuration: const Duration(milliseconds: 1),
-              ),
+            const ProviderScope(
+              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
             ),
           );
 
@@ -405,8 +387,8 @@ void main() {
         await PreferencesHelper.setOnboardingComplete();
 
         await tester.pumpWidget(
-          ProviderScope(
-            child: ArtifexApp(splashDuration: const Duration(milliseconds: 1)),
+          const ProviderScope(
+            child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
           ),
         );
 

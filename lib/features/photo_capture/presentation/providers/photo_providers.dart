@@ -1,11 +1,11 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../data/datasources/photo_local_datasource.dart';
-import '../../data/repositories/photo_repository_impl.dart';
-import '../../domain/repositories/photo_repository.dart';
-import '../../domain/usecases/capture_photo_usecase.dart';
-import 'photo_state.dart';
+import 'package:artifex/features/photo_capture/data/datasources/photo_local_datasource.dart';
+import 'package:artifex/features/photo_capture/data/repositories/photo_repository_impl.dart';
+import 'package:artifex/features/photo_capture/domain/repositories/photo_repository.dart';
+import 'package:artifex/features/photo_capture/domain/usecases/capture_photo_usecase.dart';
+import 'package:artifex/features/photo_capture/presentation/providers/photo_state.dart';
 
 part 'photo_providers.g.dart';
 

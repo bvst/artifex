@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:artifex/core/errors/failures.dart';
-import '../entities/transformation_request.dart';
-import '../entities/transformation_result.dart';
+import 'package:artifex/features/ai_transformation/domain/entities/transformation_request.dart';
+import 'package:artifex/features/ai_transformation/domain/entities/transformation_result.dart';
 
 /// Repository interface for AI transformation operations
 abstract class AITransformationRepository {

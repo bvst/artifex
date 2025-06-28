@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:uuid/uuid.dart';
-import '../../domain/entities/photo.dart';
+import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
 
 class PhotoModel extends Photo {
   const PhotoModel({

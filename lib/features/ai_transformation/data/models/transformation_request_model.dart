@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import '../../domain/entities/transformation_request.dart';
-import 'openai_image_request.dart';
+import 'package:artifex/features/ai_transformation/domain/entities/transformation_request.dart';
+import 'package:artifex/features/ai_transformation/data/models/openai_image_request.dart';
 
 part 'transformation_request_model.g.dart';
 
@@ -35,12 +35,9 @@ class TransformationRequestModel extends TransformationRequest {
   OpenAIImageRequest toOpenAIRequest() {
     return OpenAIImageRequest(
       prompt: _buildEnhancedPrompt(),
-      n: 1, // Number of images
       size: size,
       quality: quality == 1024 ? 'standard' : 'hd',
       style: _mapStyleToDalle(style),
-      model: 'dall-e-3',
-      responseFormat: 'url',
     );
   }
 

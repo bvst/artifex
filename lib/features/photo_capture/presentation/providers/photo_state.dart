@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../domain/entities/photo.dart';
+import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
 
 sealed class PhotoState extends Equatable {
   const PhotoState();

@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:artifex/core/errors/exceptions.dart';
 import 'package:artifex/core/utils/logger.dart';
-import '../models/transformation_request_model.dart';
-import '../models/transformation_result_model.dart';
-import '../models/openai_error_response.dart';
-import 'openai_api_client.dart';
+import 'package:artifex/features/ai_transformation/data/models/transformation_request_model.dart';
+import 'package:artifex/features/ai_transformation/data/models/transformation_result_model.dart';
+import 'package:artifex/features/ai_transformation/data/models/openai_error_response.dart';
+import 'package:artifex/features/ai_transformation/data/datasources/openai_api_client.dart';
 
 /// Remote data source for AI transformation operations
 class AITransformationRemoteDataSource {

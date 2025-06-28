@@ -1,8 +1,8 @@
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
-import '../models/openai_image_request.dart';
-import '../models/openai_image_response.dart';
-import '../models/openai_models_response.dart';
+import 'package:artifex/features/ai_transformation/data/models/openai_image_request.dart';
+import 'package:artifex/features/ai_transformation/data/models/openai_image_response.dart';
+import 'package:artifex/features/ai_transformation/data/models/openai_models_response.dart';
 
 part 'openai_api_client.g.dart';
 

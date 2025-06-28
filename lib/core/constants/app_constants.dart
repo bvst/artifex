@@ -5,10 +5,7 @@ class AppConstants {
     defaultValue: 'https://api.openai.com/v1',
   );
 
-  static const String dalleApiKey = String.fromEnvironment(
-    'DALLE_API_KEY',
-    defaultValue: '', // Default to empty string instead of null
-  );
+  static const String dalleApiKey = String.fromEnvironment('DALLE_API_KEY');
 
   // Safe API key access
   static bool get hasApiKey => dalleApiKey.isNotEmpty;
@@ -50,13 +47,9 @@ class AppConstants {
 
   // Feature Flags
   static const bool enableOfflineMode = true;
-  static const bool enableAnalytics = bool.fromEnvironment(
-    'ENABLE_ANALYTICS',
-    defaultValue: false,
-  );
+  static const bool enableAnalytics = bool.fromEnvironment('ENABLE_ANALYTICS');
   static const bool enableCrashReporting = bool.fromEnvironment(
     'ENABLE_CRASH_REPORTING',
-    defaultValue: false,
   );
 
   // Computed flags

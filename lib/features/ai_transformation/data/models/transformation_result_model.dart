@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import '../../domain/entities/transformation_result.dart';
-import 'openai_image_response.dart';
+import 'package:artifex/features/ai_transformation/domain/entities/transformation_result.dart';
+import 'package:artifex/features/ai_transformation/data/models/openai_image_response.dart';
 
 part 'transformation_result_model.g.dart';
 

@@ -1,14 +1,9 @@
 import 'package:logger/logger.dart';
-import '../constants/app_constants.dart';
+import 'package:artifex/core/constants/app_constants.dart';
 
 class AppLogger {
   static final Logger _logger = Logger(
     printer: PrettyPrinter(
-      methodCount: 2,
-      errorMethodCount: 8,
-      lineLength: 120,
-      colors: true,
-      printEmojis: true,
       dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
     ),
     level: AppConstants.isDebug ? Level.debug : Level.info,

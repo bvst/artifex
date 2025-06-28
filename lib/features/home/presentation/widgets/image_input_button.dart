@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../shared/themes/app_theme.dart';
+import 'package:artifex/shared/themes/app_theme.dart';
 
 class ImageInputButton extends StatelessWidget {
   const ImageInputButton({
@@ -68,7 +68,7 @@ class ImageInputButton extends StatelessWidget {
 
     return Opacity(
       opacity: opacity,
-      child: Container(
+      child: DecoratedBox(
         decoration: BoxDecoration(
           gradient: gradient,
           borderRadius: BorderRadius.circular(16),

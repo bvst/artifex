@@ -38,7 +38,7 @@ class TestWidgetBuilder {
 
     Widget app = MaterialApp(
       theme: _theme ?? AppTheme.lightTheme,
-      home: _wrapInScaffold ? Scaffold(body: _child!) : _child!,
+      home: _wrapInScaffold ? Scaffold(body: _child) : _child!,
     );
 
     if (_overrides.isNotEmpty) {

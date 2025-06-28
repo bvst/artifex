@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../utils/app_colors.dart';
-import '../screens/onboarding_screen.dart';
+import 'package:artifex/utils/app_colors.dart';
+import 'package:artifex/screens/onboarding_screen.dart';
 
 class OnboardingPage extends StatelessWidget {
   final OnboardingPageData data;
@@ -18,7 +18,7 @@ class OnboardingPage extends StatelessWidget {
           Container(
             width: 120,
             height: 120,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.cardBackground,
               shape: BoxShape.circle,
             ),

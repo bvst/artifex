@@ -10,6 +10,6 @@ class ErrorBoundary extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return child; // For now, just return the child directly
-    // TODO: Implement proper error boundary when Flutter provides better APIs
+    // TODO(artifex): Implement proper error boundary when Flutter provides better APIs
   }
 }

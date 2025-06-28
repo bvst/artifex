@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../utils/app_colors.dart';
-import '../utils/preferences_helper.dart';
-import '../widgets/onboarding_page.dart';
-import '../features/home/presentation/screens/home_screen.dart';
+import 'package:artifex/utils/app_colors.dart';
+import 'package:artifex/utils/preferences_helper.dart';
+import 'package:artifex/widgets/onboarding_page.dart';
+import 'package:artifex/features/home/presentation/screens/home_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -18,21 +18,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<OnboardingPageData> _pages = [
     OnboardingPageData(
       icon: Icons.camera_alt_outlined,
-      title: "Capture Your World",
+      title: 'Capture Your World',
       description:
-          "Take a photo or upload an image from your gallery to begin your creative journey.",
+          'Take a photo or upload an image from your gallery to begin your creative journey.',
     ),
     OnboardingPageData(
       icon: Icons.palette_outlined,
-      title: "Choose Your Vision",
+      title: 'Choose Your Vision',
       description:
-          "Select from our curated collection of AI-powered filters to transform your image.",
+          'Select from our curated collection of AI-powered filters to transform your image.',
     ),
     OnboardingPageData(
       icon: Icons.auto_awesome_outlined,
-      title: "Create Magic",
+      title: 'Create Magic',
       description:
-          "Watch as AI reimagines your photo into extraordinary works of digital art.",
+          'Watch as AI reimagines your photo into extraordinary works of digital art.',
     ),
   ];
 
@@ -51,7 +51,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     await PreferencesHelper.setOnboardingComplete();
     if (mounted) {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        MaterialPageRoute<void>(builder: (context) => const HomeScreen()),
       );
     }
   }
@@ -130,7 +130,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       child: Text(
                         _currentPage == _pages.length - 1
                             ? "Let's Create"
-                            : "Next",
+                            : 'Next',
                       ),
                     ),
                   ),

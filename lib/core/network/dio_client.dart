@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import '../constants/app_constants.dart';
-import '../utils/logger.dart';
+import 'package:artifex/core/constants/app_constants.dart';
+import 'package:artifex/core/utils/logger.dart';
 
 class DioClient {
   static final DioClient _instance = DioClient._internal();
@@ -18,7 +18,6 @@ class DioClient {
         connectTimeout: AppConstants.connectionTimeout,
         receiveTimeout: AppConstants.receiveTimeout,
         sendTimeout: AppConstants.sendTimeout,
-        responseType: ResponseType.json,
         contentType: 'application/json',
       ),
     );
@@ -29,9 +28,7 @@ class DioClient {
         LogInterceptor(
           requestBody: true,
           responseBody: true,
-          requestHeader: true,
           responseHeader: false,
-          error: true,
           logPrint: (object) => AppLogger.debug(object.toString()),
         ),
       );
@@ -98,12 +95,12 @@ class RetryInterceptor extends Interceptor {
           ? retryDelays[retryAttempt]
           : retryDelays.last;
 
-      await Future.delayed(delay);
+      await Future<void>.delayed(delay);
 
       err.requestOptions.extra['retry_attempt'] = retryAttempt + 1;
 
       try {
-        final response = await dio.request(
+        final response = await dio.request<dynamic>(
           err.requestOptions.path,
           options: Options(
             method: err.requestOptions.method,

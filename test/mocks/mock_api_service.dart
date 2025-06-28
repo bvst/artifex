@@ -6,7 +6,7 @@ class MockApiService {
   }
 
   Future<dynamic> get(String endpoint) async {
-    await Future.delayed(const Duration(milliseconds: 100));
+    await Future<void>.delayed(const Duration(milliseconds: 100));
 
     if (_mockResponses.containsKey(endpoint)) {
       return _mockResponses[endpoint];
@@ -16,7 +16,7 @@ class MockApiService {
   }
 
   Future<dynamic> post(String endpoint, Map<String, dynamic> data) async {
-    await Future.delayed(const Duration(milliseconds: 100));
+    await Future<void>.delayed(const Duration(milliseconds: 100));
 
     if (_mockResponses.containsKey(endpoint)) {
       return _mockResponses[endpoint];

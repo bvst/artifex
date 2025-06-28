@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../shared/themes/app_theme.dart';
+import 'package:artifex/shared/themes/app_theme.dart';
 
 class WelcomeSection extends StatelessWidget {
   const WelcomeSection({super.key});

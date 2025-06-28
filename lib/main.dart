@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'core/network/dio_client.dart';
-import 'core/utils/logger.dart';
-import 'core/utils/error_boundary.dart';
-import 'shared/themes/app_theme.dart';
-import 'screens/splash_screen.dart';
+import 'package:artifex/core/network/dio_client.dart';
+import 'package:artifex/core/utils/logger.dart';
+import 'package:artifex/core/utils/error_boundary.dart';
+import 'package:artifex/shared/themes/app_theme.dart';
+import 'package:artifex/screens/splash_screen.dart';
 
 void main() async {
   // Initialize Flutter binding first

@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../../core/errors/failures.dart';
-import '../../domain/entities/photo.dart';
-import '../../domain/usecases/capture_photo_usecase.dart';
-import 'photo_providers.dart';
+import 'package:artifex/core/errors/failures.dart';
+import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
+import 'package:artifex/features/photo_capture/domain/usecases/capture_photo_usecase.dart';
+import 'package:artifex/features/photo_capture/presentation/providers/photo_providers.dart';
 
 part 'photo_capture_provider.g.dart';
 

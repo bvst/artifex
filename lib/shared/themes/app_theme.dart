@@ -7,10 +7,7 @@ class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: colors.primary,
-        brightness: Brightness.light,
-      ),
+      colorScheme: ColorScheme.fromSeed(seedColor: colors.primary),
       scaffoldBackgroundColor: colors.background,
       appBarTheme: AppBarTheme(
         backgroundColor: colors.background,

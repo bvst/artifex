@@ -28,7 +28,7 @@ class TestData {
       path: path ?? testPhotoPath,
       name: name ?? testPhotoName,
       size: size ?? testPhotoSize,
-      createdAt: createdAt ?? DateTime(2025, 6, 27, 12, 0, 0),
+      createdAt: createdAt ?? DateTime(2025, 6, 27, 12),
       width: width,
       height: height,
       mimeType: mimeType,
@@ -59,9 +59,8 @@ class TestData {
   static const FileNotFoundFailure fileNotFoundFailure = FileNotFoundFailure(
     'No image selected',
   );
-  static const UserCancelledFailure userCancelledFailure = UserCancelledFailure(
-    'User cancelled operation',
-  );
+  static const UserCancelledFailure userCancelledFailure =
+      UserCancelledFailure();
   static const CacheFailure cacheFailure = CacheFailure('Cache write failed');
   static const NetworkFailure networkFailure = NetworkFailure('Network error');
 

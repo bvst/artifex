@@ -2,12 +2,12 @@ import 'package:dartz/dartz.dart';
 import 'package:artifex/core/errors/failures.dart';
 import 'package:artifex/core/errors/exceptions.dart';
 import 'package:artifex/core/utils/logger.dart';
-import '../../domain/entities/transformation_request.dart';
-import '../../domain/entities/transformation_result.dart';
-import '../../domain/repositories/ai_transformation_repository.dart';
-import '../models/transformation_request_model.dart';
-import '../datasources/ai_transformation_remote_datasource.dart';
-import '../datasources/ai_transformation_local_datasource.dart';
+import 'package:artifex/features/ai_transformation/domain/entities/transformation_request.dart';
+import 'package:artifex/features/ai_transformation/domain/entities/transformation_result.dart';
+import 'package:artifex/features/ai_transformation/domain/repositories/ai_transformation_repository.dart';
+import 'package:artifex/features/ai_transformation/data/models/transformation_request_model.dart';
+import 'package:artifex/features/ai_transformation/data/datasources/ai_transformation_remote_datasource.dart';
+import 'package:artifex/features/ai_transformation/data/datasources/ai_transformation_local_datasource.dart';
 
 /// Implementation of AI transformation repository
 class AITransformationRepositoryImpl implements AITransformationRepository {

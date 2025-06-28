@@ -28,9 +28,9 @@ void main() {
       testWidgets('initializes ProviderScope correctly', (tester) async {
         // Given: App with ProviderScope and ErrorBoundary
         await tester.pumpWidget(
-          ProviderScope(
+          const ProviderScope(
             child: ErrorBoundary(
-              child: MaterialApp(home: Scaffold(body: const Text('Test App'))),
+              child: MaterialApp(home: Scaffold(body: Text('Test App'))),
             ),
           ),
         );
@@ -42,9 +42,9 @@ void main() {
       testWidgets('renders content through ErrorBoundary', (tester) async {
         // Given: Widget wrapped in ErrorBoundary
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: ErrorBoundary(
-              child: Scaffold(body: const Text('Protected Content')),
+              child: Scaffold(body: Text('Protected Content')),
             ),
           ),
         );

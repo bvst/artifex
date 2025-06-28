@@ -1,12 +1,12 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
-import '../../../../core/providers/core_providers.dart';
-import '../../domain/repositories/ai_transformation_repository.dart';
-import '../../data/repositories/ai_transformation_repository_impl.dart';
-import '../../data/datasources/ai_transformation_remote_datasource.dart';
-import '../../data/datasources/ai_transformation_local_datasource.dart';
-import '../../data/datasources/openai_api_client.dart';
+import 'package:artifex/core/providers/core_providers.dart';
+import 'package:artifex/features/ai_transformation/domain/repositories/ai_transformation_repository.dart';
+import 'package:artifex/features/ai_transformation/data/repositories/ai_transformation_repository_impl.dart';
+import 'package:artifex/features/ai_transformation/data/datasources/ai_transformation_remote_datasource.dart';
+import 'package:artifex/features/ai_transformation/data/datasources/ai_transformation_local_datasource.dart';
+import 'package:artifex/features/ai_transformation/data/datasources/openai_api_client.dart';
 
 part 'ai_transformation_providers.g.dart';
 

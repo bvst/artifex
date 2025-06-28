@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failures.dart';
-import '../entities/photo.dart';
-import '../repositories/photo_repository.dart';
+import 'package:artifex/core/errors/failures.dart';
+import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
+import 'package:artifex/features/photo_capture/domain/repositories/photo_repository.dart';
 
 class CapturePhotoUseCase {
   const CapturePhotoUseCase(this._repository);
@@ -9,7 +9,7 @@ class CapturePhotoUseCase {
   final PhotoRepository _repository;
 
   Future<Either<Failure, Photo>> call() async {
-    return await _repository.capturePhoto();
+    return _repository.capturePhoto();
   }
 }
 
@@ -19,7 +19,7 @@ class PickImageFromGalleryUseCase {
   final PhotoRepository _repository;
 
   Future<Either<Failure, Photo>> call() async {
-    return await _repository.pickImageFromGallery();
+    return _repository.pickImageFromGallery();
   }
 }
 
@@ -29,6 +29,6 @@ class GetRecentPhotosUseCase {
   final PhotoRepository _repository;
 
   Future<Either<Failure, List<Photo>>> call({int limit = 10}) async {
-    return await _repository.getRecentPhotos(limit: limit);
+    return _repository.getRecentPhotos(limit: limit);
   }
 }

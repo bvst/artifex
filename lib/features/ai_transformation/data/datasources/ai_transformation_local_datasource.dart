@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:artifex/core/errors/exceptions.dart';
 import 'package:artifex/core/utils/logger.dart';
-import '../models/transformation_result_model.dart';
+import 'package:artifex/features/ai_transformation/data/models/transformation_result_model.dart';
 
 /// Local data source for AI transformation operations
 class AITransformationLocalDataSource {

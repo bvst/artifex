@@ -13,8 +13,6 @@ void main() {
           photoPath: '/test/photo.jpg',
           prompt: 'Make this artistic',
           style: 'artistic',
-          quality: 1024,
-          size: '1024x1024',
         );
 
         final model = TransformationRequestModel.fromEntity(entity);
@@ -31,8 +29,6 @@ void main() {
           photoPath: '/test/photo.jpg',
           prompt: 'Transform this image',
           style: 'artistic',
-          quality: 1024,
-          size: '1024x1024',
         );
 
         final openAIRequest = model.toOpenAIRequest();
@@ -131,8 +127,6 @@ void main() {
           photoPath: '/test/photo.jpg',
           prompt: 'Test prompt',
           style: 'artistic',
-          quality: 1024,
-          size: '1024x1024',
         );
 
         final json = original.toJson();
@@ -173,10 +167,10 @@ void main() {
 
       test('should use original prompt when revised prompt is null', () {
         const mockResponse = {
-          "created": 1589478378,
-          "data": [
+          'created': 1589478378,
+          'data': [
             {
-              "url": "https://example.com/test.png",
+              'url': 'https://example.com/test.png',
               // No revised_prompt field
             },
           ],

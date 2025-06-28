@@ -3,10 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as img;
-import '../../../../core/constants/app_constants.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../../../../core/utils/logger.dart';
-import '../models/photo_model.dart';
+import 'package:artifex/core/constants/app_constants.dart';
+import 'package:artifex/core/errors/exceptions.dart';
+import 'package:artifex/core/utils/logger.dart';
+import 'package:artifex/features/photo_capture/data/models/photo_model.dart';
 
 abstract class PhotoLocalDataSource {
   Future<PhotoModel> capturePhoto();

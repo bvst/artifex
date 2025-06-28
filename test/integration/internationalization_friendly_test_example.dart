@@ -33,8 +33,8 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: ArtifexApp(splashDuration: const Duration(milliseconds: 1)),
+        const ProviderScope(
+          child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
         ),
       );
 
@@ -74,8 +74,8 @@ void main() {
       );
 
       await tester.pumpWidget(
-        ProviderScope(
-          child: ArtifexApp(splashDuration: const Duration(milliseconds: 1)),
+        const ProviderScope(
+          child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
         ),
       );
 
@@ -111,8 +111,8 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: ArtifexApp(splashDuration: const Duration(milliseconds: 1)),
+        const ProviderScope(
+          child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
         ),
       );
 

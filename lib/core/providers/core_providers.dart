@@ -2,9 +2,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
 import 'package:sqflite/sqflite.dart';
-import '../network/dio_client.dart';
-import '../database/database_helper.dart';
-import '../utils/logger.dart';
+import 'package:artifex/core/network/dio_client.dart';
+import 'package:artifex/core/database/database_helper.dart';
+import 'package:artifex/core/utils/logger.dart';
 
 part 'core_providers.g.dart';
 

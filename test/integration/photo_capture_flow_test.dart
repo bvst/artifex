@@ -43,8 +43,8 @@ void main() {
               child: Builder(
                 builder: (context) {
                   container = ProviderScope.containerOf(context);
-                  return ArtifexApp(
-                    splashDuration: const Duration(milliseconds: 1),
+                  return const ArtifexApp(
+                    splashDuration: Duration(milliseconds: 1),
                   );
                 },
               ),
@@ -95,8 +95,8 @@ void main() {
               child: Builder(
                 builder: (context) {
                   container = ProviderScope.containerOf(context);
-                  return ArtifexApp(
-                    splashDuration: const Duration(milliseconds: 1),
+                  return const ArtifexApp(
+                    splashDuration: Duration(milliseconds: 1),
                   );
                 },
               ),
@@ -138,10 +138,8 @@ void main() {
         'App handles photo capture cancellation gracefully',
         (WidgetTester tester) async {
           await tester.pumpWidget(
-            ProviderScope(
-              child: ArtifexApp(
-                splashDuration: const Duration(milliseconds: 1),
-              ),
+            const ProviderScope(
+              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
             ),
           );
 
@@ -187,10 +185,8 @@ void main() {
         'App displays appropriate feedback for photo operations',
         (WidgetTester tester) async {
           await tester.pumpWidget(
-            ProviderScope(
-              child: ArtifexApp(
-                splashDuration: const Duration(milliseconds: 1),
-              ),
+            const ProviderScope(
+              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
             ),
           );
 
@@ -249,8 +245,8 @@ void main() {
               child: Builder(
                 builder: (context) {
                   container = ProviderScope.containerOf(context);
-                  return ArtifexApp(
-                    splashDuration: const Duration(milliseconds: 1),
+                  return const ArtifexApp(
+                    splashDuration: Duration(milliseconds: 1),
                   );
                 },
               ),
@@ -299,8 +295,8 @@ void main() {
               child: Builder(
                 builder: (context) {
                   container = ProviderScope.containerOf(context);
-                  return ArtifexApp(
-                    splashDuration: const Duration(milliseconds: 1),
+                  return const ArtifexApp(
+                    splashDuration: Duration(milliseconds: 1),
                   );
                 },
               ),
@@ -348,10 +344,8 @@ void main() {
         'Buttons show proper visual feedback on interaction',
         (WidgetTester tester) async {
           await tester.pumpWidget(
-            ProviderScope(
-              child: ArtifexApp(
-                splashDuration: const Duration(milliseconds: 1),
-              ),
+            const ProviderScope(
+              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
             ),
           );
 
@@ -397,10 +391,8 @@ void main() {
         'Screen layout remains consistent during photo operations',
         (WidgetTester tester) async {
           await tester.pumpWidget(
-            ProviderScope(
-              child: ArtifexApp(
-                splashDuration: const Duration(milliseconds: 1),
-              ),
+            const ProviderScope(
+              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
             ),
           );
 

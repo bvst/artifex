@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../../../../core/errors/failures.dart';
-import '../../../../core/utils/logger.dart';
-import '../../domain/entities/photo.dart';
-import '../../domain/repositories/photo_repository.dart';
-import '../datasources/photo_local_datasource.dart';
-import '../models/photo_model.dart';
+import 'package:artifex/core/errors/exceptions.dart';
+import 'package:artifex/core/errors/failures.dart';
+import 'package:artifex/core/utils/logger.dart';
+import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
+import 'package:artifex/features/photo_capture/domain/repositories/photo_repository.dart';
+import 'package:artifex/features/photo_capture/data/datasources/photo_local_datasource.dart';
+import 'package:artifex/features/photo_capture/data/models/photo_model.dart';
 
 class PhotoRepositoryImpl implements PhotoRepository {
   const PhotoRepositoryImpl({required PhotoLocalDataSource localDataSource})

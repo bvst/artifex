@@ -109,7 +109,7 @@ extension MockExtensions on Mock {
   }) {
     when(
       methodCall,
-    ).thenAnswer((_) => Future.delayed(delay, () => throw error));
+    ).thenAnswer((_) => Future.delayed(delay, () => throw Error()));
   }
 }
 
