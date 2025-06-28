@@ -3,6 +3,8 @@ import 'package:artifex/core/utils/error_boundary.dart';
 import 'package:artifex/core/utils/logger.dart';
 import 'package:artifex/screens/splash_screen.dart';
 import 'package:artifex/shared/themes/app_theme.dart';
+import 'package:artifex/shared/widgets/custom_error_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,7 +12,7 @@ void main() async {
   // Initialize Flutter binding first
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Set up global error handling for keyboard assertion errors
+  // 1. Handle Flutter framework errors (widget build issues, etc.)
   FlutterError.onError = (details) {
     // Filter out known harmless keyboard assertion errors
     if (details.exception.toString().contains(
@@ -23,13 +25,37 @@ void main() async {
       return;
     }
 
-    // Log other errors normally
+    // Log the error with context
     AppLogger.error(
-      'Flutter error: ${details.exception}',
+      'Flutter Framework Error',
       details.exception,
       details.stack,
+      {'library': details.library, 'context': details.context?.toString()},
     );
+
+    // Development: show error overlay
+    if (kDebugMode) {
+      FlutterError.presentError(details);
+    } else {
+      // Production: report to crash analytics (when implemented)
+      // FirebaseCrashlytics.instance.recordFlutterError(details);
+    }
   };
+
+  // 2. Handle platform/async errors not caught by Flutter
+  PlatformDispatcher.instance.onError = (error, stack) {
+    AppLogger.error('Platform Error', error, stack);
+
+    if (kReleaseMode) {
+      // Report to crash analytics (when implemented)
+      // FirebaseCrashlytics.instance.recordError(error, stack);
+    }
+
+    return true; // Indicates error was handled
+  };
+
+  // 3. Custom error widget for build failures
+  ErrorWidget.builder = (errorDetails) => const CustomErrorWidget();
 
   // Initialize core services
   await _initializeApp();

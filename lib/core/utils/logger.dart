@@ -21,8 +21,18 @@ class AppLogger {
     _logger.w(message, error: error, stackTrace: stackTrace);
   }
 
-  static void error(String message, [dynamic error, StackTrace? stackTrace]) {
-    _logger.e(message, error: error, stackTrace: stackTrace);
+  static void error(
+    String message, [
+    dynamic error,
+    StackTrace? stackTrace,
+    Map<String, dynamic>? additionalData,
+  ]) {
+    if (additionalData != null && additionalData.isNotEmpty) {
+      final enrichedMessage = '$message\nAdditional Data: $additionalData';
+      _logger.e(enrichedMessage, error: error, stackTrace: stackTrace);
+    } else {
+      _logger.e(message, error: error, stackTrace: stackTrace);
+    }
   }
 
   static void wtf(String message, [dynamic error, StackTrace? stackTrace]) {
