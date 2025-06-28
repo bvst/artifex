@@ -137,16 +137,19 @@ class PhotoFactory {
 
   /// List of photos for testing collections
   static List<Photo> list({int count = 3}) {
-    return List.generate(count, (index) => Photo(
-      id: 'photo-$index',
-      path: '/test/photo_$index.jpg',
-      name: 'photo_$index.jpg',
-      size: 1000000 + (index * 100000),
-      createdAt: DateTime.now().subtract(Duration(hours: index)),
-      width: 1080,
-      height: 1920,
-      mimeType: 'image/jpeg',
-    ));
+    return List.generate(
+      count,
+      (index) => Photo(
+        id: 'photo-$index',
+        path: '/test/photo_$index.jpg',
+        name: 'photo_$index.jpg',
+        size: 1000000 + (index * 100000),
+        createdAt: DateTime.now().subtract(Duration(hours: index)),
+        width: 1080,
+        height: 1920,
+        mimeType: 'image/jpeg',
+      ),
+    );
   }
 
   /// Empty list for testing edge cases

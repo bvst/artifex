@@ -43,7 +43,8 @@ class DioClient {
         onRequest: (options, handler) {
           // Add API key to headers
           if (AppConstants.dalleApiKey.isNotEmpty) {
-            options.headers['Authorization'] = 'Bearer ${AppConstants.dalleApiKey}';
+            options.headers['Authorization'] =
+                'Bearer ${AppConstants.dalleApiKey}';
           }
           handler.next(options);
         },
@@ -89,12 +90,14 @@ class RetryInterceptor extends Interceptor {
     final retryAttempt = extra['retry_attempt'] as int? ?? 0;
 
     if (retryAttempt < retries && _shouldRetry(err)) {
-      AppLogger.warning('Retrying request (attempt ${retryAttempt + 1}/$retries)');
-      
-      final delay = retryDelays.length > retryAttempt 
-          ? retryDelays[retryAttempt] 
+      AppLogger.warning(
+        'Retrying request (attempt ${retryAttempt + 1}/$retries)',
+      );
+
+      final delay = retryDelays.length > retryAttempt
+          ? retryDelays[retryAttempt]
           : retryDelays.last;
-      
+
       await Future.delayed(delay);
 
       err.requestOptions.extra['retry_attempt'] = retryAttempt + 1;
@@ -122,7 +125,6 @@ class RetryInterceptor extends Interceptor {
     return err.type == DioExceptionType.connectionTimeout ||
         err.type == DioExceptionType.receiveTimeout ||
         err.type == DioExceptionType.sendTimeout ||
-        (err.response?.statusCode != null && 
-         err.response!.statusCode! >= 500);
+        (err.response?.statusCode != null && err.response!.statusCode! >= 500);
   }
 }

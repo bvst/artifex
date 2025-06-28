@@ -8,10 +8,7 @@ class OpenAIModelsResponse {
   final String object;
   final List<OpenAIModel> data;
 
-  const OpenAIModelsResponse({
-    required this.object,
-    required this.data,
-  });
+  const OpenAIModelsResponse({required this.object, required this.data});
 
   factory OpenAIModelsResponse.fromJson(Map<String, dynamic> json) =>
       _$OpenAIModelsResponseFromJson(json);

@@ -45,13 +45,10 @@ void main() {
         };
 
         // Act - Insert transformation
-        await connection.query(
-          '''
+        await connection.query('''
             INSERT INTO transformations (id, imageUrl, thumbnailUrl, prompt, style, createdAt, localPath)
             VALUES (@id, @imageUrl, @thumbnailUrl, @prompt, @style, @createdAt, @localPath)
-          ''',
-          substitutionValues: transformationData,
-        );
+          ''', substitutionValues: transformationData);
 
         // Act - Retrieve transformation
         final result = await connection.query(
@@ -69,59 +66,59 @@ void main() {
         expect(row[4], 'artistic'); // style
       });
 
-      test('should retrieve transformations in descending order by date', () async {
-        // Arrange - Insert transformations with different timestamps
-        final transformations = [
-          {
-            'id': 'test_1',
-            'imageUrl': 'https://example.com/image1.png',
-            'thumbnailUrl': 'https://example.com/thumb1.png',
-            'prompt': 'First transformation',
-            'style': 'artistic',
-            'createdAt': '2023-12-13T08:00:00.000Z',
-            'localPath': null,
-          },
-          {
-            'id': 'test_2',
-            'imageUrl': 'https://example.com/image2.png',
-            'thumbnailUrl': 'https://example.com/thumb2.png',
-            'prompt': 'Second transformation',
-            'style': 'vintage',
-            'createdAt': '2023-12-13T10:00:00.000Z',
-            'localPath': null,
-          },
-          {
-            'id': 'test_3',
-            'imageUrl': 'https://example.com/image3.png',
-            'thumbnailUrl': 'https://example.com/thumb3.png',
-            'prompt': 'Third transformation',
-            'style': 'futuristic',
-            'createdAt': '2023-12-13T12:00:00.000Z',
-            'localPath': null,
-          },
-        ];
+      test(
+        'should retrieve transformations in descending order by date',
+        () async {
+          // Arrange - Insert transformations with different timestamps
+          final transformations = [
+            {
+              'id': 'test_1',
+              'imageUrl': 'https://example.com/image1.png',
+              'thumbnailUrl': 'https://example.com/thumb1.png',
+              'prompt': 'First transformation',
+              'style': 'artistic',
+              'createdAt': '2023-12-13T08:00:00.000Z',
+              'localPath': null,
+            },
+            {
+              'id': 'test_2',
+              'imageUrl': 'https://example.com/image2.png',
+              'thumbnailUrl': 'https://example.com/thumb2.png',
+              'prompt': 'Second transformation',
+              'style': 'vintage',
+              'createdAt': '2023-12-13T10:00:00.000Z',
+              'localPath': null,
+            },
+            {
+              'id': 'test_3',
+              'imageUrl': 'https://example.com/image3.png',
+              'thumbnailUrl': 'https://example.com/thumb3.png',
+              'prompt': 'Third transformation',
+              'style': 'futuristic',
+              'createdAt': '2023-12-13T12:00:00.000Z',
+              'localPath': null,
+            },
+          ];
 
-        for (final transformation in transformations) {
-          await connection.query(
-            '''
+          for (final transformation in transformations) {
+            await connection.query('''
               INSERT INTO transformations (id, imageUrl, thumbnailUrl, prompt, style, createdAt, localPath)
               VALUES (@id, @imageUrl, @thumbnailUrl, @prompt, @style, @createdAt, @localPath)
-            ''',
-            substitutionValues: transformation,
+            ''', substitutionValues: transformation);
+          }
+
+          // Act - Retrieve transformations ordered by createdAt DESC
+          final result = await connection.query(
+            'SELECT id FROM transformations ORDER BY createdAt DESC',
           );
-        }
 
-        // Act - Retrieve transformations ordered by createdAt DESC
-        final result = await connection.query(
-          'SELECT id FROM transformations ORDER BY createdAt DESC',
-        );
-
-        // Assert - Should be ordered newest first
-        expect(result.length, 3);
-        expect(result[0][0], 'test_3'); // newest
-        expect(result[1][0], 'test_2'); // middle
-        expect(result[2][0], 'test_1'); // oldest
-      });
+          // Assert - Should be ordered newest first
+          expect(result.length, 3);
+          expect(result[0][0], 'test_3'); // newest
+          expect(result[1][0], 'test_2'); // middle
+          expect(result[2][0], 'test_1'); // oldest
+        },
+      );
 
       test('should update transformation with local path', () async {
         // Arrange - Insert initial transformation
@@ -184,13 +181,10 @@ void main() {
         ];
 
         for (final transformation in transformations) {
-          await connection.query(
-            '''
+          await connection.query('''
               INSERT INTO transformations (id, imageUrl, thumbnailUrl, prompt, style, createdAt, localPath)
               VALUES (@id, @imageUrl, @thumbnailUrl, @prompt, @style, @createdAt, @localPath)
-            ''',
-            substitutionValues: transformation,
-          );
+            ''', substitutionValues: transformation);
         }
 
         // Act - Delete one transformation
@@ -296,7 +290,7 @@ Future<void> _waitForDatabase() async {
       // Test the connection
       await connection.query('SELECT 1');
       await connection.close();
-      
+
       // Use testWidgets print which is allowed in tests
       debugPrint('✅ Test database is ready!');
       return;
@@ -304,11 +298,13 @@ Future<void> _waitForDatabase() async {
       if (attempt == maxAttempts) {
         throw Exception(
           'Failed to connect to test database after $maxAttempts attempts. '
-          'Make sure the database container is running: "make test-up"'
+          'Make sure the database container is running: "make test-up"',
         );
       }
-      
-      debugPrint('⏳ Waiting for test database... (attempt $attempt/$maxAttempts)');
+
+      debugPrint(
+        '⏳ Waiting for test database... (attempt $attempt/$maxAttempts)',
+      );
       await Future.delayed(delayBetweenAttempts);
     }
   }

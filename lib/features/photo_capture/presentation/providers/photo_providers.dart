@@ -16,9 +16,7 @@ ImagePicker imagePicker(Ref ref) => ImagePicker();
 // Data sources
 @riverpod
 PhotoLocalDataSource photoLocalDataSource(Ref ref) {
-  return PhotoLocalDataSourceImpl(
-    imagePicker: ref.read(imagePickerProvider),
-  );
+  return PhotoLocalDataSourceImpl(imagePicker: ref.read(imagePickerProvider));
 }
 
 // Repositories
@@ -53,9 +51,9 @@ class PhotoNotifier extends _$PhotoNotifier {
 
   Future<void> capturePhoto() async {
     state = const PhotoLoading();
-    
+
     final result = await ref.read(capturePhotoUseCaseProvider).call();
-    
+
     result.fold(
       (failure) => state = PhotoError(failure.message),
       (photo) => state = PhotoSuccess(photo),
@@ -64,9 +62,9 @@ class PhotoNotifier extends _$PhotoNotifier {
 
   Future<void> pickImageFromGallery() async {
     state = const PhotoLoading();
-    
+
     final result = await ref.read(pickImageFromGalleryUseCaseProvider).call();
-    
+
     result.fold(
       (failure) => state = PhotoError(failure.message),
       (photo) => state = PhotoSuccess(photo),
@@ -74,8 +72,10 @@ class PhotoNotifier extends _$PhotoNotifier {
   }
 
   Future<void> loadRecentPhotos({int limit = 10}) async {
-    final result = await ref.read(getRecentPhotosUseCaseProvider).call(limit: limit);
-    
+    final result = await ref
+        .read(getRecentPhotosUseCaseProvider)
+        .call(limit: limit);
+
     result.fold(
       (failure) => state = PhotoError(failure.message),
       (photos) => state = PhotoRecentPhotos(photos),

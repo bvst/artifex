@@ -50,10 +50,18 @@ class TestData {
   );
 
   // Failure factories
-  static const ValidationFailure validationFailure = ValidationFailure('Invalid image format');
-  static const PermissionFailure permissionFailure = PermissionFailure('Camera permission denied');
-  static const FileNotFoundFailure fileNotFoundFailure = FileNotFoundFailure('No image selected');
-  static const UserCancelledFailure userCancelledFailure = UserCancelledFailure('User cancelled operation');
+  static const ValidationFailure validationFailure = ValidationFailure(
+    'Invalid image format',
+  );
+  static const PermissionFailure permissionFailure = PermissionFailure(
+    'Camera permission denied',
+  );
+  static const FileNotFoundFailure fileNotFoundFailure = FileNotFoundFailure(
+    'No image selected',
+  );
+  static const UserCancelledFailure userCancelledFailure = UserCancelledFailure(
+    'User cancelled operation',
+  );
   static const CacheFailure cacheFailure = CacheFailure('Cache write failed');
   static const NetworkFailure networkFailure = NetworkFailure('Network error');
 

@@ -103,7 +103,7 @@ flutter run
 # Get dependencies
 flutter pub get
 
-# Run tests and analysis together (CUSTOM COMMAND)
+# Run tests, analysis, and formatting together (CUSTOM COMMAND)
 dart run artifex:check
 
 # Run tests only
@@ -208,12 +208,29 @@ make logs        # View database logs
 ### Pre-commit Checklist
 Always run these before committing:
 ```bash
-flutter analyze       # Check for code issues
-flutter test         # Run all tests
-flutter format .     # Format code (optional: --set-exit-if-changed)
+dart run artifex:check  # Run formatting + analysis + tests (recommended)
+# OR individually:
+dart format .           # Format code
+flutter analyze         # Check for code issues
+flutter test           # Run all tests
 # If you've modified @riverpod providers, run:
 flutter packages pub run build_runner build --delete-conflicting-outputs
 ```
+
+### Testing Guidelines
+**CRITICAL: ALL new code must have tests following these rules:**
+- **Language-agnostic tests**: No `find.text()` - use `find.byIcon()`, `find.byType()`
+- **Test behavior, not implementation**: No exact pixels, colors, or padding values
+- **Error testing without messages**: Test `hasError`, not specific error strings
+- **Semantic finders**: Find buttons by icons, not text content
+- **See detailed guidelines**: `.claude/commands/testing-best-practices.md`
+
+**Test Quality Checklist:**
+- [ ] No text content dependencies (i18n-ready)
+- [ ] No implementation detail testing
+- [ ] Focus on user behavior and interactions
+- [ ] All async states tested (loading, success, error)
+- [ ] Tests pass: `dart run artifex:check`
 
 ## CI/CD Status
 - ✅ GitHub Actions configured
@@ -242,4 +259,6 @@ flutter packages pub run build_runner build --delete-conflicting-outputs
 - **CRITICAL: Write tests for ALL new code - NO EXCEPTIONS!**
   - Every new file must have corresponding test file
   - Test structure mirrors source: `lib/[path]` → `test/[path]`
-  - Current test count: 64 tests (all passing)
+  - **Follow testing best practices**: `.claude/commands/testing-best-practices.md`
+  - **Language-agnostic tests**: No text dependencies, use semantic finders
+  - Current test count: 142 tests (all passing, all i18n-ready)

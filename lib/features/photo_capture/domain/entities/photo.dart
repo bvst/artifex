@@ -21,19 +21,20 @@ class Photo extends Equatable {
   final int? width;
   final int? height;
   final String? mimeType;
-  
+
   // Null-safe accessors using Option pattern
   Option<int> get widthOption => width != null ? some(width!) : none();
   Option<int> get heightOption => height != null ? some(height!) : none();
-  Option<String> get mimeTypeOption => mimeType != null ? some(mimeType!) : none();
-  
+  Option<String> get mimeTypeOption =>
+      mimeType != null ? some(mimeType!) : none();
+
   // Safe dimension operations
   bool get hasDimensions => width != null && height != null;
-  
+
   String get displayDimensions {
     return hasDimensions ? '${width}x$height' : 'Unknown dimensions';
   }
-  
+
   double get aspectRatio {
     return hasDimensions ? (width! / height!) : 1.0;
   }

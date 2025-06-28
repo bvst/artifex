@@ -18,42 +18,42 @@ class ImageInputButton extends StatelessWidget {
     required VoidCallback onPressed,
     bool isEnabled = true,
   }) : this(
-          key: key,
-          icon: Icons.camera_alt_rounded,
-          title: 'Take a Photo',
-          subtitle: 'Capture with your camera',
-          onPressed: onPressed,
-          isEnabled: isEnabled,
-          gradient: LinearGradient(
-            colors: [
-              AppTheme.colors.primary,
-              AppTheme.colors.primary.withValues(alpha: 0.8),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        );
+         key: key,
+         icon: Icons.camera_alt_rounded,
+         title: 'Take a Photo',
+         subtitle: 'Capture with your camera',
+         onPressed: onPressed,
+         isEnabled: isEnabled,
+         gradient: LinearGradient(
+           colors: [
+             AppTheme.colors.primary,
+             AppTheme.colors.primary.withValues(alpha: 0.8),
+           ],
+           begin: Alignment.topLeft,
+           end: Alignment.bottomRight,
+         ),
+       );
 
   ImageInputButton.gallery({
     Key? key,
     required VoidCallback onPressed,
     bool isEnabled = true,
   }) : this(
-          key: key,
-          icon: Icons.photo_library_rounded,
-          title: 'Upload Image',
-          subtitle: 'Choose from gallery',
-          onPressed: onPressed,
-          isEnabled: isEnabled,
-          gradient: LinearGradient(
-            colors: [
-              AppTheme.colors.secondary,
-              AppTheme.colors.secondary.withValues(alpha: 0.8),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        );
+         key: key,
+         icon: Icons.photo_library_rounded,
+         title: 'Upload Image',
+         subtitle: 'Choose from gallery',
+         onPressed: onPressed,
+         isEnabled: isEnabled,
+         gradient: LinearGradient(
+           colors: [
+             AppTheme.colors.secondary,
+             AppTheme.colors.secondary.withValues(alpha: 0.8),
+           ],
+           begin: Alignment.topLeft,
+           end: Alignment.bottomRight,
+         ),
+       );
 
   final IconData icon;
   final String title;
@@ -65,20 +65,22 @@ class ImageInputButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final opacity = isEnabled ? 1.0 : 0.6;
-    
+
     return Opacity(
       opacity: opacity,
       child: Container(
         decoration: BoxDecoration(
           gradient: gradient,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: isEnabled ? [
-            BoxShadow(
-              color: AppTheme.colors.shadow.withValues(alpha: 0.15),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ] : null,
+          boxShadow: isEnabled
+              ? [
+                  BoxShadow(
+                    color: AppTheme.colors.shadow.withValues(alpha: 0.15),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ]
+              : null,
         ),
         child: Material(
           color: Colors.transparent,
@@ -95,11 +97,7 @@ class ImageInputButton extends StatelessWidget {
                       color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Icon(
-                      icon,
-                      size: 32,
-                      color: Colors.white,
-                    ),
+                    child: Icon(icon, size: 32, color: Colors.white),
                   ),
                   const SizedBox(width: 20),
                   Expanded(

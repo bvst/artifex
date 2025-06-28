@@ -16,7 +16,7 @@ extension WidgetTestingExtensions on WidgetTester {
     ThemeData? theme,
   }) async {
     final overrides = <Override>[];
-    
+
     if (photoRepository != null) {
       overrides.add(photoRepositoryProvider.overrideWithValue(photoRepository));
     }
@@ -39,7 +39,7 @@ extension WidgetTestingExtensions on WidgetTester {
     ThemeData? theme,
   }) async {
     final overrides = <Override>[];
-    
+
     if (photoRepository != null) {
       overrides.add(photoRepositoryProvider.overrideWithValue(photoRepository));
     }
@@ -47,10 +47,7 @@ extension WidgetTestingExtensions on WidgetTester {
     await pumpWidget(
       ProviderScope(
         overrides: overrides,
-        child: MaterialApp(
-          theme: theme ?? AppTheme.lightTheme,
-          home: screen,
-        ),
+        child: MaterialApp(theme: theme ?? AppTheme.lightTheme, home: screen),
       ),
     );
   }
@@ -85,7 +82,11 @@ extension WidgetTestingExtensions on WidgetTester {
 
   /// Verify exact widget count
   void expectWidgetCount(Finder finder, int count, {String? reason}) {
-    expect(finder, findsNWidgets(count), reason: reason ?? 'Should find exactly $count widgets');
+    expect(
+      finder,
+      findsNWidgets(count),
+      reason: reason ?? 'Should find exactly $count widgets',
+    );
   }
 }
 
@@ -97,9 +98,7 @@ extension MockExtensions on Mock {
     T result, {
     Duration delay = const Duration(milliseconds: 100),
   }) {
-    when(methodCall).thenAnswer(
-      (_) => Future.delayed(delay, () => result),
-    );
+    when(methodCall).thenAnswer((_) => Future.delayed(delay, () => result));
   }
 
   /// Setup mock to throw error after delay
@@ -108,9 +107,9 @@ extension MockExtensions on Mock {
     dynamic error, {
     Duration delay = const Duration(milliseconds: 100),
   }) {
-    when(methodCall).thenAnswer(
-      (_) => Future.delayed(delay, () => throw error),
-    );
+    when(
+      methodCall,
+    ).thenAnswer((_) => Future.delayed(delay, () => throw error));
   }
 }
 
@@ -119,9 +118,10 @@ extension FinderExtensions on CommonFinders {
   /// Find text that contains a substring (case insensitive)
   Finder textContaining(String substring) {
     return byWidgetPredicate(
-      (widget) => widget is Text && 
-                  widget.data != null &&
-                  widget.data!.toLowerCase().contains(substring.toLowerCase()),
+      (widget) =>
+          widget is Text &&
+          widget.data != null &&
+          widget.data!.toLowerCase().contains(substring.toLowerCase()),
       description: 'text containing "$substring"',
     );
   }
@@ -166,7 +166,7 @@ extension ProviderTesting on ProviderContainer {
     List<T> expectedValues,
   ) {
     final receivedValues = <T>[];
-    
+
     listen<T>(provider, (previous, next) {
       receivedValues.add(next);
     });

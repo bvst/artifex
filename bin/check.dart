@@ -1,29 +1,46 @@
 #!/usr/bin/env dart
-
 // ignore_for_file: avoid_print
 
-/// Custom Flutter command to run tests and analysis together
+/// Custom Flutter command to run tests, analysis, and formatting together
 /// Usage: dart run artifex:check
-/// 
+///
 /// This command runs:
-/// 1. Flutter analyze - checks for code issues
-/// 2. Start test database container
-/// 3. Flutter test - runs all tests (including integration tests)
-/// 4. Stop test database container
-/// 
-/// Exits with code 0 if both pass, 1 if either fails
+/// 1. Dart format - formats all code consistently
+/// 2. Flutter analyze - checks for code issues
+/// 3. Start test database container
+/// 4. Flutter test - runs all tests (including integration tests)
+/// 5. Stop test database container
+///
+/// Exits with code 0 if all pass, 1 if any fails
 
 import 'dart:io';
 
 void main(List<String> arguments) async {
   print('🔍 Running Artifex Code Quality Check...\n');
-  
+
   var hasErrors = false;
-  
+
+  // Run Dart format
+  print('✨ Step 1/5: Formatting code...');
+  final formatResult = await Process.run('dart', ['format', '.']);
+
+  if (formatResult.exitCode == 0) {
+    print('✅ Code formatted successfully\n');
+  } else {
+    print('❌ Code formatting failed:');
+    print(formatResult.stdout);
+    if (formatResult.stderr.isNotEmpty) {
+      print('Error output:');
+      print(formatResult.stderr);
+    }
+    hasErrors = true;
+    print('');
+  }
+
   // Run Flutter analyze
-  print('📊 Step 1/4: Running static analysis...');
+  print('📊 Step 2/5: Running static analysis...');
   final analyzeResult = await Process.run('flutter', ['analyze']);
-  
+
   if (analyzeResult.exitCode == 0) {
     print('✅ Analysis passed - no issues found\n');
   } else {
@@ -36,15 +53,15 @@ void main(List<String> arguments) async {
     hasErrors = true;
     print('');
   }
-  
+
   // Start test database container
-  print('🐳 Step 2/4: Starting test database container...');
-  final testDbStartResult = await Process.run(
-    'make', 
-    ['-C', 'docker', 'test-up'], 
-    workingDirectory: Directory.current.path,
-  );
-  
+  print('🐳 Step 3/5: Starting test database container...');
+  final testDbStartResult = await Process.run('make', [
+    '-C',
+    'docker',
+    'test-up',
+  ], workingDirectory: Directory.current.path);
+
   if (testDbStartResult.exitCode == 0) {
     print('✅ Test database started successfully\n');
   } else {
@@ -57,20 +74,25 @@ void main(List<String> arguments) async {
     hasErrors = true;
     print('');
   }
-  
+
   // Run Flutter test (only if database started successfully)
   bool testsRan = false;
   if (!hasErrors) {
-    print('🧪 Step 3/4: Running tests...');
-    final testResult = await Process.run('flutter', ['test', '--reporter=compact']);
+    print('🧪 Step 4/5: Running tests...');
+    final testResult = await Process.run('flutter', [
+      'test',
+      '--reporter=compact',
+    ]);
     testsRan = true;
-    
+
     if (testResult.exitCode == 0) {
       // Extract test count from output
       final output = testResult.stdout.toString();
       final lines = output.split('\n');
-      final lastLine = lines.where((line) => line.contains('All tests passed!')).firstOrNull;
-      
+      final lastLine = lines
+          .where((line) => line.contains('All tests passed!'))
+          .firstOrNull;
+
       if (lastLine != null) {
         // Find the test count in the output
         final testCountMatch = RegExp(r'(\d+) tests?').firstMatch(output);
@@ -90,21 +112,23 @@ void main(List<String> arguments) async {
       print('');
     }
   } else {
-    print('⏭️  Step 3/4: Skipping tests due to previous errors\n');
+    print('⏭️  Step 4/5: Skipping tests due to previous errors\n');
   }
-  
+
   // Stop test database container (always run cleanup)
-  print('🛑 Step 4/4: Stopping test database container...');
-  final testDbStopResult = await Process.run(
-    'make', 
-    ['-C', 'docker', 'test-down'], 
-    workingDirectory: Directory.current.path,
-  );
-  
+  print('🛑 Step 5/5: Stopping test database container...');
+  final testDbStopResult = await Process.run('make', [
+    '-C',
+    'docker',
+    'test-down',
+  ], workingDirectory: Directory.current.path);
+
   if (testDbStopResult.exitCode == 0) {
     print('✅ Test database stopped successfully\n');
   } else {
-    print('⚠️  Warning: Failed to stop test database (this is usually safe to ignore):');
+    print(
+      '⚠️  Warning: Failed to stop test database (this is usually safe to ignore):',
+    );
     print(testDbStopResult.stdout);
     if (testDbStopResult.stderr.isNotEmpty) {
       print('Error output:');
@@ -112,7 +136,7 @@ void main(List<String> arguments) async {
     }
     print('');
   }
-  
+
   // Summary
   if (hasErrors) {
     print('💥 Code quality check FAILED');

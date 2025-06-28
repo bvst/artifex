@@ -41,8 +41,8 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               child: ArtifexApp(
-              splashDuration: const Duration(milliseconds: 1),
-            ),
+                splashDuration: const Duration(milliseconds: 1),
+              ),
             ),
           );
 
@@ -55,10 +55,11 @@ void main() {
 
           // Should navigate to onboarding for first-time user
           expect(find.byType(OnboardingScreen), findsOneWidget);
-          
+
           // Verify we have 3 page indicators (small circular containers for pagination)
           final pageIndicators = find.byWidgetPredicate(
-            (widget) => widget is Container &&
+            (widget) =>
+                widget is Container &&
                 widget.decoration is BoxDecoration &&
                 (widget.decoration as BoxDecoration).shape == BoxShape.circle &&
                 widget.constraints != null &&
@@ -69,7 +70,7 @@ void main() {
           // Find and tap the Next button (ElevatedButton at bottom)
           final nextButton = find.byType(ElevatedButton);
           expect(nextButton, findsOneWidget);
-          
+
           await tester.tap(nextButton);
           await tester.pumpAndSettle();
 
@@ -108,8 +109,8 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               child: ArtifexApp(
-              splashDuration: const Duration(milliseconds: 1),
-            ),
+                splashDuration: const Duration(milliseconds: 1),
+              ),
             ),
           );
 
@@ -127,43 +128,39 @@ void main() {
         timeout: integrationTestTimeout,
       );
 
-      testWidgets(
-        'User can skip onboarding at any point',
-        (WidgetTester tester) async {
-          // Ensure fresh onboarding state
-          await mockPrefs.clear();
+      testWidgets('User can skip onboarding at any point', (
+        WidgetTester tester,
+      ) async {
+        // Ensure fresh onboarding state
+        await mockPrefs.clear();
 
-          await tester.pumpWidget(
-            ProviderScope(
-              child: ArtifexApp(
-              splashDuration: const Duration(milliseconds: 1),
-            ),
-            ),
-          );
+        await tester.pumpWidget(
+          ProviderScope(
+            child: ArtifexApp(splashDuration: const Duration(milliseconds: 1)),
+          ),
+        );
 
-          // Wait for splash screen navigation
-          await waitForSplashNavigation(tester);
+        // Wait for splash screen navigation
+        await waitForSplashNavigation(tester);
 
-          expect(find.byType(OnboardingScreen), findsOneWidget);
+        expect(find.byType(OnboardingScreen), findsOneWidget);
 
-          // Find Skip button by looking for TextButton in top-right area
-          final skipButton = find.byType(TextButton);
-          expect(skipButton, findsOneWidget);
-          
-          // Skip onboarding from first page
-          await tester.tap(skipButton);
-          await tester.pumpAndSettle();
+        // Find Skip button by looking for TextButton in top-right area
+        final skipButton = find.byType(TextButton);
+        expect(skipButton, findsOneWidget);
 
-          // Should navigate directly to home screen
-          expect(find.byType(HomeScreen), findsOneWidget);
-          // Don't test welcome text - it will change with locale
+        // Skip onboarding from first page
+        await tester.tap(skipButton);
+        await tester.pumpAndSettle();
 
-          // Verify onboarding completion is persisted even when skipped
-          final isCompleted = await PreferencesHelper.isOnboardingComplete();
-          expect(isCompleted, true);
-        },
-        timeout: integrationTestTimeout,
-      );
+        // Should navigate directly to home screen
+        expect(find.byType(HomeScreen), findsOneWidget);
+        // Don't test welcome text - it will change with locale
+
+        // Verify onboarding completion is persisted even when skipped
+        final isCompleted = await PreferencesHelper.isOnboardingComplete();
+        expect(isCompleted, true);
+      }, timeout: integrationTestTimeout);
     });
 
     group('Home Screen Interaction', () {
@@ -178,8 +175,8 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               child: ArtifexApp(
-              splashDuration: const Duration(milliseconds: 1),
-            ),
+                splashDuration: const Duration(milliseconds: 1),
+              ),
             ),
           );
 
@@ -193,7 +190,7 @@ void main() {
           // Verify photo input buttons are available by their icons (this is sufficient)
           expect(find.byIcon(Icons.camera_alt_rounded), findsOneWidget);
           expect(find.byIcon(Icons.photo_library_rounded), findsOneWidget);
-          
+
           // The presence of both icons confirms we have the photo input functionality
         },
         timeout: integrationTestTimeout,
@@ -205,8 +202,8 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               child: ArtifexApp(
-              splashDuration: const Duration(milliseconds: 1),
-            ),
+                splashDuration: const Duration(milliseconds: 1),
+              ),
             ),
           );
 
@@ -230,7 +227,7 @@ void main() {
           // Note: Since we can't actually test camera functionality in integration tests
           // without mocking the image_picker plugin, we verify the button interaction
           // and state management behavior through the UI feedback
-          
+
           // The button should still be present and tappable
           expect(cameraIcon, findsOneWidget);
           expect(cameraButton, findsOneWidget);
@@ -244,8 +241,8 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               child: ArtifexApp(
-              splashDuration: const Duration(milliseconds: 1),
-            ),
+                splashDuration: const Duration(milliseconds: 1),
+              ),
             ),
           );
 
@@ -284,8 +281,8 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               child: ArtifexApp(
-              splashDuration: const Duration(milliseconds: 1),
-            ),
+                splashDuration: const Duration(milliseconds: 1),
+              ),
             ),
           );
 
@@ -294,11 +291,11 @@ void main() {
 
           // Complete onboarding using button navigation
           expect(find.byType(OnboardingScreen), findsOneWidget);
-          
+
           // Navigate through all onboarding pages using ElevatedButton
           final nextButton = find.byType(ElevatedButton);
           expect(nextButton, findsOneWidget);
-          
+
           await tester.tap(nextButton);
           await tester.pumpAndSettle();
           await tester.tap(nextButton);
@@ -313,8 +310,8 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               child: ArtifexApp(
-              splashDuration: const Duration(milliseconds: 1),
-            ),
+                splashDuration: const Duration(milliseconds: 1),
+              ),
             ),
           );
 
@@ -337,8 +334,8 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               child: ArtifexApp(
-              splashDuration: const Duration(milliseconds: 1),
-            ),
+                splashDuration: const Duration(milliseconds: 1),
+              ),
             ),
           );
 
@@ -365,11 +362,11 @@ void main() {
           // Note: The onboarding screen doesn't have a back button
           // It only has Skip and Next/Let's Create buttons
           // This is intentional UX - users can only go forward or skip
-          
+
           // Complete onboarding instead
           await tester.tap(nextButton);
           await tester.pumpAndSettle();
-          
+
           // Should navigate to home screen
           expect(find.byType(HomeScreen), findsOneWidget);
         },
@@ -388,8 +385,8 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               child: ArtifexApp(
-              splashDuration: const Duration(milliseconds: 1),
-            ),
+                splashDuration: const Duration(milliseconds: 1),
+              ),
             ),
           );
 
@@ -402,42 +399,38 @@ void main() {
         timeout: integrationTestTimeout,
       );
 
-      testWidgets(
-        'App displays error states properly',
-        (WidgetTester tester) async {
-          await PreferencesHelper.setOnboardingComplete();
+      testWidgets('App displays error states properly', (
+        WidgetTester tester,
+      ) async {
+        await PreferencesHelper.setOnboardingComplete();
 
-          await tester.pumpWidget(
-            ProviderScope(
-              child: ArtifexApp(
-              splashDuration: const Duration(milliseconds: 1),
-            ),
-            ),
-          );
+        await tester.pumpWidget(
+          ProviderScope(
+            child: ArtifexApp(splashDuration: const Duration(milliseconds: 1)),
+          ),
+        );
 
-          // Wait for splash screen navigation
-          await waitForSplashNavigation(tester);
+        // Wait for splash screen navigation
+        await waitForSplashNavigation(tester);
 
-          expect(find.byType(HomeScreen), findsOneWidget);
+        expect(find.byType(HomeScreen), findsOneWidget);
 
-          // Test that buttons remain functional even after multiple taps
-          final cameraIcon = find.byIcon(Icons.camera_alt_rounded);
-          final cameraButton = find.ancestor(
-            of: cameraIcon,
-            matching: find.byType(InkWell),
-          );
-          
-          await tester.tap(cameraButton);
-          await tester.pump();
-          await tester.tap(cameraButton);
-          await tester.pump();
-          
-          // Button should still be present and functional
-          expect(cameraIcon, findsOneWidget);
-          expect(cameraButton, findsOneWidget);
-        },
-        timeout: integrationTestTimeout,
-      );
+        // Test that buttons remain functional even after multiple taps
+        final cameraIcon = find.byIcon(Icons.camera_alt_rounded);
+        final cameraButton = find.ancestor(
+          of: cameraIcon,
+          matching: find.byType(InkWell),
+        );
+
+        await tester.tap(cameraButton);
+        await tester.pump();
+        await tester.tap(cameraButton);
+        await tester.pump();
+
+        // Button should still be present and functional
+        expect(cameraIcon, findsOneWidget);
+        expect(cameraButton, findsOneWidget);
+      }, timeout: integrationTestTimeout);
     });
   });
 }

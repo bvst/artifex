@@ -47,7 +47,7 @@ class TransformationRequestModel extends TransformationRequest {
   String _buildEnhancedPrompt() {
     // Enhance the user prompt with style-specific instructions
     final basePrompt = 'Transform this photo: $prompt';
-    
+
     switch (style.toLowerCase()) {
       case 'artistic':
         return '$basePrompt. Make it artistic and painterly with rich colors and creative interpretation.';

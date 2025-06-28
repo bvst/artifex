@@ -14,17 +14,17 @@ extension SafeOperations<T> on T? {
   U? map<U>(U Function(T) transform) {
     return this != null ? transform(this as T) : null;
   }
-  
+
   // Provide default value
   T orElse(T defaultValue) {
     return this ?? defaultValue;
   }
-  
+
   // Lazy default value
   T orElseGet(T Function() defaultValue) {
     return this ?? defaultValue();
   }
-  
+
   // Conditional execution
   void ifPresent(void Function(T) action) {
     if (this != null) action(this as T);
@@ -35,11 +35,11 @@ extension SafeOperations<T> on T? {
 extension SafeListOperations<T> on List<T> {
   Option<T> get headOption => isEmpty ? none() : some(first);
   Option<T> get lastOption => isEmpty ? none() : some(last);
-  
+
   Option<T> getOption(int index) {
     return index >= 0 && index < length ? some(this[index]) : none();
   }
-  
+
   List<T> whereNotNull() {
     return where((item) => item != null).toList();
   }
@@ -56,9 +56,9 @@ extension SafeMapOperations<K, V> on Map<K, V> {
 extension SafeStringOperations on String? {
   bool get isNullOrEmpty => this == null || this!.isEmpty;
   bool get isNotNullOrEmpty => !isNullOrEmpty;
-  
+
   String get orEmpty => this ?? '';
-  
+
   Option<String> get nonEmptyOption {
     return isNullOrEmpty ? none() : some(this!);
   }

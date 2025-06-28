@@ -17,9 +17,8 @@ abstract class PhotoLocalDataSource {
 }
 
 class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
-  const PhotoLocalDataSourceImpl({
-    required ImagePicker imagePicker,
-  }) : _imagePicker = imagePicker;
+  const PhotoLocalDataSourceImpl({required ImagePicker imagePicker})
+    : _imagePicker = imagePicker;
 
   final ImagePicker _imagePicker;
 
@@ -27,13 +26,15 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
   Future<PhotoModel> capturePhoto() async {
     try {
       AppLogger.debug('Capturing photo from camera');
-      
+
       // Check if we're on a platform that supports camera
       if (!_isCameraSupported()) {
-        AppLogger.warning('Camera not supported on this platform, falling back to gallery');
+        AppLogger.warning(
+          'Camera not supported on this platform, falling back to gallery',
+        );
         return await pickImageFromGallery();
       }
-      
+
       final XFile? image = await _imagePicker.pickImage(
         source: ImageSource.camera,
         imageQuality: 85,
@@ -63,7 +64,7 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
   Future<PhotoModel> pickImageFromGallery() async {
     try {
       AppLogger.debug('Picking image from gallery');
-      
+
       final XFile? image = await _imagePicker.pickImage(
         source: ImageSource.gallery,
         imageQuality: 85,
@@ -93,7 +94,7 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
   Future<List<PhotoModel>> getRecentPhotos({int limit = 10}) async {
     try {
       AppLogger.debug('Getting recent photos (limit: $limit)');
-      
+
       final directory = await _getPhotosDirectory();
       if (!directory.existsSync()) {
         return [];
@@ -106,7 +107,9 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
           .toList();
 
       // Sort by modification date (newest first)
-      files.sort((a, b) => b.statSync().modified.compareTo(a.statSync().modified));
+      files.sort(
+        (a, b) => b.statSync().modified.compareTo(a.statSync().modified),
+      );
 
       final limitedFiles = files.take(limit);
       final photoModels = <PhotoModel>[];
@@ -137,12 +140,11 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
   Future<void> deletePhoto(String photoId) async {
     try {
       AppLogger.debug('Deleting photo: $photoId');
-      
+
       final directory = await _getPhotosDirectory();
-      final files = directory
-          .listSync()
-          .whereType<File>()
-          .where((file) => file.path.contains(photoId));
+      final files = directory.listSync().whereType<File>().where(
+        (file) => file.path.contains(photoId),
+      );
 
       for (final file in files) {
         if (file.existsSync()) {
@@ -160,7 +162,7 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
   Future<PhotoModel> savePhoto(PhotoModel photo) async {
     try {
       AppLogger.debug('Saving photo: ${photo.id}');
-      
+
       final sourceFile = File(photo.path);
       if (!sourceFile.existsSync()) {
         throw const FileException('Source file does not exist');
@@ -187,7 +189,7 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
 
     // Get image dimensions
     final dimensions = await _getImageDimensions(imageFile);
-    
+
     // Save to app directory
     final directory = await _getPhotosDirectory();
     final photoModel = PhotoModel.fromFile(
@@ -195,10 +197,10 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
       width: dimensions?['width'],
       height: dimensions?['height'],
     );
-    
+
     final targetPath = '${directory.path}/${photoModel.id}_${photoModel.name}';
     final savedFile = await imageFile.copy(targetPath);
-    
+
     return PhotoModel.fromFile(
       savedFile,
       width: dimensions?['width'],
@@ -208,7 +210,7 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
 
   void _validateImage(File imageFile) {
     final stat = imageFile.statSync();
-    
+
     if (stat.size > AppConstants.maxImageSizeBytes) {
       throw ValidationException(
         message: 'Image size too large: ${stat.size} bytes',
@@ -217,9 +219,7 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
 
     final extension = imageFile.path.toLowerCase().split('.').last;
     if (!AppConstants.allowedImageExtensions.contains(extension)) {
-      throw ValidationException(
-        message: 'Invalid image format: $extension',
-      );
+      throw ValidationException(message: 'Invalid image format: $extension');
     }
   }
 
@@ -227,28 +227,25 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
     try {
       final bytes = await imageFile.readAsBytes();
       final image = img.decodeImage(bytes);
-      
+
       if (image != null) {
-        return {
-          'width': image.width,
-          'height': image.height,
-        };
+        return {'width': image.width, 'height': image.height};
       }
     } catch (e) {
       AppLogger.warning('Failed to get image dimensions', e);
     }
-    
+
     return null;
   }
 
   Future<Directory> _getPhotosDirectory() async {
     final appDir = await getApplicationDocumentsDirectory();
     final photosDir = Directory('${appDir.path}/photos');
-    
+
     if (!photosDir.existsSync()) {
       await photosDir.create(recursive: true);
     }
-    
+
     return photosDir;
   }
 

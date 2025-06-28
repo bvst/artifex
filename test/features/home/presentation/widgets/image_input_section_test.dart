@@ -24,14 +24,8 @@ void main() {
     setUp(() {
       mockRepository = MockPhotoRepository();
       testWidget = ProviderScope(
-        overrides: [
-          photoRepositoryProvider.overrideWithValue(mockRepository),
-        ],
-        child: const MaterialApp(
-          home: Scaffold(
-            body: ImageInputSection(),
-          ),
-        ),
+        overrides: [photoRepositoryProvider.overrideWithValue(mockRepository)],
+        child: const MaterialApp(home: Scaffold(body: ImageInputSection())),
       );
     });
 
@@ -42,13 +36,17 @@ void main() {
       expect(find.byType(Text), findsAtLeastNWidgets(1));
     });
 
-    testWidgets('should display two ImageInputButtons', (WidgetTester tester) async {
+    testWidgets('should display two ImageInputButtons', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(testWidget);
 
       expect(find.byType(ImageInputButton), findsNWidgets(2));
     });
 
-    testWidgets('should capture photo when camera button is pressed', (WidgetTester tester) async {
+    testWidgets('should capture photo when camera button is pressed', (
+      WidgetTester tester,
+    ) async {
       // Given: A successful camera photo (using factory)
       final photo = TestData.createCameraPhoto();
       when(mockRepository.capturePhoto()).thenAnswer((_) async => right(photo));
@@ -68,10 +66,14 @@ void main() {
       verify(mockRepository.capturePhoto()).called(1);
     });
 
-    testWidgets('should pick from gallery when gallery button is pressed', (WidgetTester tester) async {
+    testWidgets('should pick from gallery when gallery button is pressed', (
+      WidgetTester tester,
+    ) async {
       // Given: A successful gallery photo (using factory)
       final photo = TestData.createGalleryPhoto();
-      when(mockRepository.pickImageFromGallery()).thenAnswer((_) async => right(photo));
+      when(
+        mockRepository.pickImageFromGallery(),
+      ).thenAnswer((_) async => right(photo));
 
       await tester.pumpWidget(testWidget);
 
@@ -88,11 +90,13 @@ void main() {
       verify(mockRepository.pickImageFromGallery()).called(1);
     });
 
-    testWidgets('should show loading indicator when capturing photo', (WidgetTester tester) async {
+    testWidgets('should show loading indicator when capturing photo', (
+      WidgetTester tester,
+    ) async {
       // Given: Camera operation will take some time (using factory)
       when(mockRepository.capturePhoto()).thenAnswer(
         (_) => Future.delayed(
-          const Duration(milliseconds: 100), 
+          const Duration(milliseconds: 100),
           () => right(TestData.createCameraPhoto()),
         ),
       );
@@ -116,18 +120,23 @@ void main() {
       await tester.pumpAndSettle();
     });
 
-    testWidgets('should disable buttons when loading', (WidgetTester tester) async {
+    testWidgets('should disable buttons when loading', (
+      WidgetTester tester,
+    ) async {
       // Return a delayed future to simulate loading
       when(mockRepository.capturePhoto()).thenAnswer(
-        (_) => Future.delayed(const Duration(milliseconds: 100), () => right(
-          Photo(
-            id: 'test-id',
-            path: '/test/path.jpg',
-            name: 'test.jpg',
-            size: 1024,
-            createdAt: DateTime.now(),
+        (_) => Future.delayed(
+          const Duration(milliseconds: 100),
+          () => right(
+            Photo(
+              id: 'test-id',
+              path: '/test/path.jpg',
+              name: 'test.jpg',
+              size: 1024,
+              createdAt: DateTime.now(),
+            ),
           ),
-        )),
+        ),
       );
 
       await tester.pumpWidget(testWidget);
@@ -150,15 +159,21 @@ void main() {
         of: galleryIcon,
         matching: find.byType(ImageInputButton),
       );
-      final galleryButtonWidget = tester.widget<ImageInputButton>(galleryButton);
+      final galleryButtonWidget = tester.widget<ImageInputButton>(
+        galleryButton,
+      );
       expect(galleryButtonWidget.isEnabled, isFalse);
 
       await tester.pumpAndSettle();
     });
 
-    testWidgets('should show error snackbar on capture failure', (WidgetTester tester) async {
+    testWidgets('should show error snackbar on capture failure', (
+      WidgetTester tester,
+    ) async {
       const failure = ValidationFailure('Invalid camera settings');
-      when(mockRepository.capturePhoto()).thenAnswer((_) async => left(failure));
+      when(
+        mockRepository.capturePhoto(),
+      ).thenAnswer((_) async => left(failure));
 
       await tester.pumpWidget(testWidget);
 
@@ -176,7 +191,9 @@ void main() {
       // Don't test error text - it will change with locale
     });
 
-    testWidgets('should show success snackbar on successful capture', (WidgetTester tester) async {
+    testWidgets('should show success snackbar on successful capture', (
+      WidgetTester tester,
+    ) async {
       // Given: A successful photo capture (using factory)
       final photo = TestData.createCameraPhoto();
       when(mockRepository.capturePhoto()).thenAnswer((_) async => right(photo));
@@ -197,9 +214,13 @@ void main() {
       // Don't test success text - it will change with locale
     });
 
-    testWidgets('should not show error when camera capture is cancelled', (WidgetTester tester) async {
+    testWidgets('should not show error when camera capture is cancelled', (
+      WidgetTester tester,
+    ) async {
       const failure = UserCancelledFailure('Camera capture was cancelled');
-      when(mockRepository.capturePhoto()).thenAnswer((_) async => left(failure));
+      when(
+        mockRepository.capturePhoto(),
+      ).thenAnswer((_) async => left(failure));
 
       await tester.pumpWidget(testWidget);
 
@@ -214,15 +235,19 @@ void main() {
 
       // Should NOT show any snackbar (no error for cancellation)
       expect(find.byType(SnackBar), findsNothing);
-      
+
       // Buttons should be enabled again
       final cameraButtonWidget = tester.widget<ImageInputButton>(cameraButton);
       expect(cameraButtonWidget.isEnabled, isTrue);
     });
 
-    testWidgets('should not show error when gallery selection is cancelled', (WidgetTester tester) async {
+    testWidgets('should not show error when gallery selection is cancelled', (
+      WidgetTester tester,
+    ) async {
       const failure = UserCancelledFailure('Gallery selection was cancelled');
-      when(mockRepository.pickImageFromGallery()).thenAnswer((_) async => left(failure));
+      when(
+        mockRepository.pickImageFromGallery(),
+      ).thenAnswer((_) async => left(failure));
 
       await tester.pumpWidget(testWidget);
 
@@ -237,9 +262,11 @@ void main() {
 
       // Should NOT show any snackbar (no error for cancellation)
       expect(find.byType(SnackBar), findsNothing);
-      
+
       // Buttons should be enabled again
-      final galleryButtonWidget = tester.widget<ImageInputButton>(galleryButton);
+      final galleryButtonWidget = tester.widget<ImageInputButton>(
+        galleryButton,
+      );
       expect(galleryButtonWidget.isEnabled, isTrue);
     });
   });

@@ -53,7 +53,7 @@ class UserCancelledFailure extends Failure {
 // API specific failures
 class ApiFailure extends Failure {
   const ApiFailure([super.message = 'API request failed']);
-  
+
   const ApiFailure.rateLimited() : super('Rate limit exceeded');
   const ApiFailure.unauthorized() : super('Unauthorized access');
   const ApiFailure.badRequest() : super('Invalid request');

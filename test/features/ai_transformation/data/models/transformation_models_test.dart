@@ -37,7 +37,10 @@ void main() {
 
         final openAIRequest = model.toOpenAIRequest();
 
-        expect(openAIRequest.prompt, contains('Transform this photo: Transform this image'));
+        expect(
+          openAIRequest.prompt,
+          contains('Transform this photo: Transform this image'),
+        );
         expect(openAIRequest.prompt, contains('artistic and painterly'));
         expect(openAIRequest.model, 'dall-e-3');
         expect(openAIRequest.n, 1);
@@ -61,7 +64,10 @@ void main() {
         expect(openAIRequest.prompt, contains('photorealistic'));
         expect(openAIRequest.prompt, contains('enhanced lighting'));
         expect(openAIRequest.quality, 'hd'); // 2048 maps to 'hd'
-        expect(openAIRequest.style, 'natural'); // photorealistic maps to natural
+        expect(
+          openAIRequest.style,
+          'natural',
+        ); // photorealistic maps to natural
         expect(openAIRequest.size, '1792x1024');
       });
 
@@ -156,7 +162,10 @@ void main() {
         expect(result.id, startsWith('transform_'));
         expect(result.imageUrl, openAIResponse.data.first.url);
         expect(result.thumbnailUrl, openAIResponse.data.first.url);
-        expect(result.prompt, 'A futuristic cityscape at sunset, with sleek glass towers reflecting the orange and pink hues of the sky. Flying cars move between the buildings, and holographic advertisements float in the air. The scene captures a sense of advanced technology and urban beauty.');
+        expect(
+          result.prompt,
+          'A futuristic cityscape at sunset, with sleek glass towers reflecting the orange and pink hues of the sky. Flying cars move between the buildings, and holographic advertisements float in the air. The scene captures a sense of advanced technology and urban beauty.',
+        );
         expect(result.style, 'artistic');
         expect(result.createdAt, isA<DateTime>());
         expect(result.localPath, isNull);
@@ -169,8 +178,8 @@ void main() {
             {
               "url": "https://example.com/test.png",
               // No revised_prompt field
-            }
-          ]
+            },
+          ],
         };
 
         final openAIResponse = OpenAIImageResponse.fromJson(mockResponse);

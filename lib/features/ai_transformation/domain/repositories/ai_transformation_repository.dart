@@ -11,7 +11,8 @@ abstract class AITransformationRepository {
   );
 
   /// Get transformation history for the user
-  Future<Either<Failure, List<TransformationResult>>> getTransformationHistory();
+  Future<Either<Failure, List<TransformationResult>>>
+  getTransformationHistory();
 
   /// Download and cache a transformed image locally
   Future<Either<Failure, String>> downloadTransformedImage(

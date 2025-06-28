@@ -12,9 +12,9 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: AppColors.primaryBackground,
         title: Text(
           'Artifex',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontFamily: 'Lora',
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontFamily: 'Lora'),
         ),
         centerTitle: true,
         elevation: 0,
@@ -34,10 +34,7 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 16),
             Text(
               'Your creative journey begins here.',
-              style: TextStyle(
-                color: AppColors.canvasWhite,
-                fontSize: 16,
-              ),
+              style: TextStyle(color: AppColors.canvasWhite, fontSize: 16),
             ),
           ],
         ),

@@ -20,9 +20,7 @@ class HomeScreen extends ConsumerWidget {
             children: [
               const WelcomeSection(),
               const SizedBox(height: 40),
-              const Expanded(
-                child: ImageInputSection(),
-              ),
+              const Expanded(child: ImageInputSection()),
             ],
           ),
         ),

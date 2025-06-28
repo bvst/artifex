@@ -35,19 +35,14 @@ class TestWidgetBuilder {
 
   Widget build() {
     assert(_child != null, 'Child widget must be provided');
-    
+
     Widget app = MaterialApp(
       theme: _theme ?? AppTheme.lightTheme,
-      home: _wrapInScaffold 
-        ? Scaffold(body: _child!) 
-        : _child!,
+      home: _wrapInScaffold ? Scaffold(body: _child!) : _child!,
     );
 
     if (_overrides.isNotEmpty) {
-      app = ProviderScope(
-        overrides: _overrides,
-        child: app,
-      );
+      app = ProviderScope(overrides: _overrides, child: app);
     }
 
     return app;
@@ -80,19 +75,18 @@ extension TestSetupExtensions on Mock {
 class TestScenarios {
   /// Creates a widget with photo repository mocked
   static TestWidgetBuilder widgetWithPhotoRepository(
-    Widget child, 
+    Widget child,
     PhotoRepository mockRepository,
   ) {
     return TestWidgetBuilder()
-      .child(child)
-      .overridePhotoRepository(mockRepository);
+        .child(child)
+        .overridePhotoRepository(mockRepository);
   }
 
   /// Creates a provider container with photo repository mocked
   static ProviderContainerBuilder containerWithPhotoRepository(
     PhotoRepository mockRepository,
   ) {
-    return ProviderContainerBuilder()
-      .overridePhotoRepository(mockRepository);
+    return ProviderContainerBuilder().overridePhotoRepository(mockRepository);
   }
 }

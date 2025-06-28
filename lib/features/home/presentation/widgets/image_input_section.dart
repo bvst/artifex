@@ -14,7 +14,7 @@ class ImageInputSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final photoCaptureState = ref.watch(photoCaptureProvider);
-    
+
     ref.listen<AsyncValue<Photo?>>(photoCaptureProvider, (previous, next) {
       next.when(
         data: (photo) {

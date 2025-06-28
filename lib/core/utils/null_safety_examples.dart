@@ -32,13 +32,13 @@ class AppConfig {
   final String apiUrl;
   final int timeout;
   final bool debugMode;
-  
+
   const AppConfig({
     required this.apiUrl,
     required this.timeout,
     required this.debugMode,
   });
-  
+
   // Factory with sensible defaults
   factory AppConfig.defaultConfig() {
     return const AppConfig(
@@ -53,7 +53,7 @@ class AppConfig {
 extension SafeList<T> on List<T> {
   T? get firstOrNull => isEmpty ? null : first;
   T? get lastOrNull => isEmpty ? null : last;
-  
+
   // Better: Use Option/Maybe pattern
   Option<T> get firstOption => isEmpty ? none() : some(first);
 }
@@ -63,19 +63,15 @@ class UserProfile {
   final String name;
   final String email;
   final int age;
-  
+
   const UserProfile({
     required this.name,
     required this.email,
     required this.age,
   });
-  
+
   // Use copyWith instead of nullable parameters
-  UserProfile copyWith({
-    String? name,
-    String? email, 
-    int? age,
-  }) {
+  UserProfile copyWith({String? name, String? email, int? age}) {
     return UserProfile(
       name: name ?? this.name,
       email: email ?? this.email,
@@ -90,12 +86,12 @@ class DatabaseRepository {
     // Instead of returning null, return none() or some(user)
     return none(); // or some(user)
   }
-  
+
   // Use fold to handle both cases
   String getUserName(String id) {
     return findUserById(id).fold(
-      () => 'Unknown User',        // none case
-      (user) => user.name,         // some case
+      () => 'Unknown User', // none case
+      (user) => user.name, // some case
     );
   }
 }
@@ -104,7 +100,7 @@ class DatabaseRepository {
 class ServiceLocator {
   late final ApiService apiService;
   late final DatabaseService databaseService;
-  
+
   void initialize() {
     apiService = ApiService();
     databaseService = DatabaseService();
@@ -114,7 +110,7 @@ class ServiceLocator {
 class User {
   final String name;
   final String email;
-  
+
   const User({required this.name, required this.email});
 }
 

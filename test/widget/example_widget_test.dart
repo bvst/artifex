@@ -13,11 +13,7 @@ void main() {
         // Given: Simple MaterialApp with text
         await tester.pumpWidget(
           const MaterialApp(
-            home: Scaffold(
-              body: Center(
-                child: Text('Artifex'),
-              ),
-            ),
+            home: Scaffold(body: Center(child: Text('Artifex'))),
           ),
         );
 
@@ -71,9 +67,7 @@ void main() {
               body: Center(
                 child: TextField(
                   controller: controller,
-                  decoration: const InputDecoration(
-                    hintText: 'Enter text',
-                  ),
+                  decoration: const InputDecoration(hintText: 'Enter text'),
                 ),
               ),
             ),
@@ -82,7 +76,7 @@ void main() {
 
         // When: User enters text
         await tester.enterText(find.byType(TextField), 'Hello Artifex');
-        
+
         // Then: Controller should contain the text
         expect(controller.text, equals('Hello Artifex'));
       });

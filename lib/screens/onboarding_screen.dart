@@ -19,17 +19,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     OnboardingPageData(
       icon: Icons.camera_alt_outlined,
       title: "Capture Your World",
-      description: "Take a photo or upload an image from your gallery to begin your creative journey.",
+      description:
+          "Take a photo or upload an image from your gallery to begin your creative journey.",
     ),
     OnboardingPageData(
       icon: Icons.palette_outlined,
       title: "Choose Your Vision",
-      description: "Select from our curated collection of AI-powered filters to transform your image.",
+      description:
+          "Select from our curated collection of AI-powered filters to transform your image.",
     ),
     OnboardingPageData(
       icon: Icons.auto_awesome_outlined,
       title: "Create Magic",
-      description: "Watch as AI reimagines your photo into extraordinary works of digital art.",
+      description:
+          "Watch as AI reimagines your photo into extraordinary works of digital art.",
     ),
   ];
 

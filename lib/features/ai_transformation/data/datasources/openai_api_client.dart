@@ -13,9 +13,7 @@ abstract class OpenAIApiClient {
 
   /// Generate image using DALL-E 3
   @POST('/images/generations')
-  Future<OpenAIImageResponse> generateImage(
-    @Body() OpenAIImageRequest request,
-  );
+  Future<OpenAIImageResponse> generateImage(@Body() OpenAIImageRequest request);
 
   /// Check API health
   @GET('/models')

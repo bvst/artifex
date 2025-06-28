@@ -26,16 +26,16 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
   ) async {
     try {
       AppLogger.info('Starting photo transformation');
-      
+
       // Convert to data model
       final requestModel = TransformationRequestModel.fromEntity(request);
-      
+
       // Call remote API
       final resultModel = await _remoteDataSource.transformPhoto(requestModel);
-      
+
       // Save to local database
       await _localDataSource.saveTransformation(resultModel);
-      
+
       AppLogger.info('Photo transformation completed successfully');
       return Right(resultModel.toEntity());
     } on APIException catch (e) {
@@ -55,16 +55,20 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
   }
 
   @override
-  Future<Either<Failure, List<TransformationResult>>> getTransformationHistory() async {
+  Future<Either<Failure, List<TransformationResult>>>
+  getTransformationHistory() async {
     try {
       AppLogger.info('Fetching transformation history');
-      
-      final transformationModels = await _localDataSource.getTransformationHistory();
+
+      final transformationModels = await _localDataSource
+          .getTransformationHistory();
       final transformations = transformationModels
           .map((model) => model.toEntity())
           .toList();
-      
-      AppLogger.info('Retrieved ${transformations.length} transformations from history');
+
+      AppLogger.info(
+        'Retrieved ${transformations.length} transformations from history',
+      );
       return Right(transformations);
     } on CacheException catch (e) {
       AppLogger.error('Cache error fetching history: ${e.message}');
@@ -82,18 +86,18 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
   ) async {
     try {
       AppLogger.info('Downloading transformed image: $transformationId');
-      
+
       final localPath = await _localDataSource.downloadTransformedImage(
         imageUrl,
         transformationId,
       );
-      
+
       // Update the transformation record with local path
       await _localDataSource.updateTransformationLocalPath(
         transformationId,
         localPath,
       );
-      
+
       AppLogger.info('Image downloaded and cached successfully');
       return Right(localPath);
     } on NetworkException catch (e) {
@@ -109,12 +113,14 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteTransformation(String transformationId) async {
+  Future<Either<Failure, void>> deleteTransformation(
+    String transformationId,
+  ) async {
     try {
       AppLogger.info('Deleting transformation: $transformationId');
-      
+
       await _localDataSource.deleteTransformation(transformationId);
-      
+
       AppLogger.info('Transformation deleted successfully');
       return const Right(null);
     } on CacheException catch (e) {
@@ -122,7 +128,9 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
       return Left(CacheFailure(e.message));
     } catch (e) {
       AppLogger.error('Unexpected error deleting transformation: $e');
-      return Left(UnknownFailure('Failed to delete transformation: ${e.toString()}'));
+      return Left(
+        UnknownFailure('Failed to delete transformation: ${e.toString()}'),
+      );
     }
   }
 
@@ -130,15 +138,15 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
   Future<Either<Failure, bool>> checkServiceHealth() async {
     try {
       AppLogger.info('Checking AI transformation service health');
-      
+
       final isHealthy = await _remoteDataSource.checkServiceHealth();
-      
+
       if (isHealthy) {
         AppLogger.info('AI transformation service is healthy');
       } else {
         AppLogger.warning('AI transformation service is not responding');
       }
-      
+
       return Right(isHealthy);
     } on APIException catch (e) {
       AppLogger.error('API error checking service health: ${e.message}');
@@ -148,7 +156,9 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
       return Left(NetworkFailure(e.message));
     } catch (e) {
       AppLogger.error('Unexpected error checking service health: $e');
-      return Left(UnknownFailure('Failed to check service health: ${e.toString()}'));
+      return Left(
+        UnknownFailure('Failed to check service health: ${e.toString()}'),
+      );
     }
   }
 }

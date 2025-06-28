@@ -13,38 +13,40 @@ class PhotoCapture extends _$PhotoCapture {
 
   Future<void> captureFromCamera() async {
     state = const AsyncValue.loading();
-    
+
     final useCase = CapturePhotoUseCase(ref.read(photoRepositoryProvider));
     final result = await useCase();
-    
-    state = result.fold(
-      (failure) {
-        // Handle user cancellation gracefully - just reset to initial state
-        if (failure is UserCancelledFailure) {
-          return const AsyncValue.data(null);
-        }
-        return AsyncValue.error(_mapFailureToMessage(failure), StackTrace.current);
-      },
-      (photo) => AsyncValue.data(photo),
-    );
+
+    state = result.fold((failure) {
+      // Handle user cancellation gracefully - just reset to initial state
+      if (failure is UserCancelledFailure) {
+        return const AsyncValue.data(null);
+      }
+      return AsyncValue.error(
+        _mapFailureToMessage(failure),
+        StackTrace.current,
+      );
+    }, (photo) => AsyncValue.data(photo));
   }
 
   Future<void> pickFromGallery() async {
     state = const AsyncValue.loading();
-    
-    final useCase = PickImageFromGalleryUseCase(ref.read(photoRepositoryProvider));
-    final result = await useCase();
-    
-    state = result.fold(
-      (failure) {
-        // Handle user cancellation gracefully - just reset to initial state
-        if (failure is UserCancelledFailure) {
-          return const AsyncValue.data(null);
-        }
-        return AsyncValue.error(_mapFailureToMessage(failure), StackTrace.current);
-      },
-      (photo) => AsyncValue.data(photo),
+
+    final useCase = PickImageFromGalleryUseCase(
+      ref.read(photoRepositoryProvider),
     );
+    final result = await useCase();
+
+    state = result.fold((failure) {
+      // Handle user cancellation gracefully - just reset to initial state
+      if (failure is UserCancelledFailure) {
+        return const AsyncValue.data(null);
+      }
+      return AsyncValue.error(
+        _mapFailureToMessage(failure),
+        StackTrace.current,
+      );
+    }, (photo) => AsyncValue.data(photo));
   }
 
   void reset() {
@@ -57,7 +59,8 @@ class PhotoCapture extends _$PhotoCapture {
       ImageProcessingFailure() => failure.message,
       ValidationFailure() => failure.message,
       CacheFailure() => 'Failed to save photo. Please try again.',
-      PermissionFailure() => 'Camera permission is required. Please allow access in settings.',
+      PermissionFailure() =>
+        'Camera permission is required. Please allow access in settings.',
       _ => 'An unexpected error occurred. Please try again.',
     };
   }

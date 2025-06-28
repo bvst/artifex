@@ -8,11 +8,7 @@ void main() {
     late Widget testWidget;
 
     setUp(() {
-      testWidget = const MaterialApp(
-        home: Scaffold(
-          body: WelcomeSection(),
-        ),
-      );
+      testWidget = const MaterialApp(home: Scaffold(body: WelcomeSection()));
     });
 
     testWidgets('should display welcome title', (WidgetTester tester) async {
@@ -20,7 +16,10 @@ void main() {
 
       // Verify welcome section structure by widget types
       expect(find.byType(Column), findsOneWidget);
-      expect(find.byType(Text), findsNWidgets(3)); // Title, tagline, description
+      expect(
+        find.byType(Text),
+        findsNWidgets(3),
+      ); // Title, tagline, description
     });
 
     testWidgets('should display tagline', (WidgetTester tester) async {
@@ -44,19 +43,27 @@ void main() {
 
       final textWidgets = find.byType(Text);
       expect(textWidgets, findsNWidgets(3));
-      
+
       // Verify title style (first text widget)
       final titleText = tester.widget<Text>(textWidgets.at(0));
-      expect(titleText.style?.fontSize, AppTheme.textStyles.headlineLarge.fontSize);
+      expect(
+        titleText.style?.fontSize,
+        AppTheme.textStyles.headlineLarge.fontSize,
+      );
       expect(titleText.style?.fontWeight, FontWeight.bold);
 
       // Verify tagline style (second text widget)
       final taglineText = tester.widget<Text>(textWidgets.at(1));
-      expect(taglineText.style?.fontSize, AppTheme.textStyles.bodyLarge.fontSize);
+      expect(
+        taglineText.style?.fontSize,
+        AppTheme.textStyles.bodyLarge.fontSize,
+      );
       expect(taglineText.style?.fontWeight, FontWeight.w500);
     });
 
-    testWidgets('should have correct spacing between elements', (WidgetTester tester) async {
+    testWidgets('should have correct spacing between elements', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(testWidget);
 
       // Find all SizedBox widgets
@@ -71,7 +78,9 @@ void main() {
       expect(secondSpacer.height, 16);
     });
 
-    testWidgets('should layout elements in a Column', (WidgetTester tester) async {
+    testWidgets('should layout elements in a Column', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(testWidget);
 
       final column = tester.widget<Column>(find.byType(Column));

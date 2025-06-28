@@ -21,13 +21,13 @@ class OpenAIErrorResponse {
 class OpenAIError {
   /// The error message
   final String message;
-  
+
   /// The error type
   final String type;
-  
+
   /// The error parameter (if applicable)
   final String? param;
-  
+
   /// The error code (if applicable)
   final String? code;
 

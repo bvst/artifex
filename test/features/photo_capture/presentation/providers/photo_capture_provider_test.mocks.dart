@@ -28,13 +28,8 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: subtype_of_sealed_class
 
 class _FakeEither_0<L, R> extends _i1.SmartFake implements _i2.Either<L, R> {
-  _FakeEither_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
+  _FakeEither_0(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
 }
 
 /// A class which mocks [PhotoRepository].
@@ -48,88 +43,68 @@ class MockPhotoRepository extends _i1.Mock implements _i3.PhotoRepository {
   @override
   _i4.Future<_i2.Either<_i5.Failure, _i6.Photo>> capturePhoto() =>
       (super.noSuchMethod(
-        Invocation.method(
-          #capturePhoto,
-          [],
-        ),
-        returnValue: _i4.Future<_i2.Either<_i5.Failure, _i6.Photo>>.value(
-            _FakeEither_0<_i5.Failure, _i6.Photo>(
-          this,
-          Invocation.method(
-            #capturePhoto,
-            [],
-          ),
-        )),
-      ) as _i4.Future<_i2.Either<_i5.Failure, _i6.Photo>>);
+            Invocation.method(#capturePhoto, []),
+            returnValue: _i4.Future<_i2.Either<_i5.Failure, _i6.Photo>>.value(
+              _FakeEither_0<_i5.Failure, _i6.Photo>(
+                this,
+                Invocation.method(#capturePhoto, []),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.Either<_i5.Failure, _i6.Photo>>);
 
   @override
   _i4.Future<_i2.Either<_i5.Failure, _i6.Photo>> pickImageFromGallery() =>
       (super.noSuchMethod(
-        Invocation.method(
-          #pickImageFromGallery,
-          [],
-        ),
-        returnValue: _i4.Future<_i2.Either<_i5.Failure, _i6.Photo>>.value(
-            _FakeEither_0<_i5.Failure, _i6.Photo>(
-          this,
-          Invocation.method(
-            #pickImageFromGallery,
-            [],
-          ),
-        )),
-      ) as _i4.Future<_i2.Either<_i5.Failure, _i6.Photo>>);
+            Invocation.method(#pickImageFromGallery, []),
+            returnValue: _i4.Future<_i2.Either<_i5.Failure, _i6.Photo>>.value(
+              _FakeEither_0<_i5.Failure, _i6.Photo>(
+                this,
+                Invocation.method(#pickImageFromGallery, []),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.Either<_i5.Failure, _i6.Photo>>);
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, List<_i6.Photo>>> getRecentPhotos(
-          {int? limit = 10}) =>
+  _i4.Future<_i2.Either<_i5.Failure, List<_i6.Photo>>> getRecentPhotos({
+    int? limit = 10,
+  }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #getRecentPhotos,
-          [],
-          {#limit: limit},
-        ),
-        returnValue: _i4.Future<_i2.Either<_i5.Failure, List<_i6.Photo>>>.value(
-            _FakeEither_0<_i5.Failure, List<_i6.Photo>>(
-          this,
-          Invocation.method(
-            #getRecentPhotos,
-            [],
-            {#limit: limit},
-          ),
-        )),
-      ) as _i4.Future<_i2.Either<_i5.Failure, List<_i6.Photo>>>);
+            Invocation.method(#getRecentPhotos, [], {#limit: limit}),
+            returnValue:
+                _i4.Future<_i2.Either<_i5.Failure, List<_i6.Photo>>>.value(
+                  _FakeEither_0<_i5.Failure, List<_i6.Photo>>(
+                    this,
+                    Invocation.method(#getRecentPhotos, [], {#limit: limit}),
+                  ),
+                ),
+          )
+          as _i4.Future<_i2.Either<_i5.Failure, List<_i6.Photo>>>);
 
   @override
   _i4.Future<_i2.Either<_i5.Failure, void>> deletePhoto(String? photoId) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #deletePhoto,
-          [photoId],
-        ),
-        returnValue: _i4.Future<_i2.Either<_i5.Failure, void>>.value(
-            _FakeEither_0<_i5.Failure, void>(
-          this,
-          Invocation.method(
-            #deletePhoto,
-            [photoId],
-          ),
-        )),
-      ) as _i4.Future<_i2.Either<_i5.Failure, void>>);
+            Invocation.method(#deletePhoto, [photoId]),
+            returnValue: _i4.Future<_i2.Either<_i5.Failure, void>>.value(
+              _FakeEither_0<_i5.Failure, void>(
+                this,
+                Invocation.method(#deletePhoto, [photoId]),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.Either<_i5.Failure, void>>);
 
   @override
   _i4.Future<_i2.Either<_i5.Failure, _i6.Photo>> savePhoto(_i6.Photo? photo) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #savePhoto,
-          [photo],
-        ),
-        returnValue: _i4.Future<_i2.Either<_i5.Failure, _i6.Photo>>.value(
-            _FakeEither_0<_i5.Failure, _i6.Photo>(
-          this,
-          Invocation.method(
-            #savePhoto,
-            [photo],
-          ),
-        )),
-      ) as _i4.Future<_i2.Either<_i5.Failure, _i6.Photo>>);
+            Invocation.method(#savePhoto, [photo]),
+            returnValue: _i4.Future<_i2.Either<_i5.Failure, _i6.Photo>>.value(
+              _FakeEither_0<_i5.Failure, _i6.Photo>(
+                this,
+                Invocation.method(#savePhoto, [photo]),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.Either<_i5.Failure, _i6.Photo>>);
 }

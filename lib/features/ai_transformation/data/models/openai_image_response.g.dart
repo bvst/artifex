@@ -15,11 +15,8 @@ OpenAIImageResponse _$OpenAIImageResponseFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$OpenAIImageResponseToJson(
-        OpenAIImageResponse instance) =>
-    <String, dynamic>{
-      'created': instance.created,
-      'data': instance.data,
-    };
+  OpenAIImageResponse instance,
+) => <String, dynamic>{'created': instance.created, 'data': instance.data};
 
 OpenAIImageData _$OpenAIImageDataFromJson(Map<String, dynamic> json) =>
     OpenAIImageData(

@@ -4,7 +4,9 @@ import 'package:artifex/features/home/presentation/widgets/image_input_button.da
 
 void main() {
   group('ImageInputButton Tests', () {
-    testWidgets('should display all button components', (WidgetTester tester) async {
+    testWidgets('should display all button components', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -25,14 +27,12 @@ void main() {
       expect(find.byType(Row), findsOneWidget); // Main layout
     });
 
-    testWidgets('camera button should have correct properties', (WidgetTester tester) async {
+    testWidgets('camera button should have correct properties', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: ImageInputButton.camera(
-              onPressed: () {},
-            ),
-          ),
+          home: Scaffold(body: ImageInputButton.camera(onPressed: () {})),
         ),
       );
 
@@ -42,14 +42,12 @@ void main() {
       expect(find.byType(Row), findsOneWidget);
     });
 
-    testWidgets('gallery button should have correct properties', (WidgetTester tester) async {
+    testWidgets('gallery button should have correct properties', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: ImageInputButton.gallery(
-              onPressed: () {},
-            ),
-          ),
+          home: Scaffold(body: ImageInputButton.gallery(onPressed: () {})),
         ),
       );
 
@@ -98,10 +96,12 @@ void main() {
 
       // Find the Container with gradient
       final container = tester.widget<Container>(
-        find.descendant(
-          of: find.byType(ImageInputButton),
-          matching: find.byType(Container),
-        ).first,
+        find
+            .descendant(
+              of: find.byType(ImageInputButton),
+              matching: find.byType(Container),
+            )
+            .first,
       );
 
       final decoration = container.decoration as BoxDecoration;
@@ -125,16 +125,20 @@ void main() {
 
       // Find the Padding widget inside InkWell
       final padding = tester.widget<Padding>(
-        find.descendant(
-          of: find.byType(InkWell),
-          matching: find.byType(Padding),
-        ).first,
+        find
+            .descendant(
+              of: find.byType(InkWell),
+              matching: find.byType(Padding),
+            )
+            .first,
       );
 
       expect(padding.padding, const EdgeInsets.all(24));
     });
 
-    testWidgets('should display icon in a decorated container', (WidgetTester tester) async {
+    testWidgets('should display icon in a decorated container', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -150,19 +154,23 @@ void main() {
 
       // Find the icon container
       final iconContainer = tester.widget<Container>(
-        find.ancestor(
-          of: find.byIcon(Icons.camera_alt),
-          matching: find.byType(Container),
-        ).first,
+        find
+            .ancestor(
+              of: find.byIcon(Icons.camera_alt),
+              matching: find.byType(Container),
+            )
+            .first,
       );
 
       expect(iconContainer.padding, const EdgeInsets.all(16));
-      
+
       final decoration = iconContainer.decoration as BoxDecoration;
       expect(decoration.borderRadius, BorderRadius.circular(12));
     });
 
-    testWidgets('should use Row layout with correct properties', (WidgetTester tester) async {
+    testWidgets('should use Row layout with correct properties', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -177,10 +185,15 @@ void main() {
       );
 
       final row = tester.widget<Row>(find.byType(Row));
-      expect(row.children.length, 4); // Icon container, SizedBox, Expanded text, Arrow icon
+      expect(
+        row.children.length,
+        4,
+      ); // Icon container, SizedBox, Expanded text, Arrow icon
     });
 
-    testWidgets('should have Material with InkWell for ripple effect', (WidgetTester tester) async {
+    testWidgets('should have Material with InkWell for ripple effect', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -199,7 +212,7 @@ void main() {
         of: find.byType(ImageInputButton),
         matching: find.byType(Material),
       );
-      
+
       expect(materialFinder, findsOneWidget);
       expect(find.byType(InkWell), findsOneWidget);
 

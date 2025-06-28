@@ -10,9 +10,8 @@ import 'openai_api_client.dart';
 class AITransformationRemoteDataSource {
   final OpenAIApiClient _apiClient;
 
-  const AITransformationRemoteDataSource({
-    required OpenAIApiClient apiClient,
-  }) : _apiClient = apiClient;
+  const AITransformationRemoteDataSource({required OpenAIApiClient apiClient})
+    : _apiClient = apiClient;
 
   /// Transform photo using DALL-E 3 API
   Future<TransformationResultModel> transformPhoto(
@@ -36,21 +35,31 @@ class AITransformationRemoteDataSource {
       );
     } on DioException catch (e) {
       AppLogger.error('DALL-E API error: ${e.message}', e);
-      
+
       if (e.response?.statusCode == 401) {
-        throw const APIException('Invalid API key. Please check your OpenAI API configuration.');
+        throw const APIException(
+          'Invalid API key. Please check your OpenAI API configuration.',
+        );
       } else if (e.response?.statusCode == 429) {
-        throw const APIException('Rate limit exceeded. Please try again later.');
+        throw const APIException(
+          'Rate limit exceeded. Please try again later.',
+        );
       } else if (e.response?.statusCode == 400) {
         final errorMessage = _extractErrorMessage(e.response?.data);
         throw APIException('Invalid request: $errorMessage');
       } else if (e.type == DioExceptionType.connectionTimeout ||
-                 e.type == DioExceptionType.receiveTimeout) {
-        throw const NetworkException('Request timeout. Please check your internet connection.');
+          e.type == DioExceptionType.receiveTimeout) {
+        throw const NetworkException(
+          'Request timeout. Please check your internet connection.',
+        );
       } else if (e.type == DioExceptionType.connectionError) {
-        throw const NetworkException('Connection failed. Please check your internet connection.');
+        throw const NetworkException(
+          'Connection failed. Please check your internet connection.',
+        );
       } else {
-        throw APIException('Transformation failed: ${e.message ?? 'Unknown error'}');
+        throw APIException(
+          'Transformation failed: ${e.message ?? 'Unknown error'}',
+        );
       }
     } catch (e) {
       AppLogger.error('Unexpected error during transformation: $e');

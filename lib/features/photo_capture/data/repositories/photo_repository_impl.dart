@@ -8,9 +8,8 @@ import '../datasources/photo_local_datasource.dart';
 import '../models/photo_model.dart';
 
 class PhotoRepositoryImpl implements PhotoRepository {
-  const PhotoRepositoryImpl({
-    required PhotoLocalDataSource localDataSource,
-  }) : _localDataSource = localDataSource;
+  const PhotoRepositoryImpl({required PhotoLocalDataSource localDataSource})
+    : _localDataSource = localDataSource;
 
   final PhotoLocalDataSource _localDataSource;
 
@@ -50,18 +49,29 @@ class PhotoRepositoryImpl implements PhotoRepository {
       // Check if user cancelled the operation
       if (e.message.toLowerCase().contains('cancelled')) {
         AppLogger.debug('PhotoRepository: User cancelled gallery selection');
-        return const Left(UserCancelledFailure('Gallery selection was cancelled'));
+        return const Left(
+          UserCancelledFailure('Gallery selection was cancelled'),
+        );
       }
       AppLogger.error('PhotoRepository: File error during gallery pick', e);
       return Left(FileNotFoundFailure(e.message));
     } on ValidationException catch (e) {
-      AppLogger.error('PhotoRepository: Validation error during gallery pick', e);
+      AppLogger.error(
+        'PhotoRepository: Validation error during gallery pick',
+        e,
+      );
       return Left(ValidationFailure(e.message));
     } on PermissionException catch (e) {
-      AppLogger.error('PhotoRepository: Permission error during gallery pick', e);
+      AppLogger.error(
+        'PhotoRepository: Permission error during gallery pick',
+        e,
+      );
       return Left(PermissionFailure(e.message));
     } catch (e) {
-      AppLogger.error('PhotoRepository: Unexpected error during gallery pick', e);
+      AppLogger.error(
+        'PhotoRepository: Unexpected error during gallery pick',
+        e,
+      );
       return Left(CacheFailure('Failed to pick image: ${e.toString()}'));
     }
   }
@@ -77,7 +87,10 @@ class PhotoRepositoryImpl implements PhotoRepository {
       AppLogger.error('PhotoRepository: Cache error getting recent photos', e);
       return Left(CacheFailure(e.message));
     } catch (e) {
-      AppLogger.error('PhotoRepository: Unexpected error getting recent photos', e);
+      AppLogger.error(
+        'PhotoRepository: Unexpected error getting recent photos',
+        e,
+      );
       return Left(CacheFailure('Failed to get recent photos: ${e.toString()}'));
     }
   }
@@ -112,7 +125,7 @@ class PhotoRepositoryImpl implements PhotoRepository {
         'height': photo.height,
         'mime_type': photo.mimeType,
       });
-      
+
       final savedModel = await _localDataSource.savePhoto(photoModel);
       return Right(savedModel.toEntity());
     } on FileException catch (e) {
@@ -124,4 +137,3 @@ class PhotoRepositoryImpl implements PhotoRepository {
     }
   }
 }
-

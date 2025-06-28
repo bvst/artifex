@@ -31,20 +31,18 @@ void main() {
         expect(find.byType(Text), findsNWidgets(2)); // Title and tagline
         tester.expectWidget(find.byType(CircularProgressIndicator));
       });
-  
+
       testWidgets('cancels timer properly on dispose', (tester) async {
         // Given: Splash screen with long duration
         await tester.pumpWidget(
           makeTestableScreen(
-            screen: const SplashScreen(
-              splashDuration: Duration(seconds: 10),
-            ),
+            screen: const SplashScreen(splashDuration: Duration(seconds: 10)),
           ),
         );
-        
+
         // When: Widget is disposed before timer completes
         await tester.disposeWidget();
-        
+
         // Then: Should not throw errors about pending timers
         // (implicit - test passes if no exception thrown)
       });
@@ -60,10 +58,10 @@ void main() {
         // Then: Should show first page content (structure-based)
         expect(find.byType(TextButton), findsOneWidget); // Skip button
         expect(find.byType(ElevatedButton), findsOneWidget); // Next button
-        
+
         // When: User taps Next
         await tester.tapAndSettle(find.byType(ElevatedButton));
-        
+
         // Then: Should navigate to second page (still has buttons)
         expect(find.byType(ElevatedButton), findsOneWidget);
       });
@@ -73,7 +71,7 @@ void main() {
       testWidgets('navigates to onboarding when not completed', (tester) async {
         // Given: Onboarding not completed
         SharedPreferences.setMockInitialValues({'onboarding_complete': false});
-        
+
         await tester.pumpWidget(
           makeTestableScreen(
             screen: const SplashScreen(
@@ -81,10 +79,10 @@ void main() {
             ),
           ),
         );
-        
+
         // When: Splash timer completes
         await tester.waitForTimer(const Duration(milliseconds: 100));
-        
+
         // Then: Should navigate to onboarding screen
         expect(find.byType(OnboardingScreen), findsOneWidget);
       });

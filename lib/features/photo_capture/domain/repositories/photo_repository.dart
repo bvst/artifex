@@ -10,10 +10,7 @@ abstract class PhotoRepository {
   Future<Either<Failure, Photo>> savePhoto(Photo photo);
 }
 
-enum PhotoSource {
-  camera,
-  gallery,
-}
+enum PhotoSource { camera, gallery }
 
 class PhotoCaptureParams {
   const PhotoCaptureParams({

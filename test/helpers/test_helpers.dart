@@ -3,27 +3,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:artifex/utils/app_theme.dart';
 
 /// Creates a testable widget wrapped in MaterialApp with proper theming
-Widget makeTestableWidget({
-  required Widget child,
-  ThemeData? theme,
-}) {
+Widget makeTestableWidget({required Widget child, ThemeData? theme}) {
   return MaterialApp(
     theme: theme ?? AppTheme.lightTheme,
-    home: Scaffold(
-      body: child,
-    ),
+    home: Scaffold(body: child),
   );
 }
 
 /// Creates a testable screen wrapped in MaterialApp with proper theming
-Widget makeTestableScreen({
-  required Widget screen,
-  ThemeData? theme,
-}) {
-  return MaterialApp(
-    theme: theme ?? AppTheme.lightTheme,
-    home: screen,
-  );
+Widget makeTestableScreen({required Widget screen, ThemeData? theme}) {
+  return MaterialApp(theme: theme ?? AppTheme.lightTheme, home: screen);
 }
 
 /// Custom pumpAndSettle that doesn't fail on long animations
@@ -43,10 +32,7 @@ Future<void> pumpAndSettle(
 
 /// Pumps for a specific duration without settling
 /// Useful for widgets with timers that need to complete
-Future<void> pumpForDuration(
-  WidgetTester tester,
-  Duration duration,
-) async {
+Future<void> pumpForDuration(WidgetTester tester, Duration duration) async {
   final end = tester.binding.clock.now().add(duration);
   while (tester.binding.clock.now().isBefore(end)) {
     await tester.pump(const Duration(milliseconds: 50));

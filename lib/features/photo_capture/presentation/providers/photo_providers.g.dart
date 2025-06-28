@@ -13,8 +13,9 @@ String _$imagePickerHash() => r'7740c09b2d6b395ce466f1b72b93b31db7bfd740';
 final imagePickerProvider = AutoDisposeProvider<ImagePicker>.internal(
   imagePicker,
   name: r'imagePickerProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$imagePickerHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$imagePickerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -29,14 +30,14 @@ String _$photoLocalDataSourceHash() =>
 @ProviderFor(photoLocalDataSource)
 final photoLocalDataSourceProvider =
     AutoDisposeProvider<PhotoLocalDataSource>.internal(
-  photoLocalDataSource,
-  name: r'photoLocalDataSourceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$photoLocalDataSourceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      photoLocalDataSource,
+      name: r'photoLocalDataSourceProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$photoLocalDataSourceHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
@@ -65,14 +66,14 @@ String _$capturePhotoUseCaseHash() =>
 @ProviderFor(capturePhotoUseCase)
 final capturePhotoUseCaseProvider =
     AutoDisposeProvider<CapturePhotoUseCase>.internal(
-  capturePhotoUseCase,
-  name: r'capturePhotoUseCaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$capturePhotoUseCaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      capturePhotoUseCase,
+      name: r'capturePhotoUseCaseProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$capturePhotoUseCaseHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
@@ -84,19 +85,19 @@ String _$pickImageFromGalleryUseCaseHash() =>
 @ProviderFor(pickImageFromGalleryUseCase)
 final pickImageFromGalleryUseCaseProvider =
     AutoDisposeProvider<PickImageFromGalleryUseCase>.internal(
-  pickImageFromGalleryUseCase,
-  name: r'pickImageFromGalleryUseCaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$pickImageFromGalleryUseCaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      pickImageFromGalleryUseCase,
+      name: r'pickImageFromGalleryUseCaseProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$pickImageFromGalleryUseCaseHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef PickImageFromGalleryUseCaseRef
-    = AutoDisposeProviderRef<PickImageFromGalleryUseCase>;
+typedef PickImageFromGalleryUseCaseRef =
+    AutoDisposeProviderRef<PickImageFromGalleryUseCase>;
 String _$getRecentPhotosUseCaseHash() =>
     r'8b6756bed8af75c88ee86f44ac76b05bf102e323';
 
@@ -104,33 +105,33 @@ String _$getRecentPhotosUseCaseHash() =>
 @ProviderFor(getRecentPhotosUseCase)
 final getRecentPhotosUseCaseProvider =
     AutoDisposeProvider<GetRecentPhotosUseCase>.internal(
-  getRecentPhotosUseCase,
-  name: r'getRecentPhotosUseCaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getRecentPhotosUseCaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      getRecentPhotosUseCase,
+      name: r'getRecentPhotosUseCaseProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$getRecentPhotosUseCaseHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef GetRecentPhotosUseCaseRef
-    = AutoDisposeProviderRef<GetRecentPhotosUseCase>;
+typedef GetRecentPhotosUseCaseRef =
+    AutoDisposeProviderRef<GetRecentPhotosUseCase>;
 String _$photoNotifierHash() => r'2aa46416396220d1a2d0b1db69a5d160bd89ab8c';
 
 /// See also [PhotoNotifier].
 @ProviderFor(PhotoNotifier)
 final photoNotifierProvider =
     AutoDisposeNotifierProvider<PhotoNotifier, PhotoState>.internal(
-  PhotoNotifier.new,
-  name: r'photoNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$photoNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      PhotoNotifier.new,
+      name: r'photoNotifierProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$photoNotifierHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$PhotoNotifier = AutoDisposeNotifier<PhotoState>;
 // ignore_for_file: type=lint

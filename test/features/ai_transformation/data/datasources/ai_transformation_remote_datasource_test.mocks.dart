@@ -31,24 +31,14 @@ import 'package:mockito/mockito.dart' as _i1;
 
 class _FakeOpenAIImageResponse_0 extends _i1.SmartFake
     implements _i2.OpenAIImageResponse {
-  _FakeOpenAIImageResponse_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
+  _FakeOpenAIImageResponse_0(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
 }
 
 class _FakeOpenAIModelsResponse_1 extends _i1.SmartFake
     implements _i3.OpenAIModelsResponse {
-  _FakeOpenAIModelsResponse_1(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
+  _FakeOpenAIModelsResponse_1(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
 }
 
 /// A class which mocks [OpenAIApiClient].
@@ -61,35 +51,29 @@ class MockOpenAIApiClient extends _i1.Mock implements _i4.OpenAIApiClient {
 
   @override
   _i5.Future<_i2.OpenAIImageResponse> generateImage(
-          _i6.OpenAIImageRequest? request) =>
+    _i6.OpenAIImageRequest? request,
+  ) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #generateImage,
-          [request],
-        ),
-        returnValue: _i5.Future<_i2.OpenAIImageResponse>.value(
-            _FakeOpenAIImageResponse_0(
-          this,
-          Invocation.method(
-            #generateImage,
-            [request],
-          ),
-        )),
-      ) as _i5.Future<_i2.OpenAIImageResponse>);
+            Invocation.method(#generateImage, [request]),
+            returnValue: _i5.Future<_i2.OpenAIImageResponse>.value(
+              _FakeOpenAIImageResponse_0(
+                this,
+                Invocation.method(#generateImage, [request]),
+              ),
+            ),
+          )
+          as _i5.Future<_i2.OpenAIImageResponse>);
 
   @override
-  _i5.Future<_i3.OpenAIModelsResponse> getModels() => (super.noSuchMethod(
-        Invocation.method(
-          #getModels,
-          [],
-        ),
-        returnValue: _i5.Future<_i3.OpenAIModelsResponse>.value(
-            _FakeOpenAIModelsResponse_1(
-          this,
-          Invocation.method(
-            #getModels,
-            [],
-          ),
-        )),
-      ) as _i5.Future<_i3.OpenAIModelsResponse>);
+  _i5.Future<_i3.OpenAIModelsResponse> getModels() =>
+      (super.noSuchMethod(
+            Invocation.method(#getModels, []),
+            returnValue: _i5.Future<_i3.OpenAIModelsResponse>.value(
+              _FakeOpenAIModelsResponse_1(
+                this,
+                Invocation.method(#getModels, []),
+              ),
+            ),
+          )
+          as _i5.Future<_i3.OpenAIModelsResponse>);
 }

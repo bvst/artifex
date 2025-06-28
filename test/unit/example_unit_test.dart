@@ -22,7 +22,7 @@ void main() {
       test('manipulates text correctly', () {
         // Given: Brand name text
         const text = 'Artifex';
-        
+
         // Then: Should support case transformations
         expect(text.toLowerCase(), equals('artifex'));
         expect(text.toUpperCase(), equals('ARTIFEX'));
@@ -35,16 +35,16 @@ void main() {
       test('handles list operations correctly', () {
         // Given: A list of numbers
         final numbers = [1, 2, 3, 4, 5];
-        
+
         // Then: Should support standard list operations
         expect(numbers.length, equals(5));
         expect(numbers.first, equals(1));
         expect(numbers.last, equals(5));
         expect(numbers.contains(3), isTrue);
-        
+
         // When: Adding elements
         numbers.add(6);
-        
+
         // Then: Should update length
         expect(numbers.length, equals(6));
       });

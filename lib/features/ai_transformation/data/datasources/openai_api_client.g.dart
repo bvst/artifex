@@ -9,10 +9,7 @@ part of 'openai_api_client.dart';
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
 class _OpenAIApiClient implements OpenAIApiClient {
-  _OpenAIApiClient(
-    this._dio, {
-    this.baseUrl,
-  }) {
+  _OpenAIApiClient(this._dio, {this.baseUrl}) {
     baseUrl ??= 'https://api.openai.com/v1/';
   }
 
@@ -28,22 +25,17 @@ class _OpenAIApiClient implements OpenAIApiClient {
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<OpenAIImageResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
+      _setStreamType<OpenAIImageResponse>(
+        Options(method: 'POST', headers: _headers, extra: _extra)
             .compose(
               _dio.options,
               '/images/generations',
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
+            .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+      ),
+    );
     final value = OpenAIImageResponse.fromJson(_result.data!);
     return value;
   }
@@ -55,22 +47,17 @@ class _OpenAIApiClient implements OpenAIApiClient {
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<OpenAIModelsResponse>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
+      _setStreamType<OpenAIModelsResponse>(
+        Options(method: 'GET', headers: _headers, extra: _extra)
             .compose(
               _dio.options,
               '/models',
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
+            .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+      ),
+    );
     final value = OpenAIModelsResponse.fromJson(_result.data!);
     return value;
   }
@@ -88,10 +75,7 @@ class _OpenAIApiClient implements OpenAIApiClient {
     return requestOptions;
   }
 
-  String _combineBaseUrls(
-    String dioBaseUrl,
-    String? baseUrl,
-  ) {
+  String _combineBaseUrls(String dioBaseUrl, String? baseUrl) {
     if (baseUrl == null || baseUrl.trim().isEmpty) {
       return dioBaseUrl;
     }

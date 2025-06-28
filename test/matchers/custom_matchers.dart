@@ -14,12 +14,7 @@ Matcher isPhotoWith({
   int? size,
   DateTime? createdAt,
 }) {
-  return _PhotoMatcher(
-    id: id,
-    name: name,
-    size: size,
-    createdAt: createdAt,
-  );
+  return _PhotoMatcher(id: id, name: name, size: size, createdAt: createdAt);
 }
 
 class _PhotoMatcher extends Matcher {
@@ -49,7 +44,7 @@ class _PhotoMatcher extends Matcher {
     if (name != null) parts.add('name: $name');
     if (size != null) parts.add('size: $size');
     if (createdAt != null) parts.add('createdAt: $createdAt');
-    
+
     return description.add('Photo with ${parts.join(', ')}');
   }
 }
@@ -105,7 +100,8 @@ class _AsyncErrorMatcher extends Matcher {
 
 /// Widget-specific matchers
 Matcher hasText(String text) => _HasTextMatcher(text);
-Matcher hasTextContaining(String substring) => _HasTextContainingMatcher(substring);
+Matcher hasTextContaining(String substring) =>
+    _HasTextContainingMatcher(substring);
 Matcher isEnabled() => const _IsEnabledMatcher();
 Matcher isDisabled() => const _IsDisabledMatcher();
 

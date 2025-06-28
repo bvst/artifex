@@ -31,9 +31,7 @@ void main() {
       });
 
       test('should create request with default values', () {
-        const request = OpenAIImageRequest(
-          prompt: 'A simple test prompt',
-        );
+        const request = OpenAIImageRequest(prompt: 'A simple test prompt');
 
         expect(request.prompt, 'A simple test prompt');
         expect(request.model, 'dall-e-3');
@@ -69,7 +67,10 @@ void main() {
           OpenAITestData.validImageRequest,
         );
 
-        expect(request.prompt, 'A futuristic cityscape at sunset with flying cars');
+        expect(
+          request.prompt,
+          'A futuristic cityscape at sunset with flying cars',
+        );
         expect(request.model, 'dall-e-3');
         expect(request.n, 1);
         expect(request.quality, 'standard');
@@ -87,7 +88,7 @@ void main() {
 
         expect(response.created, 1589478378);
         expect(response.data.length, 1);
-        
+
         final imageData = response.data.first;
         expect(imageData.url, isNotNull);
         expect(imageData.url, 'https://example.com/generated-image.png');
@@ -102,10 +103,13 @@ void main() {
 
         expect(response.created, 1589478378);
         expect(response.data.length, 1);
-        
+
         final imageData = response.data.first;
         expect(imageData.b64Json, isNotNull);
-        expect(imageData.b64Json, 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
+        expect(
+          imageData.b64Json,
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+        );
         expect(imageData.revisedPrompt, contains('simple white pixel'));
         expect(imageData.url, isNull);
       });
@@ -117,12 +121,11 @@ void main() {
 
         expect(response.created, 1589478378);
         expect(response.data.length, 3);
-        
+
         for (int i = 0; i < response.data.length; i++) {
           expect(response.data[i].url, 'https://example.com/image${i + 1}.png');
         }
       });
-
     });
 
     group('OpenAIModelsResponse', () {
@@ -133,14 +136,13 @@ void main() {
 
         expect(response.object, 'list');
         expect(response.data.length, 3);
-        
+
         final dalleModel = response.data.first;
         expect(dalleModel.id, 'dall-e-3');
         expect(dalleModel.object, 'model');
         expect(dalleModel.created, 1698785189);
         expect(dalleModel.ownedBy, 'system');
       });
-
     });
 
     group('OpenAIErrorResponse', () {
@@ -170,7 +172,10 @@ void main() {
           OpenAITestData.invalidRequestError,
         );
 
-        expect(errorResponse.error.message, contains('Invalid value for \'size\''));
+        expect(
+          errorResponse.error.message,
+          contains('Invalid value for \'size\''),
+        );
         expect(errorResponse.error.type, 'invalid_request_error');
         expect(errorResponse.error.param, 'size');
         expect(errorResponse.error.code, isNull);
@@ -197,7 +202,6 @@ void main() {
         expect(errorResponse.error.param, isNull);
         expect(errorResponse.error.code, isNull);
       });
-
     });
   });
 }

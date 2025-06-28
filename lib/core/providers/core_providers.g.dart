@@ -15,8 +15,9 @@ String _$dioClientHash() => r'fbe72ac1e3860d9450c8b0935ec510d8e01e8f93';
 final dioClientProvider = AutoDisposeProvider<Dio>.internal(
   dioClient,
   name: r'dioClientProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$dioClientHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$dioClientHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -33,8 +34,9 @@ String _$databaseHash() => r'f2fd4db70c7c7ea9fa87da9353311851a6956153';
 final databaseProvider = AutoDisposeFutureProvider<Database>.internal(
   database,
   name: r'databaseProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$databaseHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$databaseHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -51,8 +53,9 @@ String _$appLoggerHash() => r'7a3044f5a0d402b3650407c5580520f6e78a1e22';
 final appLoggerProvider = AutoDisposeProvider<AppLogger>.internal(
   appLogger,
   name: r'appLoggerProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$appLoggerHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$appLoggerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

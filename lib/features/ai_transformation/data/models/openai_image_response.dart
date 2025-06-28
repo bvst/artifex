@@ -8,10 +8,7 @@ class OpenAIImageResponse {
   final int created;
   final List<OpenAIImageData> data;
 
-  const OpenAIImageResponse({
-    required this.created,
-    required this.data,
-  });
+  const OpenAIImageResponse({required this.created, required this.data});
 
   factory OpenAIImageResponse.fromJson(Map<String, dynamic> json) =>
       _$OpenAIImageResponseFromJson(json);
@@ -28,11 +25,7 @@ class OpenAIImageData {
   @JsonKey(name: 'revised_prompt')
   final String? revisedPrompt;
 
-  const OpenAIImageData({
-    this.url,
-    this.b64Json,
-    this.revisedPrompt,
-  });
+  const OpenAIImageData({this.url, this.b64Json, this.revisedPrompt});
 
   factory OpenAIImageData.fromJson(Map<String, dynamic> json) =>
       _$OpenAIImageDataFromJson(json);

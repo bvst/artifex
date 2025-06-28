@@ -51,9 +51,12 @@ extension PhotoStateExtensions on PhotoState {
   bool get isError => this is PhotoError;
   bool get hasRecentPhotos => this is PhotoRecentPhotos;
 
-  Photo? get photo => this is PhotoSuccess ? (this as PhotoSuccess).photo : null;
-  List<Photo>? get photos => this is PhotoRecentPhotos ? (this as PhotoRecentPhotos).photos : null;
-  String? get errorMessage => this is PhotoError ? (this as PhotoError).message : null;
+  Photo? get photo =>
+      this is PhotoSuccess ? (this as PhotoSuccess).photo : null;
+  List<Photo>? get photos =>
+      this is PhotoRecentPhotos ? (this as PhotoRecentPhotos).photos : null;
+  String? get errorMessage =>
+      this is PhotoError ? (this as PhotoError).message : null;
 }
 
 // Factory methods for cleaner code
@@ -61,6 +64,7 @@ extension PhotoStateFactory on PhotoState {
   static PhotoState initial() => const PhotoInitial();
   static PhotoState loading() => const PhotoLoading();
   static PhotoState success(Photo photo) => PhotoSuccess(photo);
-  static PhotoState recentPhotos(List<Photo> photos) => PhotoRecentPhotos(photos);
+  static PhotoState recentPhotos(List<Photo> photos) =>
+      PhotoRecentPhotos(photos);
   static PhotoState error(String message) => PhotoError(message);
 }

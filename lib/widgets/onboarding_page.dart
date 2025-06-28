@@ -22,11 +22,7 @@ class OnboardingPage extends StatelessWidget {
               color: AppColors.cardBackground,
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              data.icon,
-              size: 60,
-              color: AppColors.primaryAccent,
-            ),
+            child: Icon(data.icon, size: 60, color: AppColors.primaryAccent),
           ),
           const SizedBox(height: 48),
           // Title

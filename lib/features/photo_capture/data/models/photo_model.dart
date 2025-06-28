@@ -17,7 +17,7 @@ class PhotoModel extends Photo {
   factory PhotoModel.fromFile(File file, {int? width, int? height}) {
     final stat = file.statSync();
     const uuid = Uuid();
-    
+
     return PhotoModel(
       id: uuid.v4(),
       path: file.path,

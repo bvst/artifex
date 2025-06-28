@@ -37,7 +37,7 @@ void main() {
         (WidgetTester tester) async {
           // Create a container to track provider state changes
           late ProviderContainer container;
-          
+
           await tester.pumpWidget(
             ProviderScope(
               child: Builder(
@@ -89,7 +89,7 @@ void main() {
         'Gallery upload button triggers provider state change',
         (WidgetTester tester) async {
           late ProviderContainer container;
-          
+
           await tester.pumpWidget(
             ProviderScope(
               child: Builder(
@@ -140,8 +140,8 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               child: ArtifexApp(
-              splashDuration: const Duration(milliseconds: 1),
-            ),
+                splashDuration: const Duration(milliseconds: 1),
+              ),
             ),
           );
 
@@ -163,19 +163,19 @@ void main() {
             of: galleryIcon,
             matching: find.byType(InkWell),
           );
-          
+
           // Tap photo capture button multiple times to test resilience
           await tester.tap(cameraButton);
           await tester.pump();
-          
+
           // UI should remain stable and functional
           expect(cameraIcon, findsOneWidget);
           expect(galleryIcon, findsOneWidget);
-          
+
           // Try gallery upload as well
           await tester.tap(galleryButton);
           await tester.pump();
-          
+
           // UI should still be responsive
           expect(cameraIcon, findsOneWidget);
           expect(galleryIcon, findsOneWidget);
@@ -189,8 +189,8 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               child: ArtifexApp(
-              splashDuration: const Duration(milliseconds: 1),
-            ),
+                splashDuration: const Duration(milliseconds: 1),
+              ),
             ),
           );
 
@@ -243,7 +243,7 @@ void main() {
         'Provider state persists correctly across widget rebuilds',
         (WidgetTester tester) async {
           late ProviderContainer container;
-          
+
           await tester.pumpWidget(
             ProviderScope(
               child: Builder(
@@ -270,7 +270,7 @@ void main() {
             of: cameraIcon,
             matching: find.byType(InkWell),
           );
-          
+
           // Trigger a photo capture action
           await tester.tap(cameraButton);
           await tester.pump();
@@ -293,7 +293,7 @@ void main() {
         'Multiple provider interactions work correctly',
         (WidgetTester tester) async {
           late ProviderContainer container;
-          
+
           await tester.pumpWidget(
             ProviderScope(
               child: Builder(
@@ -312,7 +312,7 @@ void main() {
 
           final cameraIcon = find.byIcon(Icons.camera_alt_rounded);
           final galleryIcon = find.byIcon(Icons.photo_library_rounded);
-          
+
           final cameraButton = find.ancestor(
             of: cameraIcon,
             matching: find.byType(InkWell),
@@ -325,13 +325,13 @@ void main() {
           // Alternate between different photo input methods
           await tester.tap(cameraButton);
           await tester.pump();
-          
+
           final stateAfterCamera = container.read(photoCaptureProvider);
           expect(stateAfterCamera, isA<AsyncValue<Photo?>>());
 
           await tester.tap(galleryButton);
           await tester.pump();
-          
+
           final stateAfterGallery = container.read(photoCaptureProvider);
           expect(stateAfterGallery, isA<AsyncValue<Photo?>>());
 
@@ -350,8 +350,8 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               child: ArtifexApp(
-              splashDuration: const Duration(milliseconds: 1),
-            ),
+                splashDuration: const Duration(milliseconds: 1),
+              ),
             ),
           );
 
@@ -360,7 +360,7 @@ void main() {
 
           final cameraIcon = find.byIcon(Icons.camera_alt_rounded);
           final galleryIcon = find.byIcon(Icons.photo_library_rounded);
-          
+
           final cameraButton = find.ancestor(
             of: cameraIcon,
             matching: find.byType(InkWell),
@@ -399,8 +399,8 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               child: ArtifexApp(
-              splashDuration: const Duration(milliseconds: 1),
-            ),
+                splashDuration: const Duration(milliseconds: 1),
+              ),
             ),
           );
 
@@ -412,7 +412,7 @@ void main() {
           final galleryIcon = find.byIcon(Icons.photo_library_rounded);
           expect(cameraIcon, findsOneWidget);
           expect(galleryIcon, findsOneWidget);
-          
+
           final cameraButton = find.ancestor(
             of: cameraIcon,
             matching: find.byType(InkWell),

@@ -32,26 +32,30 @@ void main() {
         size: '1024x1024',
       );
 
-      test('should return TransformationResultModel on successful response', () async {
-        // Arrange
-        final mockResponse = OpenAIImageResponse.fromJson(
-          OpenAITestData.successfulImageResponse,
-        );
-        when(mockApiClient.generateImage(any))
-            .thenAnswer((_) async => mockResponse);
+      test(
+        'should return TransformationResultModel on successful response',
+        () async {
+          // Arrange
+          final mockResponse = OpenAIImageResponse.fromJson(
+            OpenAITestData.successfulImageResponse,
+          );
+          when(
+            mockApiClient.generateImage(any),
+          ).thenAnswer((_) async => mockResponse);
 
-        // Act
-        final result = await dataSource.transformPhoto(testRequest);
+          // Act
+          final result = await dataSource.transformPhoto(testRequest);
 
-        // Assert
-        expect(result.id, isNotEmpty);
-        expect(result.imageUrl, mockResponse.data.first.url);
-        expect(result.prompt, mockResponse.data.first.revisedPrompt);
-        expect(result.style, 'artistic');
-        expect(result.createdAt, isA<DateTime>());
+          // Assert
+          expect(result.id, isNotEmpty);
+          expect(result.imageUrl, mockResponse.data.first.url);
+          expect(result.prompt, mockResponse.data.first.revisedPrompt);
+          expect(result.style, 'artistic');
+          expect(result.createdAt, isA<DateTime>());
 
-        verify(mockApiClient.generateImage(any)).called(1);
-      });
+          verify(mockApiClient.generateImage(any)).called(1);
+        },
+      );
 
       test('should throw APIException on 401 Unauthorized', () async {
         // Arrange
@@ -69,11 +73,13 @@ void main() {
         // Act & Assert
         expect(
           () => dataSource.transformPhoto(testRequest),
-          throwsA(isA<APIException>().having(
-            (e) => e.message,
-            'message',
-            contains('Invalid API key'),
-          )),
+          throwsA(
+            isA<APIException>().having(
+              (e) => e.message,
+              'message',
+              contains('Invalid API key'),
+            ),
+          ),
         );
       });
 
@@ -93,40 +99,47 @@ void main() {
         // Act & Assert
         expect(
           () => dataSource.transformPhoto(testRequest),
-          throwsA(isA<APIException>().having(
-            (e) => e.message,
-            'message',
-            contains('Rate limit exceeded'),
-          )),
-        );
-      });
-
-      test('should throw APIException with parsed error message on 400 Bad Request', () async {
-        // Arrange
-        final dioException = DioException(
-          requestOptions: RequestOptions(path: '/images/generations'),
-          response: Response(
-            requestOptions: RequestOptions(path: '/images/generations'),
-            statusCode: 400,
-            data: OpenAITestData.invalidRequestError,
-          ),
-          type: DioExceptionType.badResponse,
-        );
-        when(mockApiClient.generateImage(any)).thenThrow(dioException);
-
-        // Act & Assert
-        expect(
-          () => dataSource.transformPhoto(testRequest),
-          throwsA(isA<APIException>().having(
-            (e) => e.message,
-            'message',
-            allOf(
-              contains('Invalid request'),
-              contains('Invalid value for \'size\''),
+          throwsA(
+            isA<APIException>().having(
+              (e) => e.message,
+              'message',
+              contains('Rate limit exceeded'),
             ),
-          )),
+          ),
         );
       });
+
+      test(
+        'should throw APIException with parsed error message on 400 Bad Request',
+        () async {
+          // Arrange
+          final dioException = DioException(
+            requestOptions: RequestOptions(path: '/images/generations'),
+            response: Response(
+              requestOptions: RequestOptions(path: '/images/generations'),
+              statusCode: 400,
+              data: OpenAITestData.invalidRequestError,
+            ),
+            type: DioExceptionType.badResponse,
+          );
+          when(mockApiClient.generateImage(any)).thenThrow(dioException);
+
+          // Act & Assert
+          expect(
+            () => dataSource.transformPhoto(testRequest),
+            throwsA(
+              isA<APIException>().having(
+                (e) => e.message,
+                'message',
+                allOf(
+                  contains('Invalid request'),
+                  contains('Invalid value for \'size\''),
+                ),
+              ),
+            ),
+          );
+        },
+      );
 
       test('should throw NetworkException on connection timeout', () async {
         // Arrange
@@ -139,11 +152,13 @@ void main() {
         // Act & Assert
         expect(
           () => dataSource.transformPhoto(testRequest),
-          throwsA(isA<NetworkException>().having(
-            (e) => e.message,
-            'message',
-            contains('Request timeout'),
-          )),
+          throwsA(
+            isA<NetworkException>().having(
+              (e) => e.message,
+              'message',
+              contains('Request timeout'),
+            ),
+          ),
         );
       });
 
@@ -158,11 +173,13 @@ void main() {
         // Act & Assert
         expect(
           () => dataSource.transformPhoto(testRequest),
-          throwsA(isA<NetworkException>().having(
-            (e) => e.message,
-            'message',
-            contains('Request timeout'),
-          )),
+          throwsA(
+            isA<NetworkException>().having(
+              (e) => e.message,
+              'message',
+              contains('Request timeout'),
+            ),
+          ),
         );
       });
 
@@ -177,11 +194,13 @@ void main() {
         // Act & Assert
         expect(
           () => dataSource.transformPhoto(testRequest),
-          throwsA(isA<NetworkException>().having(
-            (e) => e.message,
-            'message',
-            contains('Connection failed'),
-          )),
+          throwsA(
+            isA<NetworkException>().having(
+              (e) => e.message,
+              'message',
+              contains('Connection failed'),
+            ),
+          ),
         );
       });
 
@@ -202,27 +221,32 @@ void main() {
         // Act & Assert
         expect(
           () => dataSource.transformPhoto(testRequest),
-          throwsA(isA<APIException>().having(
-            (e) => e.message,
-            'message',
-            contains('Transformation failed'),
-          )),
+          throwsA(
+            isA<APIException>().having(
+              (e) => e.message,
+              'message',
+              contains('Transformation failed'),
+            ),
+          ),
         );
       });
 
       test('should throw APIException on unexpected error', () async {
         // Arrange
-        when(mockApiClient.generateImage(any))
-            .thenThrow(Exception('Unexpected error'));
+        when(
+          mockApiClient.generateImage(any),
+        ).thenThrow(Exception('Unexpected error'));
 
         // Act & Assert
         expect(
           () => dataSource.transformPhoto(testRequest),
-          throwsA(isA<APIException>().having(
-            (e) => e.message,
-            'message',
-            contains('Unexpected error'),
-          )),
+          throwsA(
+            isA<APIException>().having(
+              (e) => e.message,
+              'message',
+              contains('Unexpected error'),
+            ),
+          ),
         );
       });
     });
@@ -245,10 +269,7 @@ void main() {
 
       test('should return false when models list is empty', () async {
         // Arrange
-        const emptyResponse = OpenAIModelsResponse(
-          object: 'list',
-          data: [],
-        );
+        const emptyResponse = OpenAIModelsResponse(object: 'list', data: []);
         when(mockApiClient.getModels()).thenAnswer((_) async => emptyResponse);
 
         // Act
@@ -312,49 +333,53 @@ void main() {
               style: 'artistic',
             ),
           ),
-          throwsA(isA<APIException>().having(
-            (e) => e.message,
-            'message',
-            allOf(
-              contains('Invalid request'),
-              contains('safety system'),
+          throwsA(
+            isA<APIException>().having(
+              (e) => e.message,
+              'message',
+              allOf(contains('Invalid request'), contains('safety system')),
             ),
-          )),
+          ),
         );
       });
 
-      test('should return generic message for invalid error response', () async {
-        // This tests the fallback behavior when JSON parsing fails
-        final dioException = DioException(
-          requestOptions: RequestOptions(path: '/images/generations'),
-          response: Response(
+      test(
+        'should return generic message for invalid error response',
+        () async {
+          // This tests the fallback behavior when JSON parsing fails
+          final dioException = DioException(
             requestOptions: RequestOptions(path: '/images/generations'),
-            statusCode: 400,
-            data: 'Invalid JSON response',
-          ),
-          type: DioExceptionType.badResponse,
-        );
-        when(mockApiClient.generateImage(any)).thenThrow(dioException);
+            response: Response(
+              requestOptions: RequestOptions(path: '/images/generations'),
+              statusCode: 400,
+              data: 'Invalid JSON response',
+            ),
+            type: DioExceptionType.badResponse,
+          );
+          when(mockApiClient.generateImage(any)).thenThrow(dioException);
 
-        // Act & Assert
-        expect(
-          () => dataSource.transformPhoto(
-            const TransformationRequestModel(
-              photoPath: '/test/photo.jpg',
-              prompt: 'test prompt',
-              style: 'artistic',
+          // Act & Assert
+          expect(
+            () => dataSource.transformPhoto(
+              const TransformationRequestModel(
+                photoPath: '/test/photo.jpg',
+                prompt: 'test prompt',
+                style: 'artistic',
+              ),
             ),
-          ),
-          throwsA(isA<APIException>().having(
-            (e) => e.message,
-            'message',
-            allOf(
-              contains('Invalid request'),
-              contains('Unknown API error'),
+            throwsA(
+              isA<APIException>().having(
+                (e) => e.message,
+                'message',
+                allOf(
+                  contains('Invalid request'),
+                  contains('Unknown API error'),
+                ),
+              ),
             ),
-          )),
-        );
-      });
+          );
+        },
+      );
     });
   });
 }

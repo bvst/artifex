@@ -9,16 +9,20 @@ import 'screens/splash_screen.dart';
 void main() async {
   // Initialize Flutter binding first
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Set up global error handling for keyboard assertion errors
   FlutterError.onError = (FlutterErrorDetails details) {
     // Filter out known harmless keyboard assertion errors
-    if (details.exception.toString().contains('HardwareKeyboard._assertEventIsRegular') ||
+    if (details.exception.toString().contains(
+          'HardwareKeyboard._assertEventIsRegular',
+        ) ||
         details.exception.toString().contains('_AssertionError')) {
-      AppLogger.debug('Filtered keyboard assertion error: ${details.exception}');
+      AppLogger.debug(
+        'Filtered keyboard assertion error: ${details.exception}',
+      );
       return;
     }
-    
+
     // Log other errors normally
     AppLogger.error(
       'Flutter error: ${details.exception}',
@@ -26,10 +30,10 @@ void main() async {
       details.stack,
     );
   };
-  
+
   // Initialize core services
   await _initializeApp();
-  
+
   runApp(
     ProviderScope(
       child: ErrorBoundary(
@@ -45,10 +49,10 @@ void main() async {
 Future<void> _initializeApp() async {
   try {
     AppLogger.debug('Initializing Artifex application');
-    
+
     // Initialize network client
     DioClient().initialize();
-    
+
     AppLogger.debug('Application initialization completed');
   } catch (e, stackTrace) {
     AppLogger.error('Failed to initialize application', e, stackTrace);
@@ -58,7 +62,7 @@ Future<void> _initializeApp() async {
 
 class ArtifexApp extends StatelessWidget {
   final Duration splashDuration;
-  
+
   const ArtifexApp({
     super.key,
     this.splashDuration = const Duration(seconds: 2),
@@ -70,9 +74,7 @@ class ArtifexApp extends StatelessWidget {
       title: 'Artifex',
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(
-        splashDuration: splashDuration,
-      ),
+      home: SplashScreen(splashDuration: splashDuration),
     );
   }
 }

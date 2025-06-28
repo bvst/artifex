@@ -7,7 +7,7 @@ import '../features/home/presentation/screens/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   final Duration splashDuration;
-  
+
   const SplashScreen({
     super.key,
     this.splashDuration = const Duration(seconds: 2),
@@ -35,11 +35,12 @@ class _SplashScreenState extends State<SplashScreen> {
   void _startSplashTimer() {
     _timer = Timer(widget.splashDuration, () async {
       if (!mounted) return;
-      
-      final isOnboardingComplete = await PreferencesHelper.isOnboardingComplete();
-      
+
+      final isOnboardingComplete =
+          await PreferencesHelper.isOnboardingComplete();
+
       if (!mounted) return;
-      
+
       if (isOnboardingComplete) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const HomeScreen()),
@@ -90,9 +91,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             const SizedBox(height: 48),
-            CircularProgressIndicator(
-              color: AppTheme.colors.secondary,
-            ),
+            CircularProgressIndicator(color: AppTheme.colors.secondary),
           ],
         ),
       ),

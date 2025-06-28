@@ -42,7 +42,7 @@ class TransformationResultModel extends TransformationResult {
   ) {
     final firstImage = response.data.first;
     final imageUrl = firstImage.url!;
-    
+
     return TransformationResultModel(
       id: _generateId(),
       imageUrl: imageUrl,

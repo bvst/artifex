@@ -34,19 +34,19 @@ String _$aiTransformationRemoteDataSourceHash() =>
 @ProviderFor(aiTransformationRemoteDataSource)
 final aiTransformationRemoteDataSourceProvider =
     AutoDisposeProvider<AITransformationRemoteDataSource>.internal(
-  aiTransformationRemoteDataSource,
-  name: r'aiTransformationRemoteDataSourceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$aiTransformationRemoteDataSourceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      aiTransformationRemoteDataSource,
+      name: r'aiTransformationRemoteDataSourceProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$aiTransformationRemoteDataSourceHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef AiTransformationRemoteDataSourceRef
-    = AutoDisposeProviderRef<AITransformationRemoteDataSource>;
+typedef AiTransformationRemoteDataSourceRef =
+    AutoDisposeProviderRef<AITransformationRemoteDataSource>;
 String _$aiTransformationLocalDataSourceHash() =>
     r'450583ebf3c14fd6bd67bbbd5581b52fc2fab6a4';
 
@@ -56,19 +56,19 @@ String _$aiTransformationLocalDataSourceHash() =>
 @ProviderFor(aiTransformationLocalDataSource)
 final aiTransformationLocalDataSourceProvider =
     AutoDisposeFutureProvider<AITransformationLocalDataSource>.internal(
-  aiTransformationLocalDataSource,
-  name: r'aiTransformationLocalDataSourceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$aiTransformationLocalDataSourceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      aiTransformationLocalDataSource,
+      name: r'aiTransformationLocalDataSourceProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$aiTransformationLocalDataSourceHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef AiTransformationLocalDataSourceRef
-    = AutoDisposeFutureProviderRef<AITransformationLocalDataSource>;
+typedef AiTransformationLocalDataSourceRef =
+    AutoDisposeFutureProviderRef<AITransformationLocalDataSource>;
 String _$aiTransformationRepositoryHash() =>
     r'9b2fad129b9e1255e058b4104de85f33bb30ea6d';
 
@@ -78,18 +78,18 @@ String _$aiTransformationRepositoryHash() =>
 @ProviderFor(aiTransformationRepository)
 final aiTransformationRepositoryProvider =
     AutoDisposeFutureProvider<AITransformationRepository>.internal(
-  aiTransformationRepository,
-  name: r'aiTransformationRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$aiTransformationRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      aiTransformationRepository,
+      name: r'aiTransformationRepositoryProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$aiTransformationRepositoryHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef AiTransformationRepositoryRef
-    = AutoDisposeFutureProviderRef<AITransformationRepository>;
+typedef AiTransformationRepositoryRef =
+    AutoDisposeFutureProviderRef<AITransformationRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
