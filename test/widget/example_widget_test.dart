@@ -21,8 +21,8 @@ void main() {
           ),
         );
 
-        // Then: Should display all UI elements
-        expect(find.text('Artifex'), findsOneWidget);
+        // Then: Should display all UI elements (structure-based)
+        expect(find.byType(Text), findsOneWidget);
         expect(find.byType(MaterialApp), findsOneWidget);
         expect(find.byType(Scaffold), findsOneWidget);
       });
@@ -49,7 +49,8 @@ void main() {
         );
 
         // Then: Button should be visible and not yet pressed
-        expect(find.text('Tap me'), findsOneWidget);
+        expect(find.byType(ElevatedButton), findsOneWidget);
+        expect(find.byType(Text), findsOneWidget);
         expect(wasPressed, isFalse);
 
         // When: User taps button

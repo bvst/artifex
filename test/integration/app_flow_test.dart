@@ -121,7 +121,7 @@ void main() {
 
           // Should skip onboarding and go directly to home
           expect(find.byType(HomeScreen), findsOneWidget);
-          expect(find.text('Welcome to Artifex'), findsOneWidget);
+          // Don't test welcome text - it will change with locale
           expect(find.byType(OnboardingScreen), findsNothing);
         },
         timeout: integrationTestTimeout,

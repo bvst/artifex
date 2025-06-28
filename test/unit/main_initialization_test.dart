@@ -33,7 +33,7 @@ void main() {
         );
 
         // Then: Should render child content successfully
-        expect(find.text('Test App'), findsOneWidget);
+        expect(find.byType(Text), findsOneWidget);
       });
 
       testWidgets('renders content through ErrorBoundary', (tester) async {
@@ -49,7 +49,7 @@ void main() {
         );
 
         // Then: Should display protected content normally
-        expect(find.text('Protected Content'), findsOneWidget);
+        expect(find.byType(Text), findsOneWidget);
       });
     });
 

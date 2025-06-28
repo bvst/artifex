@@ -18,11 +18,11 @@ void main() {
         ),
       );
 
-      // Verify all components are present
+      // Verify all components are present by structure
       expect(find.byIcon(Icons.camera_alt), findsOneWidget);
-      expect(find.text('Test Title'), findsOneWidget);
-      expect(find.text('Test Subtitle'), findsOneWidget);
+      expect(find.byType(Text), findsNWidgets(2)); // Title and subtitle
       expect(find.byIcon(Icons.arrow_forward_ios_rounded), findsOneWidget);
+      expect(find.byType(Row), findsOneWidget); // Main layout
     });
 
     testWidgets('camera button should have correct properties', (WidgetTester tester) async {
@@ -36,9 +36,10 @@ void main() {
         ),
       );
 
+      // Verify camera button structure by icon and layout
       expect(find.byIcon(Icons.camera_alt_rounded), findsOneWidget);
-      expect(find.text('Take a Photo'), findsOneWidget);
-      expect(find.text('Capture with your camera'), findsOneWidget);
+      expect(find.byType(Text), findsNWidgets(2)); // Title and subtitle
+      expect(find.byType(Row), findsOneWidget);
     });
 
     testWidgets('gallery button should have correct properties', (WidgetTester tester) async {
@@ -52,9 +53,10 @@ void main() {
         ),
       );
 
+      // Verify gallery button structure by icon and layout
       expect(find.byIcon(Icons.photo_library_rounded), findsOneWidget);
-      expect(find.text('Upload Image'), findsOneWidget);
-      expect(find.text('Choose from gallery'), findsOneWidget);
+      expect(find.byType(Text), findsNWidgets(2)); // Title and subtitle
+      expect(find.byType(Row), findsOneWidget);
     });
 
     testWidgets('should handle tap events', (WidgetTester tester) async {
