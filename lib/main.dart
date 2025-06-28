@@ -57,7 +57,12 @@ Future<void> _initializeApp() async {
 }
 
 class ArtifexApp extends StatelessWidget {
-  const ArtifexApp({super.key});
+  final Duration splashDuration;
+  
+  const ArtifexApp({
+    super.key,
+    this.splashDuration = const Duration(seconds: 2),
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +70,9 @@ class ArtifexApp extends StatelessWidget {
       title: 'Artifex',
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      home: SplashScreen(
+        splashDuration: splashDuration,
+      ),
     );
   }
 }
