@@ -7,9 +7,10 @@
 /// This command runs:
 /// 1. Dart format - formats all code consistently
 /// 2. Flutter analyze - checks for code issues
-/// 3. Start test database container
-/// 4. Flutter test - runs all tests (including integration tests)
-/// 5. Stop test database container
+/// 3. Check outdated dependencies - shows which packages need updates
+/// 4. Start test database container
+/// 5. Flutter test - runs all tests (including integration tests)
+/// 6. Stop test database container
 ///
 /// Exits with code 0 if all pass, 1 if any fails
 
@@ -38,7 +39,7 @@ void main(List<String> arguments) async {
   }
 
   // Run Flutter analyze
-  print('📊 Step 2/5: Running static analysis...');
+  print('📊 Step 2/6: Running static analysis...');
   final analyzeResult = await Process.run('flutter', ['analyze']);
 
   if (analyzeResult.exitCode == 0) {
@@ -54,8 +55,89 @@ void main(List<String> arguments) async {
     print('');
   }
 
+  // Check for outdated dependencies
+  print('📦 Step 3/6: Checking for outdated dependencies...');
+  final outdatedResult = await Process.run('flutter', ['pub', 'outdated']);
+
+  if (outdatedResult.exitCode == 0) {
+    final output = outdatedResult.stdout.toString();
+
+    // Parse the output to count outdated dependencies
+    final lines = output.split('\n');
+    var directOutdated = 0;
+    var devOutdated = 0;
+    var transitiveOutdated = 0;
+    var currentSection = '';
+
+    for (final line in lines) {
+      if (line.contains('direct dependencies:')) {
+        currentSection = 'direct';
+      } else if (line.contains('dev_dependencies:') &&
+          !line.contains('transitive')) {
+        currentSection = 'dev';
+      } else if (line.contains('transitive dependencies:')) {
+        currentSection = 'transitive';
+      } else if (line.contains('transitive dev_dependencies:')) {
+        currentSection = 'transitive';
+      } else if (line.trim().isNotEmpty &&
+          line.contains('*') &&
+          !line.contains('indicates versions') &&
+          !line.contains('Package Name') &&
+          RegExp(r'^\w').hasMatch(line.trim())) {
+        // This line has an outdated dependency
+        if (currentSection == 'direct')
+          directOutdated++;
+        else if (currentSection == 'dev')
+          devOutdated++;
+        else if (currentSection == 'transitive')
+          transitiveOutdated++;
+      }
+    }
+
+    final totalOutdated = directOutdated + devOutdated + transitiveOutdated;
+
+    if (totalOutdated > 0) {
+      print('⚠️  Found $totalOutdated outdated dependencies:');
+      if (directOutdated > 0) {
+        print('   • $directOutdated direct dependencies');
+      }
+      if (devOutdated > 0) {
+        print('   • $devOutdated dev dependencies');
+      }
+      if (transitiveOutdated > 0) {
+        print(
+          '   • $transitiveOutdated transitive dependencies (auto-updated)',
+        );
+      }
+
+      // Check for constraint message
+      if (output.contains('dependencies are constrained')) {
+        print('');
+        print(
+          '   💡 Some updates require manual version changes in pubspec.yaml',
+        );
+        print('   Run `flutter pub outdated` to see details');
+      } else {
+        print('');
+        print('   Run `flutter pub upgrade` to update compatible versions');
+      }
+      print('');
+    } else {
+      print('✅ All dependencies are up to date\n');
+    }
+  } else {
+    print('⚠️  Failed to check outdated dependencies:');
+    print(outdatedResult.stdout);
+    if (outdatedResult.stderr.isNotEmpty) {
+      print('Error output:');
+      print(outdatedResult.stderr);
+    }
+    // Don't set hasErrors for this - it's informational
+    print('');
+  }
+
   // Start test database container
-  print('🐳 Step 3/5: Starting test database container...');
+  print('🐳 Step 4/6: Starting test database container...');
   final testDbStartResult = await Process.run('make', [
     '-C',
     'docker',
@@ -78,7 +160,7 @@ void main(List<String> arguments) async {
   // Run Flutter test (only if database started successfully)
   bool testsRan = false;
   if (!hasErrors) {
-    print('🧪 Step 4/5: Running tests...');
+    print('🧪 Step 5/6: Running tests...');
     final testResult = await Process.run('flutter', [
       'test',
       '--reporter=compact',
@@ -112,11 +194,11 @@ void main(List<String> arguments) async {
       print('');
     }
   } else {
-    print('⏭️  Step 4/5: Skipping tests due to previous errors\n');
+    print('⏭️  Step 5/6: Skipping tests due to previous errors\n');
   }
 
   // Stop test database container (always run cleanup)
-  print('🛑 Step 5/5: Stopping test database container...');
+  print('🛑 Step 6/6: Stopping test database container...');
   final testDbStopResult = await Process.run('make', [
     '-C',
     'docker',

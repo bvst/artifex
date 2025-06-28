@@ -42,7 +42,17 @@ jobs:
         channel: 'stable'
     
     - name: Get dependencies
-      run: flutter pub get
+      run: |
+        flutter pub get
+        echo "::group::Dependency Resolution"
+        flutter pub deps
+        echo "::endgroup::"
+    
+    - name: Check for outdated dependencies
+      run: |
+        echo "::group::Outdated Dependencies Report"
+        flutter pub outdated || true
+        echo "::endgroup::"
     
     - name: Initialize test database
       run: |
@@ -56,7 +66,12 @@ jobs:
         PGPASSWORD=artifex_test_password psql -h localhost -p 5433 -U artifex_test_user -d artifex_test -f docker/init-test.sql
     
     - name: Analyze code
-      run: flutter analyze
+      run: |
+        echo "::group::Flutter Analyze Output"
+        flutter analyze --no-fatal-infos --no-fatal-warnings || true
+        echo "::endgroup::"
+        # Run again to fail on errors only
+        flutter analyze
     
     - name: Run tests (including integration tests)
       run: flutter test
@@ -90,7 +105,12 @@ jobs:
       run: flutter pub get
     
     - name: Build APK
-      run: flutter build apk --release
+      run: |
+        echo "::group::Building Android APK"
+        flutter build apk --release --verbose 2>&1 | grep -E "(warning|deprecated|info:|WARNING|DEPRECATED)" || true
+        echo "::endgroup::"
+        # Build again without verbose to ensure it succeeds
+        flutter build apk --release
     
     - name: Upload APK
       uses: actions/upload-artifact@v4

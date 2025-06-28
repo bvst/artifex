@@ -86,15 +86,15 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   
   # Code Generation
-  riverpod_generator: ^2.3.0
-  retrofit_generator: ^7.0.0
-  json_serializable: ^6.7.0
+  riverpod_generator: ^2.6.3
+  retrofit_generator: ^7.0.8
+  json_serializable: ^6.9.0
   build_runner: ^2.4.0
   
   # Testing
-  mockito: ^5.4.0
+  mockito: ^5.4.5
   sqflite_common_ffi: ^2.3.0
-  postgres: ^2.6.2
+  postgres: ^2.6.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
