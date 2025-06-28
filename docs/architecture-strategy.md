@@ -200,43 +200,195 @@ class TransformationNotifier extends _$TransformationNotifier {
 
 ## 5. Error Handling Strategy
 
-### Failure Classes
+Artifex follows Flutter's recommended global error handling approach, avoiding defensive programming patterns in favor of centralized error management.
+
+### Philosophy
+- **Let exceptions bubble up** to reveal real issues during development
+- **Global handlers** for consistent error reporting and user experience
+- **Local try/catch only** for specific business logic where recovery is needed
+- **No scattered defensive programming** (avoid try/catch everywhere)
+
+### Global Error Handlers Setup
+
 ```dart
+// main.dart - Global error handling setup
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // 1. Handle Flutter framework errors (widget build issues, etc.)
+  FlutterError.onError = (FlutterErrorDetails details) {
+    // Log the error with context
+    AppLogger.error(
+      'Flutter Framework Error',
+      details.exception,
+      details.stack,
+      additionalData: {
+        'library': details.library,
+        'context': details.context?.toString(),
+      },
+    );
+
+    // Development: show error overlay
+    if (kDebugMode) {
+      FlutterError.presentError(details);
+    } else {
+      // Production: report to crash analytics
+      FirebaseCrashlytics.instance.recordFlutterError(details);
+    }
+  };
+
+  // 2. Handle platform/async errors not caught by Flutter
+  PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
+    AppLogger.error('Platform Error', error, stack);
+    
+    if (kReleaseMode) {
+      FirebaseCrashlytics.instance.recordError(error, stack);
+    }
+    
+    return true; // Indicates error was handled
+  };
+
+  // 3. Custom error widget for build failures
+  ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+    return const CustomErrorWidget();
+  };
+
+  runApp(const MyApp());
+}
+```
+
+### Custom Error Widget
+
+```dart
+class CustomErrorWidget extends StatelessWidget {
+  const CustomErrorWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    body: Container(
+      color: AppColors.canvasWhite,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline,
+              size: 64,
+              color: AppColors.error,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Something went wrong',
+              style: AppTextStyles.titleMedium,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Please restart the app',
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+```
+
+### Business Logic Error Handling (Either Pattern)
+
+For business logic where specific error recovery is needed, use the Either pattern:
+
+```dart
+// Failure classes for domain errors
 abstract class Failure extends Equatable {
   final String message;
   const Failure(this.message);
+  
+  @override
+  List<Object> get props => [message];
 }
 
-class ServerFailure extends Failure {
-  const ServerFailure([String message = 'Server error occurred']) : super(message);
+class APIFailure extends Failure {
+  const APIFailure(super.message);
 }
 
 class NetworkFailure extends Failure {
-  const NetworkFailure([String message = 'Network connection failed']) : super(message);
+  const NetworkFailure(super.message);
 }
 
-class CacheFailure extends Failure {
-  const CacheFailure([String message = 'Cache operation failed']) : super(message);
+class ValidationFailure extends Failure {
+  const ValidationFailure(super.message);
 }
-```
 
-### Global Error Handling
-```dart
-class ErrorHandler {
-  static String mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case ServerFailure:
-        return 'Something went wrong with the server';
-      case NetworkFailure:
-        return 'Please check your internet connection';
-      case CacheFailure:
-        return 'Unable to save data locally';
-      default:
-        return 'Unexpected error occurred';
+class UserCancelledFailure extends Failure {
+  const UserCancelledFailure(super.message);
+}
+
+// Repository implementation with specific error handling
+class PhotoRepositoryImpl implements PhotoRepository {
+  @override
+  Future<Either<Failure, Photo>> capturePhoto() async {
+    // NO try/catch here - let platform errors bubble to global handler
+    final photoModel = await _localDataSource.capturePhoto();
+    return Right(photoModel.toEntity());
+  }
+}
+
+// Use case with specific business logic error handling
+class LoginUseCase {
+  Future<Either<Failure, User>> call(String email, String password) async {
+    try {
+      final user = await _authService.login(email, password);
+      return Right(user);
+    } on InvalidCredentialsException {
+      return Left(AuthFailure('Invalid email or password'));
+    } on NetworkException {
+      return Left(NetworkFailure('No internet connection'));
     }
+    // Other exceptions bubble to global handler
   }
 }
 ```
+
+### Error Logging Strategy
+
+```dart
+class AppLogger {
+  static void error(
+    String message,
+    Object? error,
+    StackTrace? stackTrace, {
+    Map<String, dynamic>? additionalData,
+  }) {
+    // Development logging
+    if (kDebugMode) {
+      debugPrint('🔴 ERROR: $message');
+      if (error != null) debugPrint('Exception: $error');
+      if (stackTrace != null) debugPrint('Stack: $stackTrace');
+      if (additionalData != null) debugPrint('Data: $additionalData');
+    }
+    
+    // Production analytics (when implemented)
+    // AnalyticsService.logError(message, error, stackTrace, additionalData);
+  }
+}
+```
+
+### When to Use Local Error Handling
+
+**✅ DO use try/catch for:**
+- Authentication flows with specific error messages
+- File operations with fallback strategies  
+- Network requests with retry logic
+- Business rule validations
+
+**❌ DON'T use try/catch for:**
+- General "just in case" error prevention
+- Hiding bugs during development
+- Every database/API call without specific recovery
+- Widget build methods (use global handlers)
 
 ## 6. Null Safety Strategy
 
