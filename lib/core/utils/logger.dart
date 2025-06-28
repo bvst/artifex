@@ -2,12 +2,36 @@ import 'package:artifex/core/constants/app_constants.dart';
 import 'package:logger/logger.dart';
 
 class AppLogger {
-  static final Logger _logger = Logger(
-    printer: PrettyPrinter(
-      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
-    ),
-    level: AppConstants.isDebug ? Level.debug : Level.info,
-  );
+  static Logger _logger = _createLogger();
+
+  static Logger _createLogger() {
+    // Check if running in test environment
+    const isTest = bool.fromEnvironment('FLUTTER_TEST');
+
+    if (isTest) {
+      return Logger(
+        printer: SimplePrinter(),
+        level: Level.error, // Only errors during tests
+      );
+    }
+
+    return Logger(
+      printer: PrettyPrinter(
+        dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+      ),
+      level: AppConstants.isDebug ? Level.debug : Level.info,
+    );
+  }
+
+  // Allow injecting a different logger for testing
+  static void setLogger(Logger logger) {
+    _logger = logger;
+  }
+
+  // Reset to default logger (useful for tests)
+  static void resetLogger() {
+    _logger = _createLogger();
+  }
 
   static void debug(String message, [dynamic error, StackTrace? stackTrace]) {
     _logger.d(message, error: error, stackTrace: stackTrace);

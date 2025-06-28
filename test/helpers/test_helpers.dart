@@ -1,6 +1,8 @@
+import 'package:artifex/core/utils/logger.dart';
 import 'package:artifex/utils/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:logger/logger.dart';
 
 /// Creates a testable widget wrapped in MaterialApp with proper theming
 Widget makeTestableWidget({required Widget child, ThemeData? theme}) =>
@@ -40,6 +42,23 @@ Future<void> pumpForDuration(WidgetTester tester, Duration duration) async {
 Finder findTextContaining(String text) => find.byWidgetPredicate(
   (widget) => widget is Text && widget.data?.contains(text) == true,
 );
+
+/// Test utilities for setting up test environment
+class TestLoggerHelpers {
+  /// Sets up a minimal logger for tests to improve performance
+  static void setupTestLogger() {
+    final testLogger = Logger(
+      printer: SimplePrinter(),
+      level: Level.error, // Only show errors during tests
+    );
+    AppLogger.setLogger(testLogger);
+  }
+
+  /// Resets logger to default after tests
+  static void tearDownTestLogger() {
+    AppLogger.resetLogger();
+  }
+}
 
 extension WidgetTesterHelpers on WidgetTester {
   /// Wait for a widget with a timer to complete

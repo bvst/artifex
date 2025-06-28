@@ -77,6 +77,7 @@ void main(List<String> arguments) async {
     'test/widget',
     'test/widget_test.dart',
     '--reporter=compact',
+    '--dart-define=FLUTTER_TEST=true', // Enable test optimizations
   ]);
 
   if (unitTestResult.exitCode == 0) {
