@@ -7,12 +7,18 @@ import 'package:artifex/shared/themes/app_theme.dart';
 import 'package:artifex/shared/widgets/custom_error_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   // Initialize Flutter binding first
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Suppress keyboard assertion errors on Linux (development only)
+  if (kDebugMode && defaultTargetPlatform == TargetPlatform.linux) {
+    SystemChannels.keyEvent.setMessageHandler(null);
+  }
 
   // 1. Handle Flutter framework errors (widget build issues, etc.)
   FlutterError.onError = (details) {
