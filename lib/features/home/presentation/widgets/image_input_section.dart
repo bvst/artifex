@@ -1,12 +1,12 @@
 import 'dart:io';
+
+import 'package:artifex/features/home/presentation/widgets/image_input_button.dart';
+import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
+import 'package:artifex/features/photo_capture/presentation/providers/photo_capture_provider.dart';
+import 'package:artifex/shared/themes/app_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:artifex/shared/themes/app_theme.dart';
-import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
-import 'package:artifex/features/photo_capture/presentation/providers/photo_capture_provider.dart';
-import 'package:artifex/features/home/presentation/widgets/image_input_button.dart';
 
 class ImageInputSection extends ConsumerWidget {
   const ImageInputSection({super.key});

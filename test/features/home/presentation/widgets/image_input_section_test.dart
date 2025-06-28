@@ -1,16 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mockito/mockito.dart';
-import 'package:mockito/annotations.dart';
-import 'package:dartz/dartz.dart';
-
-import 'package:artifex/features/home/presentation/widgets/image_input_section.dart';
+import 'package:artifex/core/errors/failures.dart';
 import 'package:artifex/features/home/presentation/widgets/image_input_button.dart';
+import 'package:artifex/features/home/presentation/widgets/image_input_section.dart';
 import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
 import 'package:artifex/features/photo_capture/domain/repositories/photo_repository.dart';
 import 'package:artifex/features/photo_capture/presentation/providers/photo_providers.dart';
-import 'package:artifex/core/errors/failures.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 
 import '../../../../fixtures/test_data.dart';
 import 'image_input_section_test.mocks.dart';
@@ -29,23 +28,21 @@ void main() {
       );
     });
 
-    testWidgets('should display heading text', (WidgetTester tester) async {
+    testWidgets('should display heading text', (tester) async {
       await tester.pumpWidget(testWidget);
 
       // Verify heading exists by checking text widget structure
       expect(find.byType(Text), findsAtLeastNWidgets(1));
     });
 
-    testWidgets('should display two ImageInputButtons', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('should display two ImageInputButtons', (tester) async {
       await tester.pumpWidget(testWidget);
 
       expect(find.byType(ImageInputButton), findsNWidgets(2));
     });
 
     testWidgets('should capture photo when camera button is pressed', (
-      WidgetTester tester,
+      tester,
     ) async {
       // Given: A successful camera photo (using factory)
       final photo = TestData.createCameraPhoto();
@@ -67,7 +64,7 @@ void main() {
     });
 
     testWidgets('should pick from gallery when gallery button is pressed', (
-      WidgetTester tester,
+      tester,
     ) async {
       // Given: A successful gallery photo (using factory)
       final photo = TestData.createGalleryPhoto();
@@ -91,7 +88,7 @@ void main() {
     });
 
     testWidgets('should show loading indicator when capturing photo', (
-      WidgetTester tester,
+      tester,
     ) async {
       // Given: Camera operation will take some time (using factory)
       when(mockRepository.capturePhoto()).thenAnswer(
@@ -120,9 +117,7 @@ void main() {
       await tester.pumpAndSettle();
     });
 
-    testWidgets('should disable buttons when loading', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('should disable buttons when loading', (tester) async {
       // Return a delayed future to simulate loading
       when(mockRepository.capturePhoto()).thenAnswer(
         (_) => Future.delayed(
@@ -168,7 +163,7 @@ void main() {
     });
 
     testWidgets('should show error snackbar on capture failure', (
-      WidgetTester tester,
+      tester,
     ) async {
       const failure = ValidationFailure('Invalid camera settings');
       when(
@@ -192,7 +187,7 @@ void main() {
     });
 
     testWidgets('should show success snackbar on successful capture', (
-      WidgetTester tester,
+      tester,
     ) async {
       // Given: A successful photo capture (using factory)
       final photo = TestData.createCameraPhoto();
@@ -215,7 +210,7 @@ void main() {
     });
 
     testWidgets('should not show error when camera capture is cancelled', (
-      WidgetTester tester,
+      tester,
     ) async {
       const failure = UserCancelledFailure('Camera capture was cancelled');
       when(
@@ -242,7 +237,7 @@ void main() {
     });
 
     testWidgets('should not show error when gallery selection is cancelled', (
-      WidgetTester tester,
+      tester,
     ) async {
       const failure = UserCancelledFailure('Gallery selection was cancelled');
       when(

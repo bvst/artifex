@@ -1,6 +1,6 @@
+import 'package:artifex/utils/preferences_helper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:artifex/utils/preferences_helper.dart';
 
 void main() {
   group('PreferencesHelper', () {

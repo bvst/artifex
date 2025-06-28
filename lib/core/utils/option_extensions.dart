@@ -11,19 +11,14 @@ extension NullableToOption<T> on T? {
 // Extension for safe operations on nullable values
 extension SafeOperations<T> on T? {
   // Transform nullable value
-  U? map<U>(U Function(T) transform) {
-    return this != null ? transform(this as T) : null;
-  }
+  U? map<U>(U Function(T) transform) =>
+      this != null ? transform(this as T) : null;
 
   // Provide default value
-  T orElse(T defaultValue) {
-    return this ?? defaultValue;
-  }
+  T orElse(T defaultValue) => this ?? defaultValue;
 
   // Lazy default value
-  T orElseGet(T Function() defaultValue) {
-    return this ?? defaultValue();
-  }
+  T orElseGet(T Function() defaultValue) => this ?? defaultValue();
 
   // Conditional execution
   void ifPresent(void Function(T) action) {
@@ -36,20 +31,16 @@ extension SafeListOperations<T> on List<T> {
   Option<T> get headOption => isEmpty ? none() : some(first);
   Option<T> get lastOption => isEmpty ? none() : some(last);
 
-  Option<T> getOption(int index) {
-    return index >= 0 && index < length ? some(this[index]) : none();
-  }
+  Option<T> getOption(int index) =>
+      index >= 0 && index < length ? some(this[index]) : none();
 
-  List<T> whereNotNull() {
-    return where((item) => item != null).toList();
-  }
+  List<T> whereNotNull() => where((item) => item != null).toList();
 }
 
 // Extension for Map operations
 extension SafeMapOperations<K, V> on Map<K, V> {
-  Option<V> getOption(K key) {
-    return containsKey(key) ? some(this[key] as V) : none();
-  }
+  Option<V> getOption(K key) =>
+      containsKey(key) ? some(this[key] as V) : none();
 }
 
 // Extension for String operations
@@ -59,7 +50,5 @@ extension SafeStringOperations on String? {
 
   String get orEmpty => this ?? '';
 
-  Option<String> get nonEmptyOption {
-    return isNullOrEmpty ? none() : some(this!);
-  }
+  Option<String> get nonEmptyOption => isNullOrEmpty ? none() : some(this!);
 }

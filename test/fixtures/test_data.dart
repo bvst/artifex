@@ -1,5 +1,5 @@
-import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
 import 'package:artifex/core/errors/failures.dart';
+import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
 
 /// Centralized test data and factory methods for consistent testing
 class TestData {
@@ -22,18 +22,16 @@ class TestData {
     int? width,
     int? height,
     String? mimeType,
-  }) {
-    return Photo(
-      id: id ?? testPhotoId,
-      path: path ?? testPhotoPath,
-      name: name ?? testPhotoName,
-      size: size ?? testPhotoSize,
-      createdAt: createdAt ?? DateTime(2025, 6, 27, 12),
-      width: width,
-      height: height,
-      mimeType: mimeType,
-    );
-  }
+  }) => Photo(
+    id: id ?? testPhotoId,
+    path: path ?? testPhotoPath,
+    name: name ?? testPhotoName,
+    size: size ?? testPhotoSize,
+    createdAt: createdAt ?? DateTime(2025, 6, 27, 12),
+    width: width,
+    height: height,
+    mimeType: mimeType,
+  );
 
   static Photo createCameraPhoto() => createPhoto(
     id: 'camera-photo-id',

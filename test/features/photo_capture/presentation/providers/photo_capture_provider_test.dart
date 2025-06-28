@@ -1,13 +1,12 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:dartz/dartz.dart';
-import 'package:mockito/mockito.dart';
-import 'package:mockito/annotations.dart';
-
+import 'package:artifex/core/errors/failures.dart';
 import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
 import 'package:artifex/features/photo_capture/domain/repositories/photo_repository.dart';
 import 'package:artifex/features/photo_capture/presentation/providers/photo_capture_provider.dart';
-import 'package:artifex/core/errors/failures.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 
 import '../../../../fixtures/test_data.dart';
 import '../../../../helpers/test_builders.dart';

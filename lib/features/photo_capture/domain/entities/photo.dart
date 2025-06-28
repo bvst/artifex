@@ -1,5 +1,5 @@
-import 'package:equatable/equatable.dart';
 import 'package:dartz/dartz.dart';
+import 'package:equatable/equatable.dart';
 
 class Photo extends Equatable {
   const Photo({
@@ -31,13 +31,10 @@ class Photo extends Equatable {
   // Safe dimension operations
   bool get hasDimensions => width != null && height != null;
 
-  String get displayDimensions {
-    return hasDimensions ? '${width}x$height' : 'Unknown dimensions';
-  }
+  String get displayDimensions =>
+      hasDimensions ? '${width}x$height' : 'Unknown dimensions';
 
-  double get aspectRatio {
-    return hasDimensions ? (width! / height!) : 1.0;
-  }
+  double get aspectRatio => hasDimensions ? (width! / height!) : 1.0;
 
   @override
   List<Object?> get props => [
@@ -60,16 +57,14 @@ class Photo extends Equatable {
     int? width,
     int? height,
     String? mimeType,
-  }) {
-    return Photo(
-      id: id ?? this.id,
-      path: path ?? this.path,
-      name: name ?? this.name,
-      size: size ?? this.size,
-      createdAt: createdAt ?? this.createdAt,
-      width: width ?? this.width,
-      height: height ?? this.height,
-      mimeType: mimeType ?? this.mimeType,
-    );
-  }
+  }) => Photo(
+    id: id ?? this.id,
+    path: path ?? this.path,
+    name: name ?? this.name,
+    size: size ?? this.size,
+    createdAt: createdAt ?? this.createdAt,
+    width: width ?? this.width,
+    height: height ?? this.height,
+    mimeType: mimeType ?? this.mimeType,
+  );
 }

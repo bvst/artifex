@@ -1,11 +1,11 @@
-import 'package:dio/dio.dart';
 import 'package:artifex/core/constants/app_constants.dart';
 import 'package:artifex/core/utils/logger.dart';
+import 'package:dio/dio.dart';
 
 class DioClient {
-  static final DioClient _instance = DioClient._internal();
   factory DioClient() => _instance;
   DioClient._internal();
+  static final DioClient _instance = DioClient._internal();
 
   late final Dio _dio;
 
@@ -71,18 +71,20 @@ class DioClient {
 }
 
 class RetryInterceptor extends Interceptor {
-  final Dio dio;
-  final int retries;
-  final List<Duration> retryDelays;
-
   RetryInterceptor({
     required this.dio,
     required this.retries,
     required this.retryDelays,
   });
+  final Dio dio;
+  final int retries;
+  final List<Duration> retryDelays;
 
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(
+    DioException err,
+    ErrorInterceptorHandler handler,
+  ) async {
     final extra = err.requestOptions.extra;
     final retryAttempt = extra['retry_attempt'] as int? ?? 0;
 
@@ -110,7 +112,7 @@ class RetryInterceptor extends Interceptor {
           queryParameters: err.requestOptions.queryParameters,
         );
         return handler.resolve(response);
-      } catch (e) {
+      } on DioException {
         return handler.next(err);
       }
     }
@@ -118,10 +120,9 @@ class RetryInterceptor extends Interceptor {
     return handler.next(err);
   }
 
-  bool _shouldRetry(DioException err) {
-    return err.type == DioExceptionType.connectionTimeout ||
-        err.type == DioExceptionType.receiveTimeout ||
-        err.type == DioExceptionType.sendTimeout ||
-        (err.response?.statusCode != null && err.response!.statusCode! >= 500);
-  }
+  bool _shouldRetry(DioException err) =>
+      err.type == DioExceptionType.connectionTimeout ||
+      err.type == DioExceptionType.receiveTimeout ||
+      err.type == DioExceptionType.sendTimeout ||
+      (err.response?.statusCode != null && err.response!.statusCode! >= 500);
 }

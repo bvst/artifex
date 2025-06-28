@@ -1,5 +1,5 @@
-import 'package:logger/logger.dart';
 import 'package:artifex/core/constants/app_constants.dart';
+import 'package:logger/logger.dart';
 
 class AppLogger {
   static final Logger _logger = Logger(

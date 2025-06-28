@@ -1,12 +1,10 @@
+import 'package:artifex/features/home/presentation/widgets/image_input_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:artifex/features/home/presentation/widgets/image_input_button.dart';
 
 void main() {
   group('ImageInputButton Tests', () {
-    testWidgets('should display all button components', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('should display all button components', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -27,9 +25,7 @@ void main() {
       expect(find.byType(Row), findsOneWidget); // Main layout
     });
 
-    testWidgets('camera button should have correct properties', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('camera button should have correct properties', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(body: ImageInputButton.camera(onPressed: () {})),
@@ -43,7 +39,7 @@ void main() {
     });
 
     testWidgets('gallery button should have correct properties', (
-      WidgetTester tester,
+      tester,
     ) async {
       await tester.pumpWidget(
         MaterialApp(
@@ -57,8 +53,8 @@ void main() {
       expect(find.byType(Row), findsOneWidget);
     });
 
-    testWidgets('should handle tap events', (WidgetTester tester) async {
-      bool wasPressed = false;
+    testWidgets('should handle tap events', (tester) async {
+      var wasPressed = false;
 
       await tester.pumpWidget(
         MaterialApp(
@@ -77,7 +73,7 @@ void main() {
       expect(wasPressed, isTrue);
     });
 
-    testWidgets('should have gradient decoration', (WidgetTester tester) async {
+    testWidgets('should have gradient decoration', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -109,7 +105,7 @@ void main() {
       expect(decoration.borderRadius, BorderRadius.circular(16));
     });
 
-    testWidgets('should have correct padding', (WidgetTester tester) async {
+    testWidgets('should have correct padding', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -136,9 +132,7 @@ void main() {
       expect(padding.padding, const EdgeInsets.all(24));
     });
 
-    testWidgets('should display icon in a decorated container', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('should display icon in a decorated container', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -169,7 +163,7 @@ void main() {
     });
 
     testWidgets('should use Row layout with correct properties', (
-      WidgetTester tester,
+      tester,
     ) async {
       await tester.pumpWidget(
         MaterialApp(
@@ -192,7 +186,7 @@ void main() {
     });
 
     testWidgets('should have Material with InkWell for ripple effect', (
-      WidgetTester tester,
+      tester,
     ) async {
       await tester.pumpWidget(
         MaterialApp(

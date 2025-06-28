@@ -1,8 +1,8 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:artifex/core/errors/failures.dart';
 import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
 import 'package:artifex/features/photo_capture/domain/usecases/capture_photo_usecase.dart';
 import 'package:artifex/features/photo_capture/presentation/providers/photo_providers.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'photo_capture_provider.g.dart';
 
@@ -26,7 +26,7 @@ class PhotoCapture extends _$PhotoCapture {
         _mapFailureToMessage(failure),
         StackTrace.current,
       );
-    }, (photo) => AsyncValue.data(photo));
+    }, AsyncValue.data);
   }
 
   Future<void> pickFromGallery() async {
@@ -46,22 +46,20 @@ class PhotoCapture extends _$PhotoCapture {
         _mapFailureToMessage(failure),
         StackTrace.current,
       );
-    }, (photo) => AsyncValue.data(photo));
+    }, AsyncValue.data);
   }
 
   void reset() {
     state = const AsyncValue.data(null);
   }
 
-  String _mapFailureToMessage(Failure failure) {
-    return switch (failure) {
-      FileNotFoundFailure() => failure.message,
-      ImageProcessingFailure() => failure.message,
-      ValidationFailure() => failure.message,
-      CacheFailure() => 'Failed to save photo. Please try again.',
-      PermissionFailure() =>
-        'Camera permission is required. Please allow access in settings.',
-      _ => 'An unexpected error occurred. Please try again.',
-    };
-  }
+  String _mapFailureToMessage(Failure failure) => switch (failure) {
+    FileNotFoundFailure() => failure.message,
+    ImageProcessingFailure() => failure.message,
+    ValidationFailure() => failure.message,
+    CacheFailure() => 'Failed to save photo. Please try again.',
+    PermissionFailure() =>
+      'Camera permission is required. Please allow access in settings.',
+    _ => 'An unexpected error occurred. Please try again.',
+  };
 }

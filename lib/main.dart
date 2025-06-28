@@ -1,17 +1,17 @@
+import 'package:artifex/core/network/dio_client.dart';
+import 'package:artifex/core/utils/error_boundary.dart';
+import 'package:artifex/core/utils/logger.dart';
+import 'package:artifex/screens/splash_screen.dart';
+import 'package:artifex/shared/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:artifex/core/network/dio_client.dart';
-import 'package:artifex/core/utils/logger.dart';
-import 'package:artifex/core/utils/error_boundary.dart';
-import 'package:artifex/shared/themes/app_theme.dart';
-import 'package:artifex/screens/splash_screen.dart';
 
 void main() async {
   // Initialize Flutter binding first
   WidgetsFlutterBinding.ensureInitialized();
 
   // Set up global error handling for keyboard assertion errors
-  FlutterError.onError = (FlutterErrorDetails details) {
+  FlutterError.onError = (details) {
     // Filter out known harmless keyboard assertion errors
     if (details.exception.toString().contains(
           'HardwareKeyboard._assertEventIsRegular',
@@ -61,20 +61,17 @@ Future<void> _initializeApp() async {
 }
 
 class ArtifexApp extends StatelessWidget {
-  final Duration splashDuration;
-
   const ArtifexApp({
     super.key,
     this.splashDuration = const Duration(seconds: 2),
   });
+  final Duration splashDuration;
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Artifex',
-      theme: AppTheme.lightTheme,
-      debugShowCheckedModeBanner: false,
-      home: SplashScreen(splashDuration: splashDuration),
-    );
-  }
+  Widget build(BuildContext context) => MaterialApp(
+    title: 'Artifex',
+    theme: AppTheme.lightTheme,
+    debugShowCheckedModeBanner: false,
+    home: SplashScreen(splashDuration: splashDuration),
+  );
 }

@@ -93,16 +93,22 @@ linter:
     slash_for_doc_comments: true
     sort_child_properties_last: true
     
-    # TODO: Enable these gradually as we clean up the codebase
-    # always_declare_return_types: true
-    # always_put_required_named_parameters_first: true  
-    # avoid_catches_without_on_clauses: true
-    # avoid_types_on_closure_parameters: true
-    # avoid_void_async: true
-    # directives_ordering: true
-    # omit_local_variable_types: true
-    # prefer_expression_function_bodies: true
-    # prefer_final_locals: true
-    # sort_constructors_first: true
-    # type_annotate_public_apis: true
-    # unnecessary_lambdas: true
+    # Type Safety and API Design
+    always_declare_return_types: true
+    always_put_required_named_parameters_first: true
+    type_annotate_public_apis: true
+    
+    # Error Handling and Async Patterns
+    avoid_catches_without_on_clauses: true
+    avoid_void_async: true
+    
+    # Code Organization and Structure
+    directives_ordering: true
+    sort_constructors_first: true
+    
+    # Expression Style and Conciseness
+    avoid_types_on_closure_parameters: true
+    omit_local_variable_types: true
+    prefer_expression_function_bodies: true
+    prefer_final_locals: true
+    unnecessary_lambdas: true

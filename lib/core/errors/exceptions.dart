@@ -1,8 +1,7 @@
 class ServerException implements Exception {
+  const ServerException({required this.message, this.statusCode});
   final String message;
   final int? statusCode;
-
-  const ServerException({required this.message, this.statusCode});
 
   @override
   String toString() =>
@@ -10,28 +9,25 @@ class ServerException implements Exception {
 }
 
 class NetworkException implements Exception {
-  final String message;
-
   const NetworkException(this.message);
+  final String message;
 
   @override
   String toString() => 'NetworkException: $message';
 }
 
 class CacheException implements Exception {
-  final String message;
-
   const CacheException(this.message);
+  final String message;
 
   @override
   String toString() => 'CacheException: $message';
 }
 
 class ValidationException implements Exception {
+  const ValidationException({required this.message, this.errors});
   final String message;
   final Map<String, String>? errors;
-
-  const ValidationException({required this.message, this.errors});
 
   @override
   String toString() =>
@@ -39,28 +35,25 @@ class ValidationException implements Exception {
 }
 
 class FileException implements Exception {
-  final String message;
-
   const FileException(this.message);
+  final String message;
 
   @override
   String toString() => 'FileException: $message';
 }
 
 class PermissionException implements Exception {
-  final String message;
-
   const PermissionException(this.message);
+  final String message;
 
   @override
   String toString() => 'PermissionException: $message';
 }
 
 class APIException implements Exception {
+  const APIException(this.message, [this.statusCode]);
   final String message;
   final int? statusCode;
-
-  const APIException(this.message, [this.statusCode]);
 
   @override
   String toString() =>

@@ -1,15 +1,15 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:mockito/annotations.dart';
-import 'package:dio/dio.dart';
 import 'package:artifex/core/errors/exceptions.dart';
 import 'package:artifex/features/ai_transformation/data/datasources/ai_transformation_remote_datasource.dart';
 import 'package:artifex/features/ai_transformation/data/datasources/openai_api_client.dart';
-import 'package:artifex/features/ai_transformation/data/models/transformation_request_model.dart';
 import 'package:artifex/features/ai_transformation/data/models/openai_image_response.dart';
 import 'package:artifex/features/ai_transformation/data/models/openai_models_response.dart';
-import '../test_data/openai_responses.dart';
+import 'package:artifex/features/ai_transformation/data/models/transformation_request_model.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 
+import '../test_data/openai_responses.dart';
 @GenerateMocks([OpenAIApiClient])
 import 'ai_transformation_remote_datasource_test.mocks.dart';
 

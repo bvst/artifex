@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mockito/mockito.dart';
-
 import 'package:artifex/features/photo_capture/domain/repositories/photo_repository.dart';
 import 'package:artifex/features/photo_capture/presentation/providers/photo_providers.dart';
 import 'package:artifex/shared/themes/app_theme.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
 /// Extension methods for cleaner test setup - very Dart idiomatic
 extension WidgetTestingExtensions on WidgetTester {
@@ -116,30 +115,24 @@ extension MockExtensions on Mock {
 /// Extensions for better finder patterns
 extension FinderExtensions on CommonFinders {
   /// Find text that contains a substring (case insensitive)
-  Finder textContaining(String substring) {
-    return byWidgetPredicate(
-      (widget) =>
-          widget is Text &&
-          widget.data != null &&
-          widget.data!.toLowerCase().contains(substring.toLowerCase()),
-      description: 'text containing "$substring"',
-    );
-  }
+  Finder textContaining(String substring) => byWidgetPredicate(
+    (widget) =>
+        widget is Text &&
+        widget.data != null &&
+        widget.data!.toLowerCase().contains(substring.toLowerCase()),
+    description: 'text containing "$substring"',
+  );
 
   /// Find widget by its key value
-  Finder byKeyValue(String keyValue) {
-    return byKey(ValueKey(keyValue));
-  }
+  Finder byKeyValue(String keyValue) => byKey(ValueKey(keyValue));
 
   /// Find button by text (works for any button type)
-  Finder buttonWithText(String text) {
-    return ancestor(
-      of: this.text(text),
-      matching: byWidgetPredicate(
-        (widget) => widget is ButtonStyleButton || widget is Material,
-      ),
-    );
-  }
+  Finder buttonWithText(String text) => ancestor(
+    of: this.text(text),
+    matching: byWidgetPredicate(
+      (widget) => widget is ButtonStyleButton || widget is Material,
+    ),
+  );
 }
 
 /// Extensions for test assertions

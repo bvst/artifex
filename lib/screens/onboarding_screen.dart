@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:artifex/features/home/presentation/screens/home_screen.dart';
 import 'package:artifex/utils/app_colors.dart';
 import 'package:artifex/utils/preferences_helper.dart';
 import 'package:artifex/widgets/onboarding_page.dart';
-import 'package:artifex/features/home/presentation/screens/home_screen.dart';
+import 'package:flutter/material.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -47,7 +47,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
   }
 
-  void _completeOnboarding() async {
+  Future<void> _completeOnboarding() async {
     await PreferencesHelper.setOnboardingComplete();
     if (mounted) {
       Navigator.of(context).pushReplacement(
@@ -61,87 +61,84 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.primaryBackground,
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Skip button
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: TextButton(
-                  onPressed: _skipOnboarding,
-                  child: Text(
-                    'Skip',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.canvasWhite.withValues(alpha: 0.7),
-                    ),
+  Widget build(BuildContext context) => Scaffold(
+    backgroundColor: AppColors.primaryBackground,
+    body: SafeArea(
+      child: Column(
+        children: [
+          // Skip button
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: TextButton(
+                onPressed: _skipOnboarding,
+                child: Text(
+                  'Skip',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: AppColors.canvasWhite.withValues(alpha: 0.7),
                   ),
                 ),
               ),
             ),
-            // Page content
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                onPageChanged: (index) {
-                  setState(() {
-                    _currentPage = index;
-                  });
-                },
-                itemCount: _pages.length,
-                itemBuilder: (context, index) {
-                  return OnboardingPage(data: _pages[index]);
-                },
-              ),
+          ),
+          // Page content
+          Expanded(
+            child: PageView.builder(
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPage = index;
+                });
+              },
+              itemCount: _pages.length,
+              itemBuilder: (context, index) =>
+                  OnboardingPage(data: _pages[index]),
             ),
-            // Bottom section with indicators and button
-            Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                children: [
-                  // Page indicators
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      _pages.length,
-                      (index) => Container(
-                        width: 8,
-                        height: 8,
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _currentPage == index
-                              ? AppColors.primaryAccent
-                              : AppColors.canvasWhite.withValues(alpha: 0.3),
-                        ),
+          ),
+          // Bottom section with indicators and button
+          Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              children: [
+                // Page indicators
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    _pages.length,
+                    (index) => Container(
+                      width: 8,
+                      height: 8,
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _currentPage == index
+                            ? AppColors.primaryAccent
+                            : AppColors.canvasWhite.withValues(alpha: 0.3),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 32),
-                  // Action button
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: _nextPage,
-                      child: Text(
-                        _currentPage == _pages.length - 1
-                            ? "Let's Create"
-                            : 'Next',
-                      ),
+                ),
+                const SizedBox(height: 32),
+                // Action button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _nextPage,
+                    child: Text(
+                      _currentPage == _pages.length - 1
+                          ? "Let's Create"
+                          : 'Next',
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
 
   @override
   void dispose() {
@@ -151,13 +148,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 }
 
 class OnboardingPageData {
-  final IconData icon;
-  final String title;
-  final String description;
-
   OnboardingPageData({
     required this.icon,
     required this.title,
     required this.description,
   });
+  final IconData icon;
+  final String title;
+  final String description;
 }

@@ -3,9 +3,7 @@ import '../test_config.dart';
 
 void main() {
   group('Core Functionality', () {
-    setUpAll(() {
-      setupTestEnvironment();
-    });
+    setUpAll(setupTestEnvironment);
 
     group('Math Operations', () {
       test('performs basic arithmetic correctly', () {

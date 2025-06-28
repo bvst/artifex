@@ -5,12 +5,7 @@ class PreferencesHelper {
 
   static Future<bool> isOnboardingComplete() async {
     final prefs = await SharedPreferences.getInstance();
-    try {
-      return prefs.getBool(_onboardingCompleteKey) ?? false;
-    } catch (e) {
-      // Handle corrupted preferences gracefully - default to false (show onboarding)
-      return false;
-    }
+    return prefs.getBool(_onboardingCompleteKey) ?? false;
   }
 
   static Future<void> setOnboardingComplete() async {

@@ -20,13 +20,11 @@ Future<void> configureGoldenTestView(WidgetTester tester) async {
   });
 }
 
-Widget wrapForGolden(Widget widget, {ThemeData? theme}) {
-  return MaterialApp(
-    theme: theme ?? ThemeData.light(),
-    debugShowCheckedModeBanner: false,
-    home: widget,
-  );
-}
+Widget wrapForGolden(Widget widget, {ThemeData? theme}) => MaterialApp(
+  theme: theme ?? ThemeData.light(),
+  debugShowCheckedModeBanner: false,
+  home: widget,
+);
 
 Future<void> expectGolden(
   WidgetTester tester,

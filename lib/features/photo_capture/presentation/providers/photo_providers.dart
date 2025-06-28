@@ -1,11 +1,11 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:artifex/features/photo_capture/data/datasources/photo_local_datasource.dart';
 import 'package:artifex/features/photo_capture/data/repositories/photo_repository_impl.dart';
 import 'package:artifex/features/photo_capture/domain/repositories/photo_repository.dart';
 import 'package:artifex/features/photo_capture/domain/usecases/capture_photo_usecase.dart';
 import 'package:artifex/features/photo_capture/presentation/providers/photo_state.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'photo_providers.g.dart';
 
@@ -15,33 +15,27 @@ ImagePicker imagePicker(Ref ref) => ImagePicker();
 
 // Data sources
 @riverpod
-PhotoLocalDataSource photoLocalDataSource(Ref ref) {
-  return PhotoLocalDataSourceImpl(imagePicker: ref.read(imagePickerProvider));
-}
+PhotoLocalDataSource photoLocalDataSource(Ref ref) =>
+    PhotoLocalDataSourceImpl(imagePicker: ref.read(imagePickerProvider));
 
 // Repositories
 @riverpod
-PhotoRepository photoRepository(Ref ref) {
-  return PhotoRepositoryImpl(
-    localDataSource: ref.read(photoLocalDataSourceProvider),
-  );
-}
+PhotoRepository photoRepository(Ref ref) => PhotoRepositoryImpl(
+  localDataSource: ref.read(photoLocalDataSourceProvider),
+);
 
 // Use cases
 @riverpod
-CapturePhotoUseCase capturePhotoUseCase(Ref ref) {
-  return CapturePhotoUseCase(ref.read(photoRepositoryProvider));
-}
+CapturePhotoUseCase capturePhotoUseCase(Ref ref) =>
+    CapturePhotoUseCase(ref.read(photoRepositoryProvider));
 
 @riverpod
-PickImageFromGalleryUseCase pickImageFromGalleryUseCase(Ref ref) {
-  return PickImageFromGalleryUseCase(ref.read(photoRepositoryProvider));
-}
+PickImageFromGalleryUseCase pickImageFromGalleryUseCase(Ref ref) =>
+    PickImageFromGalleryUseCase(ref.read(photoRepositoryProvider));
 
 @riverpod
-GetRecentPhotosUseCase getRecentPhotosUseCase(Ref ref) {
-  return GetRecentPhotosUseCase(ref.read(photoRepositoryProvider));
-}
+GetRecentPhotosUseCase getRecentPhotosUseCase(Ref ref) =>
+    GetRecentPhotosUseCase(ref.read(photoRepositoryProvider));
 
 // Photo state notifier
 @riverpod

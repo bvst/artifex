@@ -1,8 +1,8 @@
+import 'package:artifex/features/home/presentation/screens/home_screen.dart';
+import 'package:artifex/features/home/presentation/widgets/image_input_section.dart';
+import 'package:artifex/features/home/presentation/widgets/welcome_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:artifex/features/home/presentation/screens/home_screen.dart';
-import 'package:artifex/features/home/presentation/widgets/welcome_section.dart';
-import 'package:artifex/features/home/presentation/widgets/image_input_section.dart';
 
 import '../../../../extensions/test_extensions.dart';
 

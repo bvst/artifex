@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 /// Custom matchers for domain-specific assertions
 /// This is very Flutter/Dart idiomatic for testing
@@ -13,17 +12,14 @@ Matcher isPhotoWith({
   String? name,
   int? size,
   DateTime? createdAt,
-}) {
-  return _PhotoMatcher(id: id, name: name, size: size, createdAt: createdAt);
-}
+}) => _PhotoMatcher(id: id, name: name, size: size, createdAt: createdAt);
 
 class _PhotoMatcher extends Matcher {
+  const _PhotoMatcher({this.id, this.name, this.size, this.createdAt});
   final String? id;
   final String? name;
   final int? size;
   final DateTime? createdAt;
-
-  const _PhotoMatcher({this.id, this.name, this.size, this.createdAt});
 
   @override
   bool matches(Object? item, Map<dynamic, dynamic> matchState) {
@@ -55,47 +51,41 @@ Matcher get isAsyncLoading => const _AsyncLoadingMatcher();
 Matcher isAsyncError(Object error) => _AsyncErrorMatcher(error);
 
 class _AsyncDataMatcher<T> extends Matcher {
-  final T expectedData;
   const _AsyncDataMatcher(this.expectedData);
+  final T expectedData;
 
   @override
-  bool matches(Object? item, Map<dynamic, dynamic> matchState) {
-    return item is AsyncData<T> && item.value == expectedData;
-  }
+  bool matches(Object? item, Map<dynamic, dynamic> matchState) =>
+      item is AsyncData<T> && item.value == expectedData;
 
   @override
-  Description describe(Description description) {
-    return description.add('AsyncData with value $expectedData');
-  }
+  Description describe(Description description) =>
+      description.add('AsyncData with value $expectedData');
 }
 
 class _AsyncLoadingMatcher extends Matcher {
   const _AsyncLoadingMatcher();
 
   @override
-  bool matches(Object? item, Map<dynamic, dynamic> matchState) {
-    return item is AsyncLoading;
-  }
+  bool matches(Object? item, Map<dynamic, dynamic> matchState) =>
+      item is AsyncLoading;
 
   @override
-  Description describe(Description description) {
-    return description.add('AsyncLoading state');
-  }
+  Description describe(Description description) =>
+      description.add('AsyncLoading state');
 }
 
 class _AsyncErrorMatcher extends Matcher {
-  final Object expectedError;
   const _AsyncErrorMatcher(this.expectedError);
+  final Object expectedError;
 
   @override
-  bool matches(Object? item, Map<dynamic, dynamic> matchState) {
-    return item is AsyncError && item.error == expectedError;
-  }
+  bool matches(Object? item, Map<dynamic, dynamic> matchState) =>
+      item is AsyncError && item.error == expectedError;
 
   @override
-  Description describe(Description description) {
-    return description.add('AsyncError with error $expectedError');
-  }
+  Description describe(Description description) =>
+      description.add('AsyncError with error $expectedError');
 }
 
 /// Widget-specific matchers
@@ -106,8 +96,8 @@ Matcher isEnabled() => const _IsEnabledMatcher();
 Matcher isDisabled() => const _IsDisabledMatcher();
 
 class _HasTextMatcher extends Matcher {
-  final String expectedText;
   const _HasTextMatcher(this.expectedText);
+  final String expectedText;
 
   @override
   bool matches(Object? item, Map<dynamic, dynamic> matchState) {
@@ -118,14 +108,13 @@ class _HasTextMatcher extends Matcher {
   }
 
   @override
-  Description describe(Description description) {
-    return description.add('Text widget with text "$expectedText"');
-  }
+  Description describe(Description description) =>
+      description.add('Text widget with text "$expectedText"');
 }
 
 class _HasTextContainingMatcher extends Matcher {
-  final String substring;
   const _HasTextContainingMatcher(this.substring);
+  final String substring;
 
   @override
   bool matches(Object? item, Map<dynamic, dynamic> matchState) {
@@ -136,9 +125,8 @@ class _HasTextContainingMatcher extends Matcher {
   }
 
   @override
-  Description describe(Description description) {
-    return description.add('Text widget containing "$substring"');
-  }
+  Description describe(Description description) =>
+      description.add('Text widget containing "$substring"');
 }
 
 class _IsEnabledMatcher extends Matcher {
@@ -156,9 +144,8 @@ class _IsEnabledMatcher extends Matcher {
   }
 
   @override
-  Description describe(Description description) {
-    return description.add('enabled widget');
-  }
+  Description describe(Description description) =>
+      description.add('enabled widget');
 }
 
 class _IsDisabledMatcher extends Matcher {
@@ -176,7 +163,6 @@ class _IsDisabledMatcher extends Matcher {
   }
 
   @override
-  Description describe(Description description) {
-    return description.add('disabled widget');
-  }
+  Description describe(Description description) =>
+      description.add('disabled widget');
 }

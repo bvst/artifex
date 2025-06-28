@@ -6,12 +6,11 @@ part 'openai_error_response.g.dart';
 /// Based on https://platform.openai.com/docs/guides/error-codes
 @JsonSerializable()
 class OpenAIErrorResponse {
-  final OpenAIError error;
-
   const OpenAIErrorResponse({required this.error});
 
   factory OpenAIErrorResponse.fromJson(Map<String, dynamic> json) =>
       _$OpenAIErrorResponseFromJson(json);
+  final OpenAIError error;
 
   Map<String, dynamic> toJson() => _$OpenAIErrorResponseToJson(this);
 }
@@ -19,6 +18,16 @@ class OpenAIErrorResponse {
 /// OpenAI Error Details
 @JsonSerializable()
 class OpenAIError {
+  const OpenAIError({
+    required this.message,
+    required this.type,
+    this.param,
+    this.code,
+  });
+
+  factory OpenAIError.fromJson(Map<String, dynamic> json) =>
+      _$OpenAIErrorFromJson(json);
+
   /// The error message
   final String message;
 
@@ -30,16 +39,6 @@ class OpenAIError {
 
   /// The error code (if applicable)
   final String? code;
-
-  const OpenAIError({
-    required this.message,
-    required this.type,
-    this.param,
-    this.code,
-  });
-
-  factory OpenAIError.fromJson(Map<String, dynamic> json) =>
-      _$OpenAIErrorFromJson(json);
 
   Map<String, dynamic> toJson() => _$OpenAIErrorToJson(this);
 }

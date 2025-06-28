@@ -1,12 +1,6 @@
 /// Result entity for AI photo transformation
 class TransformationResult {
-  final String id;
-  final String imageUrl;
-  final String thumbnailUrl;
-  final String prompt;
-  final String style;
-  final DateTime createdAt;
-  final String? localPath; // Path after downloading
+  // Path after downloading
 
   const TransformationResult({
     required this.id,
@@ -17,6 +11,13 @@ class TransformationResult {
     required this.createdAt,
     this.localPath,
   });
+  final String id;
+  final String imageUrl;
+  final String thumbnailUrl;
+  final String prompt;
+  final String style;
+  final DateTime createdAt;
+  final String? localPath;
 
   TransformationResult copyWith({
     String? id,
@@ -26,17 +27,15 @@ class TransformationResult {
     String? style,
     DateTime? createdAt,
     String? localPath,
-  }) {
-    return TransformationResult(
-      id: id ?? this.id,
-      imageUrl: imageUrl ?? this.imageUrl,
-      thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
-      prompt: prompt ?? this.prompt,
-      style: style ?? this.style,
-      createdAt: createdAt ?? this.createdAt,
-      localPath: localPath ?? this.localPath,
-    );
-  }
+  }) => TransformationResult(
+    id: id ?? this.id,
+    imageUrl: imageUrl ?? this.imageUrl,
+    thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
+    prompt: prompt ?? this.prompt,
+    style: style ?? this.style,
+    createdAt: createdAt ?? this.createdAt,
+    localPath: localPath ?? this.localPath,
+  );
 
   @override
   bool operator ==(Object other) =>

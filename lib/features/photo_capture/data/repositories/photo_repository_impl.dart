@@ -1,11 +1,11 @@
-import 'package:dartz/dartz.dart';
 import 'package:artifex/core/errors/exceptions.dart';
 import 'package:artifex/core/errors/failures.dart';
 import 'package:artifex/core/utils/logger.dart';
-import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
-import 'package:artifex/features/photo_capture/domain/repositories/photo_repository.dart';
 import 'package:artifex/features/photo_capture/data/datasources/photo_local_datasource.dart';
 import 'package:artifex/features/photo_capture/data/models/photo_model.dart';
+import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
+import 'package:artifex/features/photo_capture/domain/repositories/photo_repository.dart';
+import 'package:dartz/dartz.dart';
 
 class PhotoRepositoryImpl implements PhotoRepository {
   const PhotoRepositoryImpl({required PhotoLocalDataSource localDataSource})
@@ -33,7 +33,7 @@ class PhotoRepositoryImpl implements PhotoRepository {
     } on PermissionException catch (e) {
       AppLogger.error('PhotoRepository: Permission error during capture', e);
       return Left(PermissionFailure(e.message));
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.error('PhotoRepository: Unexpected error during capture', e);
       return Left(CacheFailure('Failed to capture photo: ${e.toString()}'));
     }
@@ -67,7 +67,7 @@ class PhotoRepositoryImpl implements PhotoRepository {
         e,
       );
       return Left(PermissionFailure(e.message));
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.error(
         'PhotoRepository: Unexpected error during gallery pick',
         e,
@@ -86,7 +86,7 @@ class PhotoRepositoryImpl implements PhotoRepository {
     } on CacheException catch (e) {
       AppLogger.error('PhotoRepository: Cache error getting recent photos', e);
       return Left(CacheFailure(e.message));
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.error(
         'PhotoRepository: Unexpected error getting recent photos',
         e,
@@ -104,7 +104,7 @@ class PhotoRepositoryImpl implements PhotoRepository {
     } on FileException catch (e) {
       AppLogger.error('PhotoRepository: File error during delete', e);
       return Left(FileNotFoundFailure(e.message));
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.error('PhotoRepository: Unexpected error during delete', e);
       return Left(CacheFailure('Failed to delete photo: ${e.toString()}'));
     }
@@ -131,7 +131,7 @@ class PhotoRepositoryImpl implements PhotoRepository {
     } on FileException catch (e) {
       AppLogger.error('PhotoRepository: File error during save', e);
       return Left(FileNotFoundFailure(e.message));
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.error('PhotoRepository: Unexpected error during save', e);
       return Left(CacheFailure('Failed to save photo: ${e.toString()}'));
     }

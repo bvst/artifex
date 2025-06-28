@@ -3,10 +3,9 @@
 import 'package:dartz/dartz.dart';
 
 // 1. Use Either instead of nullable returns
-Either<String, User> findUser(String id) {
-  // Instead of: User? findUser(String id)
-  return left('User not found'); // or right(user)
-}
+Either<String, User> findUser(String id) =>
+    // Instead of: User? findUser(String id)
+    left('User not found'); // or right(user)
 
 // 2. Use sealed classes for state management
 sealed class LoadingState<T> {
@@ -18,21 +17,17 @@ class Loading<T> extends LoadingState<T> {
 }
 
 class Success<T> extends LoadingState<T> {
-  final T data;
   const Success(this.data);
+  final T data;
 }
 
 class Error<T> extends LoadingState<T> {
-  final String message;
   const Error(this.message);
+  final String message;
 }
 
 // 3. Use factory constructors with defaults
 class AppConfig {
-  final String apiUrl;
-  final int timeout;
-  final bool debugMode;
-
   const AppConfig({
     required this.apiUrl,
     required this.timeout,
@@ -40,13 +35,14 @@ class AppConfig {
   });
 
   // Factory with sensible defaults
-  factory AppConfig.defaultConfig() {
-    return const AppConfig(
-      apiUrl: 'https://api.openai.com/v1',
-      timeout: 30000,
-      debugMode: false,
-    );
-  }
+  factory AppConfig.defaultConfig() => const AppConfig(
+    apiUrl: 'https://api.openai.com/v1',
+    timeout: 30000,
+    debugMode: false,
+  );
+  final String apiUrl;
+  final int timeout;
+  final bool debugMode;
 }
 
 // 4. Use extension methods for safe operations
@@ -60,40 +56,34 @@ extension SafeList<T> on List<T> {
 
 // 5. Use builders and required parameters
 class UserProfile {
-  final String name;
-  final String email;
-  final int age;
-
   const UserProfile({
     required this.name,
     required this.email,
     required this.age,
   });
+  final String name;
+  final String email;
+  final int age;
 
   // Use copyWith instead of nullable parameters
-  UserProfile copyWith({String? name, String? email, int? age}) {
-    return UserProfile(
-      name: name ?? this.name,
-      email: email ?? this.email,
-      age: age ?? this.age,
-    );
-  }
+  UserProfile copyWith({String? name, String? email, int? age}) => UserProfile(
+    name: name ?? this.name,
+    email: email ?? this.email,
+    age: age ?? this.age,
+  );
 }
 
 // 6. Use Option type from dartz for truly optional values
 class DatabaseRepository {
-  Option<User> findUserById(String id) {
-    // Instead of returning null, return none() or some(user)
-    return none(); // or some(user)
-  }
+  Option<User> findUserById(String id) =>
+      // Instead of returning null, return none() or some(user)
+      none(); // or some(user)
 
   // Use fold to handle both cases
-  String getUserName(String id) {
-    return findUserById(id).fold(
-      () => 'Unknown User', // none case
-      (user) => user.name, // some case
-    );
-  }
+  String getUserName(String id) => findUserById(id).fold(
+    () => 'Unknown User', // none case
+    (user) => user.name, // some case
+  );
 }
 
 // 7. Use late for deferred initialization (sparingly)
@@ -108,10 +98,9 @@ class ServiceLocator {
 }
 
 class User {
+  const User({required this.name, required this.email});
   final String name;
   final String email;
-
-  const User({required this.name, required this.email});
 }
 
 class ApiService {

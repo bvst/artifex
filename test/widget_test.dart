@@ -1,12 +1,12 @@
+import 'package:artifex/screens/onboarding_screen.dart';
+import 'package:artifex/screens/splash_screen.dart';
+import 'package:artifex/utils/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:artifex/screens/splash_screen.dart';
-import 'package:artifex/screens/onboarding_screen.dart';
-import 'package:artifex/utils/app_theme.dart';
-import 'helpers/test_helpers.dart';
 import 'extensions/test_extensions.dart';
+import 'helpers/test_helpers.dart';
 
 void main() {
   group('App Screens', () {

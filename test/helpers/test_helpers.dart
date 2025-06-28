@@ -1,19 +1,17 @@
+import 'package:artifex/utils/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:artifex/utils/app_theme.dart';
 
 /// Creates a testable widget wrapped in MaterialApp with proper theming
-Widget makeTestableWidget({required Widget child, ThemeData? theme}) {
-  return MaterialApp(
-    theme: theme ?? AppTheme.lightTheme,
-    home: Scaffold(body: child),
-  );
-}
+Widget makeTestableWidget({required Widget child, ThemeData? theme}) =>
+    MaterialApp(
+      theme: theme ?? AppTheme.lightTheme,
+      home: Scaffold(body: child),
+    );
 
 /// Creates a testable screen wrapped in MaterialApp with proper theming
-Widget makeTestableScreen({required Widget screen, ThemeData? theme}) {
-  return MaterialApp(theme: theme ?? AppTheme.lightTheme, home: screen);
-}
+Widget makeTestableScreen({required Widget screen, ThemeData? theme}) =>
+    MaterialApp(theme: theme ?? AppTheme.lightTheme, home: screen);
 
 /// Custom pumpAndSettle that doesn't fail on long animations
 /// Use this instead of tester.pumpAndSettle() when animations might take longer
@@ -22,7 +20,7 @@ Future<void> pumpAndSettle(
   Duration duration = const Duration(milliseconds: 100),
   int maxIterations = 10,
 }) async {
-  for (int i = 0; i < maxIterations; i++) {
+  for (var i = 0; i < maxIterations; i++) {
     await tester.pump(duration);
     if (!tester.binding.hasScheduledFrame) {
       break;
@@ -39,11 +37,9 @@ Future<void> pumpForDuration(WidgetTester tester, Duration duration) async {
   }
 }
 
-Finder findTextContaining(String text) {
-  return find.byWidgetPredicate(
-    (widget) => widget is Text && widget.data?.contains(text) == true,
-  );
-}
+Finder findTextContaining(String text) => find.byWidgetPredicate(
+  (widget) => widget is Text && widget.data?.contains(text) == true,
+);
 
 extension WidgetTesterHelpers on WidgetTester {
   /// Wait for a widget with a timer to complete

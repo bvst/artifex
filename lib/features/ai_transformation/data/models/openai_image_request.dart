@@ -6,6 +6,20 @@ part 'openai_image_request.g.dart';
 /// Based on https://platform.openai.com/docs/api-reference/images/create
 @JsonSerializable()
 class OpenAIImageRequest {
+  const OpenAIImageRequest({
+    required this.prompt,
+    this.model = 'dall-e-3',
+    this.n = 1,
+    this.quality = 'standard',
+    this.responseFormat = 'url',
+    this.size = '1024x1024',
+    this.style = 'vivid',
+    this.user,
+  });
+
+  factory OpenAIImageRequest.fromJson(Map<String, dynamic> json) =>
+      _$OpenAIImageRequestFromJson(json);
+
   /// A text description of the desired image(s). The maximum length is 1000 characters for dall-e-2 and 4000 characters for dall-e-3.
   final String prompt;
 
@@ -30,20 +44,6 @@ class OpenAIImageRequest {
 
   /// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
   final String? user;
-
-  const OpenAIImageRequest({
-    required this.prompt,
-    this.model = 'dall-e-3',
-    this.n = 1,
-    this.quality = 'standard',
-    this.responseFormat = 'url',
-    this.size = '1024x1024',
-    this.style = 'vivid',
-    this.user,
-  });
-
-  factory OpenAIImageRequest.fromJson(Map<String, dynamic> json) =>
-      _$OpenAIImageRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$OpenAIImageRequestToJson(this);
 }

@@ -1,17 +1,17 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+
+import 'package:artifex/features/home/presentation/screens/home_screen.dart';
+import 'package:artifex/screens/onboarding_screen.dart';
 import 'package:artifex/shared/themes/app_theme.dart';
 import 'package:artifex/utils/preferences_helper.dart';
-import 'package:artifex/screens/onboarding_screen.dart';
-import 'package:artifex/features/home/presentation/screens/home_screen.dart';
+import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
-  final Duration splashDuration;
-
   const SplashScreen({
     super.key,
     this.splashDuration = const Duration(seconds: 2),
   });
+  final Duration splashDuration;
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -56,47 +56,45 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.colors.primary,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Logo placeholder - will be replaced with actual logo
-            Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                color: AppTheme.colors.background,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.auto_awesome,
-                size: 60,
-                color: AppTheme.colors.secondary,
-              ),
+  Widget build(BuildContext context) => Scaffold(
+    backgroundColor: AppTheme.colors.primary,
+    body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Logo placeholder - will be replaced with actual logo
+          Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+              color: AppTheme.colors.background,
+              shape: BoxShape.circle,
             ),
-            const SizedBox(height: 32),
-            Text(
-              'Artifex',
-              style: AppTheme.textStyles.headlineLarge.copyWith(
-                color: AppTheme.colors.onPrimary,
-                fontFamily: 'Lora',
-              ),
+            child: Icon(
+              Icons.auto_awesome,
+              size: 60,
+              color: AppTheme.colors.secondary,
             ),
-            const SizedBox(height: 8),
-            Text(
-              'Your World, Reimagined',
-              style: AppTheme.textStyles.bodyLarge.copyWith(
-                color: AppTheme.colors.onPrimary.withValues(alpha: 0.7),
-              ),
+          ),
+          const SizedBox(height: 32),
+          Text(
+            'Artifex',
+            style: AppTheme.textStyles.headlineLarge.copyWith(
+              color: AppTheme.colors.onPrimary,
+              fontFamily: 'Lora',
             ),
-            const SizedBox(height: 48),
-            CircularProgressIndicator(color: AppTheme.colors.secondary),
-          ],
-        ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Your World, Reimagined',
+            style: AppTheme.textStyles.bodyLarge.copyWith(
+              color: AppTheme.colors.onPrimary.withValues(alpha: 0.7),
+            ),
+          ),
+          const SizedBox(height: 48),
+          CircularProgressIndicator(color: AppTheme.colors.secondary),
+        ],
       ),
-    );
-  }
+    ),
+  );
 }

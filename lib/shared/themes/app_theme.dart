@@ -4,38 +4,34 @@ class AppTheme {
   static const AppColors colors = AppColors();
   static const AppTextStyles textStyles = AppTextStyles();
 
-  static ThemeData get lightTheme {
-    return ThemeData(
-      useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(seedColor: colors.primary),
-      scaffoldBackgroundColor: colors.background,
-      appBarTheme: AppBarTheme(
-        backgroundColor: colors.background,
-        foregroundColor: colors.onSurface,
-        elevation: 0,
-        titleTextStyle: textStyles.titleLarge,
+  static ThemeData get lightTheme => ThemeData(
+    useMaterial3: true,
+    colorScheme: ColorScheme.fromSeed(seedColor: colors.primary),
+    scaffoldBackgroundColor: colors.background,
+    appBarTheme: AppBarTheme(
+      backgroundColor: colors.background,
+      foregroundColor: colors.onSurface,
+      elevation: 0,
+      titleTextStyle: textStyles.titleLarge,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: colors.primary,
+        foregroundColor: colors.onPrimary,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: colors.primary,
-          foregroundColor: colors.onPrimary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        ),
-      ),
-      textTheme: TextTheme(
-        headlineLarge: textStyles.headlineLarge,
-        headlineMedium: textStyles.headlineMedium,
-        headlineSmall: textStyles.headlineSmall,
-        titleLarge: textStyles.titleLarge,
-        bodyLarge: textStyles.bodyLarge,
-        bodyMedium: textStyles.bodyMedium,
-        bodySmall: textStyles.bodySmall,
-      ),
-    );
-  }
+    ),
+    textTheme: TextTheme(
+      headlineLarge: textStyles.headlineLarge,
+      headlineMedium: textStyles.headlineMedium,
+      headlineSmall: textStyles.headlineSmall,
+      titleLarge: textStyles.titleLarge,
+      bodyLarge: textStyles.bodyLarge,
+      bodyMedium: textStyles.bodyMedium,
+      bodySmall: textStyles.bodySmall,
+    ),
+  );
 }
 
 class AppColors {

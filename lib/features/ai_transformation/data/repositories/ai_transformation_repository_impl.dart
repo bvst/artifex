@@ -1,24 +1,23 @@
-import 'package:dartz/dartz.dart';
-import 'package:artifex/core/errors/failures.dart';
 import 'package:artifex/core/errors/exceptions.dart';
+import 'package:artifex/core/errors/failures.dart';
 import 'package:artifex/core/utils/logger.dart';
+import 'package:artifex/features/ai_transformation/data/datasources/ai_transformation_local_datasource.dart';
+import 'package:artifex/features/ai_transformation/data/datasources/ai_transformation_remote_datasource.dart';
+import 'package:artifex/features/ai_transformation/data/models/transformation_request_model.dart';
 import 'package:artifex/features/ai_transformation/domain/entities/transformation_request.dart';
 import 'package:artifex/features/ai_transformation/domain/entities/transformation_result.dart';
 import 'package:artifex/features/ai_transformation/domain/repositories/ai_transformation_repository.dart';
-import 'package:artifex/features/ai_transformation/data/models/transformation_request_model.dart';
-import 'package:artifex/features/ai_transformation/data/datasources/ai_transformation_remote_datasource.dart';
-import 'package:artifex/features/ai_transformation/data/datasources/ai_transformation_local_datasource.dart';
+import 'package:dartz/dartz.dart';
 
 /// Implementation of AI transformation repository
 class AITransformationRepositoryImpl implements AITransformationRepository {
-  final AITransformationRemoteDataSource _remoteDataSource;
-  final AITransformationLocalDataSource _localDataSource;
-
   const AITransformationRepositoryImpl({
     required AITransformationRemoteDataSource remoteDataSource,
     required AITransformationLocalDataSource localDataSource,
   }) : _remoteDataSource = remoteDataSource,
        _localDataSource = localDataSource;
+  final AITransformationRemoteDataSource _remoteDataSource;
+  final AITransformationLocalDataSource _localDataSource;
 
   @override
   Future<Either<Failure, TransformationResult>> transformPhoto(
@@ -48,7 +47,7 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
       AppLogger.warning('Cache error during transformation: ${e.message}');
       // Still return success since API call worked, just caching failed
       return Left(CacheFailure(e.message));
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.error('Unexpected error during transformation: $e');
       return Left(UnknownFailure('Unexpected error: ${e.toString()}'));
     }
@@ -73,7 +72,7 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
     } on CacheException catch (e) {
       AppLogger.error('Cache error fetching history: ${e.message}');
       return Left(CacheFailure(e.message));
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.error('Unexpected error fetching history: $e');
       return Left(UnknownFailure('Failed to fetch history: ${e.toString()}'));
     }
@@ -106,7 +105,7 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
     } on CacheException catch (e) {
       AppLogger.error('Cache error downloading image: ${e.message}');
       return Left(CacheFailure(e.message));
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.error('Unexpected error downloading image: $e');
       return Left(UnknownFailure('Failed to download image: ${e.toString()}'));
     }
@@ -126,7 +125,7 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
     } on CacheException catch (e) {
       AppLogger.error('Cache error deleting transformation: ${e.message}');
       return Left(CacheFailure(e.message));
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.error('Unexpected error deleting transformation: $e');
       return Left(
         UnknownFailure('Failed to delete transformation: ${e.toString()}'),
@@ -154,7 +153,7 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
     } on NetworkException catch (e) {
       AppLogger.error('Network error checking service health: ${e.message}');
       return Left(NetworkFailure(e.message));
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.error('Unexpected error checking service health: $e');
       return Left(
         UnknownFailure('Failed to check service health: ${e.toString()}'),

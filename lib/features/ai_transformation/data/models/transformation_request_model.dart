@@ -1,6 +1,6 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:artifex/features/ai_transformation/domain/entities/transformation_request.dart';
 import 'package:artifex/features/ai_transformation/data/models/openai_image_request.dart';
+import 'package:artifex/features/ai_transformation/domain/entities/transformation_request.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'transformation_request_model.g.dart';
 
@@ -15,15 +15,14 @@ class TransformationRequestModel extends TransformationRequest {
     super.size,
   });
 
-  factory TransformationRequestModel.fromEntity(TransformationRequest entity) {
-    return TransformationRequestModel(
-      photoPath: entity.photoPath,
-      prompt: entity.prompt,
-      style: entity.style,
-      quality: entity.quality,
-      size: entity.size,
-    );
-  }
+  factory TransformationRequestModel.fromEntity(TransformationRequest entity) =>
+      TransformationRequestModel(
+        photoPath: entity.photoPath,
+        prompt: entity.prompt,
+        style: entity.style,
+        quality: entity.quality,
+        size: entity.size,
+      );
 
   factory TransformationRequestModel.fromJson(Map<String, dynamic> json) =>
       _$TransformationRequestModelFromJson(json);
@@ -32,14 +31,12 @@ class TransformationRequestModel extends TransformationRequest {
   Map<String, dynamic> toJson() => _$TransformationRequestModelToJson(this);
 
   /// Convert to OpenAI Image Generation API format
-  OpenAIImageRequest toOpenAIRequest() {
-    return OpenAIImageRequest(
-      prompt: _buildEnhancedPrompt(),
-      size: size,
-      quality: quality == 1024 ? 'standard' : 'hd',
-      style: _mapStyleToDalle(style),
-    );
-  }
+  OpenAIImageRequest toOpenAIRequest() => OpenAIImageRequest(
+    prompt: _buildEnhancedPrompt(),
+    size: size,
+    quality: quality == 1024 ? 'standard' : 'hd',
+    style: _mapStyleToDalle(style),
+  );
 
   String _buildEnhancedPrompt() {
     // Enhance the user prompt with style-specific instructions

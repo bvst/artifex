@@ -7,30 +7,28 @@
 /// 4. Create semantic finders that describe what you're looking for
 library;
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:artifex/main.dart';
 import 'package:artifex/features/home/presentation/screens/home_screen.dart';
 import 'package:artifex/features/home/presentation/widgets/image_input_button.dart';
-import 'package:artifex/screens/splash_screen.dart';
+import 'package:artifex/main.dart';
 import 'package:artifex/screens/onboarding_screen.dart';
+import 'package:artifex/screens/splash_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../test_config.dart';
 
 void main() {
   group('Internationalization-Friendly Integration Tests', () {
-    setUpAll(() {
-      setupTestEnvironment();
-    });
+    setUpAll(setupTestEnvironment);
 
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
     });
 
     testWidgets('App navigation flow works regardless of language', (
-      WidgetTester tester,
+      tester,
     ) async {
       await tester.pumpWidget(
         const ProviderScope(
@@ -66,7 +64,7 @@ void main() {
     });
 
     testWidgets('Photo input buttons work regardless of language', (
-      WidgetTester tester,
+      tester,
     ) async {
       // Set up to go directly to home
       await SharedPreferences.getInstance().then(
@@ -108,7 +106,7 @@ void main() {
     });
 
     testWidgets('Onboarding page indicators work regardless of language', (
-      WidgetTester tester,
+      tester,
     ) async {
       await tester.pumpWidget(
         const ProviderScope(
@@ -160,22 +158,16 @@ void main() {
 /// Helper functions for finding widgets in a language-agnostic way
 class I18nFinders {
   /// Find a button by its icon instead of text
-  static Finder buttonWithIcon(IconData icon) {
-    return find.ancestor(
-      of: find.byIcon(icon),
-      matching: find.byType(ElevatedButton),
-    );
-  }
+  static Finder buttonWithIcon(IconData icon) => find.ancestor(
+    of: find.byIcon(icon),
+    matching: find.byType(ElevatedButton),
+  );
 
   /// Find navigation elements by structure
-  static Finder navigationButton() {
-    return find.byWidgetPredicate(
-      (widget) => widget is ElevatedButton || widget is TextButton,
-    );
-  }
+  static Finder navigationButton() => find.byWidgetPredicate(
+    (widget) => widget is ElevatedButton || widget is TextButton,
+  );
 
   /// Find by semantic labels (when implemented)
-  static Finder bySemanticLabel(String label) {
-    return find.bySemanticsLabel(label);
-  }
+  static Finder bySemanticLabel(String label) => find.bySemanticsLabel(label);
 }

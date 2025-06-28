@@ -5,13 +5,12 @@ part 'openai_models_response.g.dart';
 /// OpenAI Models List Response
 @JsonSerializable()
 class OpenAIModelsResponse {
-  final String object;
-  final List<OpenAIModel> data;
-
   const OpenAIModelsResponse({required this.object, required this.data});
 
   factory OpenAIModelsResponse.fromJson(Map<String, dynamic> json) =>
       _$OpenAIModelsResponseFromJson(json);
+  final String object;
+  final List<OpenAIModel> data;
 
   Map<String, dynamic> toJson() => _$OpenAIModelsResponseToJson(this);
 }
@@ -19,12 +18,6 @@ class OpenAIModelsResponse {
 /// OpenAI Model
 @JsonSerializable()
 class OpenAIModel {
-  final String id;
-  final String object;
-  final int created;
-  @JsonKey(name: 'owned_by')
-  final String ownedBy;
-
   const OpenAIModel({
     required this.id,
     required this.object,
@@ -34,6 +27,11 @@ class OpenAIModel {
 
   factory OpenAIModel.fromJson(Map<String, dynamic> json) =>
       _$OpenAIModelFromJson(json);
+  final String id;
+  final String object;
+  final int created;
+  @JsonKey(name: 'owned_by')
+  final String ownedBy;
 
   Map<String, dynamic> toJson() => _$OpenAIModelToJson(this);
 }

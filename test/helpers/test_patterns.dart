@@ -7,10 +7,10 @@
 /// - Fast and reliable
 library;
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:artifex/features/home/presentation/screens/home_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 /// Guidelines for what to test vs what NOT to test
 class TestingGuidelines {
@@ -36,45 +36,31 @@ class TestingGuidelines {
 /// Standard patterns for finding widgets in a maintainable way
 class TestFinders {
   /// Find buttons by their icon instead of text
-  static Finder buttonByIcon(IconData icon) {
-    return find.ancestor(
-      of: find.byIcon(icon),
-      matching: find.byWidgetPredicate(
-        (widget) =>
-            widget is InkWell ||
-            widget is ElevatedButton ||
-            widget is TextButton,
-      ),
-    );
-  }
+  static Finder buttonByIcon(IconData icon) => find.ancestor(
+    of: find.byIcon(icon),
+    matching: find.byWidgetPredicate(
+      (widget) =>
+          widget is InkWell || widget is ElevatedButton || widget is TextButton,
+    ),
+  );
 
   /// Find primary action button (usually ElevatedButton)
-  static Finder primaryActionButton() {
-    return find.byType(ElevatedButton);
-  }
+  static Finder primaryActionButton() => find.byType(ElevatedButton);
 
   /// Find secondary action button (usually TextButton)
-  static Finder secondaryActionButton() {
-    return find.byType(TextButton);
-  }
+  static Finder secondaryActionButton() => find.byType(TextButton);
 
   /// Find by semantic role instead of appearance
-  static Finder submitButton() {
-    return find.byWidgetPredicate(
-      (widget) => widget is ElevatedButton,
-      description: 'submit button',
-    );
-  }
+  static Finder submitButton() => find.byWidgetPredicate(
+    (widget) => widget is ElevatedButton,
+    description: 'submit button',
+  );
 
   /// Find loading indicator
-  static Finder loadingIndicator() {
-    return find.byType(CircularProgressIndicator);
-  }
+  static Finder loadingIndicator() => find.byType(CircularProgressIndicator);
 
   /// Find error display (typically SnackBar)
-  static Finder errorDisplay() {
-    return find.byType(SnackBar);
-  }
+  static Finder errorDisplay() => find.byType(SnackBar);
 }
 
 /// Standard assertions that are robust to changes

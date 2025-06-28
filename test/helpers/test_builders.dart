@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mockito/mockito.dart';
-
 import 'package:artifex/features/photo_capture/domain/repositories/photo_repository.dart';
 import 'package:artifex/features/photo_capture/presentation/providers/photo_providers.dart';
 import 'package:artifex/shared/themes/app_theme.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mockito/mockito.dart';
 
 /// Builder pattern for creating consistent test widgets with providers
 class TestWidgetBuilder {
@@ -58,9 +57,7 @@ class ProviderContainerBuilder {
     return this;
   }
 
-  ProviderContainer build() {
-    return ProviderContainer(overrides: _overrides);
-  }
+  ProviderContainer build() => ProviderContainer(overrides: _overrides);
 }
 
 /// Utility extensions for cleaner test setup
@@ -77,16 +74,10 @@ class TestScenarios {
   static TestWidgetBuilder widgetWithPhotoRepository(
     Widget child,
     PhotoRepository mockRepository,
-  ) {
-    return TestWidgetBuilder()
-        .child(child)
-        .overridePhotoRepository(mockRepository);
-  }
+  ) => TestWidgetBuilder().child(child).overridePhotoRepository(mockRepository);
 
   /// Creates a provider container with photo repository mocked
   static ProviderContainerBuilder containerWithPhotoRepository(
     PhotoRepository mockRepository,
-  ) {
-    return ProviderContainerBuilder().overridePhotoRepository(mockRepository);
-  }
+  ) => ProviderContainerBuilder().overridePhotoRepository(mockRepository);
 }

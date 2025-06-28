@@ -1,17 +1,16 @@
-import 'package:dio/dio.dart';
 import 'package:artifex/core/errors/exceptions.dart';
 import 'package:artifex/core/utils/logger.dart';
+import 'package:artifex/features/ai_transformation/data/datasources/openai_api_client.dart';
+import 'package:artifex/features/ai_transformation/data/models/openai_error_response.dart';
 import 'package:artifex/features/ai_transformation/data/models/transformation_request_model.dart';
 import 'package:artifex/features/ai_transformation/data/models/transformation_result_model.dart';
-import 'package:artifex/features/ai_transformation/data/models/openai_error_response.dart';
-import 'package:artifex/features/ai_transformation/data/datasources/openai_api_client.dart';
+import 'package:dio/dio.dart';
 
 /// Remote data source for AI transformation operations
 class AITransformationRemoteDataSource {
-  final OpenAIApiClient _apiClient;
-
   const AITransformationRemoteDataSource({required OpenAIApiClient apiClient})
     : _apiClient = apiClient;
+  final OpenAIApiClient _apiClient;
 
   /// Transform photo using DALL-E 3 API
   Future<TransformationResultModel> transformPhoto(
@@ -61,7 +60,7 @@ class AITransformationRemoteDataSource {
           'Transformation failed: ${e.message ?? 'Unknown error'}',
         );
       }
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.error('Unexpected error during transformation: $e');
       throw APIException('Unexpected error: ${e.toString()}');
     }
@@ -77,7 +76,7 @@ class AITransformationRemoteDataSource {
     } on DioException catch (e) {
       AppLogger.warning('OpenAI API health check failed: ${e.message}');
       return false;
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.error('Unexpected error during health check: $e');
       return false;
     }
@@ -89,7 +88,7 @@ class AITransformationRemoteDataSource {
         final errorResponse = OpenAIErrorResponse.fromJson(responseData);
         return errorResponse.error.message;
       }
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.warning('Failed to parse OpenAI error response: $e');
     }
     return 'Unknown API error';

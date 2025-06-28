@@ -1,8 +1,9 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:artifex/features/ai_transformation/data/models/openai_error_response.dart';
 import 'package:artifex/features/ai_transformation/data/models/openai_image_request.dart';
 import 'package:artifex/features/ai_transformation/data/models/openai_image_response.dart';
 import 'package:artifex/features/ai_transformation/data/models/openai_models_response.dart';
-import 'package:artifex/features/ai_transformation/data/models/openai_error_response.dart';
+import 'package:flutter_test/flutter_test.dart';
+
 import '../test_data/openai_responses.dart';
 
 void main() {
@@ -117,7 +118,7 @@ void main() {
         expect(response.created, 1589478378);
         expect(response.data.length, 3);
 
-        for (int i = 0; i < response.data.length; i++) {
+        for (var i = 0; i < response.data.length; i++) {
           expect(response.data[i].url, 'https://example.com/image${i + 1}.png');
         }
       });

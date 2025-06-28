@@ -1,12 +1,13 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:image/image.dart' as img;
+
 import 'package:artifex/core/constants/app_constants.dart';
 import 'package:artifex/core/errors/exceptions.dart';
 import 'package:artifex/core/utils/logger.dart';
 import 'package:artifex/features/photo_capture/data/models/photo_model.dart';
+import 'package:flutter/foundation.dart';
+import 'package:image/image.dart' as img;
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 abstract class PhotoLocalDataSource {
   Future<PhotoModel> capturePhoto();
@@ -35,7 +36,7 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
         return await pickImageFromGallery();
       }
 
-      final XFile? image = await _imagePicker.pickImage(
+      final image = await _imagePicker.pickImage(
         source: ImageSource.camera,
         imageQuality: 85,
         maxWidth: AppConstants.maxImageWidth.toDouble(),
@@ -47,7 +48,7 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
         throw const FileException('User cancelled camera capture');
       }
 
-      final File imageFile = File(image.path);
+      final imageFile = File(image.path);
       return await _processAndSaveImage(imageFile);
     } catch (e) {
       // Don't log cancellations as errors - they're normal user actions
@@ -65,7 +66,7 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
     try {
       AppLogger.debug('Picking image from gallery');
 
-      final XFile? image = await _imagePicker.pickImage(
+      final image = await _imagePicker.pickImage(
         source: ImageSource.gallery,
         imageQuality: 85,
         maxWidth: AppConstants.maxImageWidth.toDouble(),
@@ -77,7 +78,7 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
         throw const FileException('User cancelled gallery selection');
       }
 
-      final File imageFile = File(image.path);
+      final imageFile = File(image.path);
       return await _processAndSaveImage(imageFile);
     } catch (e) {
       // Don't log cancellations as errors - they're normal user actions
@@ -123,7 +124,7 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
             height: dimensions?['height'],
           );
           photoModels.add(photoModel);
-        } catch (e) {
+        } on Exception catch (e) {
           AppLogger.warning('Error processing file ${file.path}', e);
           continue;
         }
@@ -231,7 +232,7 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
       if (image != null) {
         return {'width': image.width, 'height': image.height};
       }
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.warning('Failed to get image dimensions', e);
     }
 

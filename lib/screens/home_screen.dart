@@ -1,44 +1,42 @@
-import 'package:flutter/material.dart';
 import 'package:artifex/utils/app_colors.dart';
+import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
+    backgroundColor: AppColors.primaryBackground,
+    appBar: AppBar(
       backgroundColor: AppColors.primaryBackground,
-      appBar: AppBar(
-        backgroundColor: AppColors.primaryBackground,
-        title: Text(
-          'Artifex',
-          style: Theme.of(
-            context,
-          ).textTheme.headlineSmall?.copyWith(fontFamily: 'Lora'),
-        ),
-        centerTitle: true,
-        elevation: 0,
+      title: Text(
+        'Artifex',
+        style: Theme.of(
+          context,
+        ).textTheme.headlineSmall?.copyWith(fontFamily: 'Lora'),
       ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Welcome to Artifex!',
-              style: TextStyle(
-                color: AppColors.canvasWhite,
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-              ),
+      centerTitle: true,
+      elevation: 0,
+    ),
+    body: const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Welcome to Artifex!',
+            style: TextStyle(
+              color: AppColors.canvasWhite,
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
             ),
-            SizedBox(height: 16),
-            Text(
-              'Your creative journey begins here.',
-              style: TextStyle(color: AppColors.canvasWhite, fontSize: 16),
-            ),
-          ],
-        ),
+          ),
+          SizedBox(height: 16),
+          Text(
+            'Your creative journey begins here.',
+            style: TextStyle(color: AppColors.canvasWhite, fontSize: 16),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
 }

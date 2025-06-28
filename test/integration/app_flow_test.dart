@@ -1,21 +1,20 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:artifex/main.dart';
-import 'package:artifex/utils/preferences_helper.dart';
 import 'package:artifex/features/home/presentation/screens/home_screen.dart';
+import 'package:artifex/main.dart';
 import 'package:artifex/screens/onboarding_screen.dart';
 import 'package:artifex/screens/splash_screen.dart';
+import 'package:artifex/utils/preferences_helper.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../test_config.dart';
 
 void main() {
   group('App Flow Integration Tests', () {
     late SharedPreferences mockPrefs;
 
-    setUpAll(() {
-      setupTestEnvironment();
-    });
+    setUpAll(setupTestEnvironment);
 
     setUp(() async {
       // Reset SharedPreferences for each test
@@ -34,7 +33,7 @@ void main() {
     group('App Launch Flow', () {
       testWidgets(
         'First-time user goes through onboarding flow',
-        (WidgetTester tester) async {
+        (tester) async {
           // Ensure onboarding not completed for first-time user
           await mockPrefs.clear();
 
@@ -100,7 +99,7 @@ void main() {
 
       testWidgets(
         'Returning user skips onboarding and goes directly to home',
-        (WidgetTester tester) async {
+        (tester) async {
           // Mark onboarding as completed for returning user
           await PreferencesHelper.setOnboardingComplete();
 
@@ -124,9 +123,7 @@ void main() {
         timeout: integrationTestTimeout,
       );
 
-      testWidgets('User can skip onboarding at any point', (
-        WidgetTester tester,
-      ) async {
+      testWidgets('User can skip onboarding at any point', (tester) async {
         // Ensure fresh onboarding state
         await mockPrefs.clear();
 
@@ -167,7 +164,7 @@ void main() {
 
       testWidgets(
         'Home screen displays welcome content and photo input options',
-        (WidgetTester tester) async {
+        (tester) async {
           await tester.pumpWidget(
             const ProviderScope(
               child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
@@ -192,7 +189,7 @@ void main() {
 
       testWidgets(
         'Photo capture button shows proper UI feedback',
-        (WidgetTester tester) async {
+        (tester) async {
           await tester.pumpWidget(
             const ProviderScope(
               child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
@@ -229,7 +226,7 @@ void main() {
 
       testWidgets(
         'Gallery upload button shows proper UI feedback',
-        (WidgetTester tester) async {
+        (tester) async {
           await tester.pumpWidget(
             const ProviderScope(
               child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
@@ -264,7 +261,7 @@ void main() {
     group('Navigation and State Persistence', () {
       testWidgets(
         'App maintains state correctly across navigation',
-        (WidgetTester tester) async {
+        (tester) async {
           // Start with fresh state
           await mockPrefs.clear();
 
@@ -314,7 +311,7 @@ void main() {
 
       testWidgets(
         'Back navigation works correctly in onboarding',
-        (WidgetTester tester) async {
+        (tester) async {
           await mockPrefs.clear();
 
           await tester.pumpWidget(
@@ -361,7 +358,7 @@ void main() {
     group('Error Handling and Edge Cases', () {
       testWidgets(
         'App handles corrupted preferences gracefully',
-        (WidgetTester tester) async {
+        (tester) async {
           // Clear preferences first, then simulate corrupted preferences
           await mockPrefs.clear();
           await mockPrefs.setString('onboarding_complete', 'invalid_boolean');
@@ -381,9 +378,7 @@ void main() {
         timeout: integrationTestTimeout,
       );
 
-      testWidgets('App displays error states properly', (
-        WidgetTester tester,
-      ) async {
+      testWidgets('App displays error states properly', (tester) async {
         await PreferencesHelper.setOnboardingComplete();
 
         await tester.pumpWidget(

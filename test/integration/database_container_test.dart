@@ -274,7 +274,7 @@ Future<void> _waitForDatabase() async {
   const maxAttempts = 30;
   const delayBetweenAttempts = Duration(seconds: 2);
 
-  for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+  for (var attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
       final connection = PostgreSQLConnection(
         'localhost',
@@ -292,7 +292,7 @@ Future<void> _waitForDatabase() async {
       // Use testWidgets print which is allowed in tests
       debugPrint('✅ Test database is ready!');
       return;
-    } catch (e) {
+    } on Exception {
       if (attempt == maxAttempts) {
         throw Exception(
           'Failed to connect to test database after $maxAttempts attempts. '

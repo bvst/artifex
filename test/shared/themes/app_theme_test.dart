@@ -1,6 +1,6 @@
+import 'package:artifex/shared/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:artifex/shared/themes/app_theme.dart';
 
 void main() {
   group('AppTheme Tests', () {

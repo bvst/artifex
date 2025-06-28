@@ -1,21 +1,20 @@
-import 'package:flutter/material.dart';
-
 import 'package:artifex/shared/themes/app_theme.dart';
+import 'package:flutter/material.dart';
 
 class ImageInputButton extends StatelessWidget {
   const ImageInputButton({
-    super.key,
     required this.icon,
     required this.title,
     required this.subtitle,
     required this.onPressed,
+    super.key,
     this.gradient,
     this.isEnabled = true,
   });
 
   ImageInputButton.camera({
-    Key? key,
     required VoidCallback onPressed,
+    Key? key,
     bool isEnabled = true,
   }) : this(
          key: key,
@@ -35,8 +34,8 @@ class ImageInputButton extends StatelessWidget {
        );
 
   ImageInputButton.gallery({
-    Key? key,
     required VoidCallback onPressed,
+    Key? key,
     bool isEnabled = true,
   }) : this(
          key: key,

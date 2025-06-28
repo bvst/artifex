@@ -1,21 +1,21 @@
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'package:dio/dio.dart';
-import 'package:sqflite/sqflite.dart';
+
 import 'package:artifex/core/errors/exceptions.dart';
 import 'package:artifex/core/utils/logger.dart';
 import 'package:artifex/features/ai_transformation/data/models/transformation_result_model.dart';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sqflite/sqflite.dart';
 
 /// Local data source for AI transformation operations
 class AITransformationLocalDataSource {
-  final Database _database;
-  final Dio _dio;
-
   const AITransformationLocalDataSource({
     required Database database,
     required Dio dio,
   }) : _database = database,
        _dio = dio;
+  final Database _database;
+  final Dio _dio;
 
   static const String _tableName = 'transformations';
 
@@ -52,7 +52,7 @@ class AITransformationLocalDataSource {
       );
 
       final transformations = maps
-          .map((map) => TransformationResultModel.fromJson(map))
+          .map(TransformationResultModel.fromJson)
           .toList();
 
       AppLogger.info(

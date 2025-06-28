@@ -1,6 +1,6 @@
-import 'package:dartz/dartz.dart';
 import 'package:artifex/core/errors/failures.dart';
 import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
+import 'package:dartz/dartz.dart';
 
 abstract class PhotoRepository {
   Future<Either<Failure, Photo>> capturePhoto();

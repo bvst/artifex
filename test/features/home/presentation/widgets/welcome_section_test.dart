@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:artifex/features/home/presentation/widgets/welcome_section.dart';
 import 'package:artifex/shared/themes/app_theme.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('WelcomeSection Tests', () {
@@ -11,7 +11,7 @@ void main() {
       testWidget = const MaterialApp(home: Scaffold(body: WelcomeSection()));
     });
 
-    testWidgets('should display welcome title', (WidgetTester tester) async {
+    testWidgets('should display welcome title', (tester) async {
       await tester.pumpWidget(testWidget);
 
       // Verify welcome section structure by widget types
@@ -22,7 +22,7 @@ void main() {
       ); // Title, tagline, description
     });
 
-    testWidgets('should display tagline', (WidgetTester tester) async {
+    testWidgets('should display tagline', (tester) async {
       await tester.pumpWidget(testWidget);
 
       // Verify tagline exists by checking text widget count and structure
@@ -30,7 +30,7 @@ void main() {
       expect(textWidgets, findsNWidgets(3)); // Title, tagline, description
     });
 
-    testWidgets('should display description text', (WidgetTester tester) async {
+    testWidgets('should display description text', (tester) async {
       await tester.pumpWidget(testWidget);
 
       // Verify description exists by checking complete text widget structure
@@ -38,7 +38,7 @@ void main() {
       expect(textWidgets, findsNWidgets(3)); // Title, tagline, description
     });
 
-    testWidgets('should use correct text styles', (WidgetTester tester) async {
+    testWidgets('should use correct text styles', (tester) async {
       await tester.pumpWidget(testWidget);
 
       final textWidgets = find.byType(Text);
@@ -61,9 +61,7 @@ void main() {
       expect(taglineText.style?.fontWeight, FontWeight.w500);
     });
 
-    testWidgets('should have correct spacing between elements', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('should have correct spacing between elements', (tester) async {
       await tester.pumpWidget(testWidget);
 
       // Find all SizedBox widgets
@@ -78,9 +76,7 @@ void main() {
       expect(secondSpacer.height, 16);
     });
 
-    testWidgets('should layout elements in a Column', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('should layout elements in a Column', (tester) async {
       await tester.pumpWidget(testWidget);
 
       final column = tester.widget<Column>(find.byType(Column));

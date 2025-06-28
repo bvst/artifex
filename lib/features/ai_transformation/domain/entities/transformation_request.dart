@@ -1,11 +1,5 @@
 /// Request entity for AI photo transformation
 class TransformationRequest {
-  final String photoPath;
-  final String prompt;
-  final String style;
-  final int quality;
-  final String size;
-
   const TransformationRequest({
     required this.photoPath,
     required this.prompt,
@@ -13,6 +7,11 @@ class TransformationRequest {
     this.quality = 1024,
     this.size = '1024x1024',
   });
+  final String photoPath;
+  final String prompt;
+  final String style;
+  final int quality;
+  final String size;
 
   Map<String, dynamic> toJson() => {
     'photoPath': photoPath,

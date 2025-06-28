@@ -9,7 +9,7 @@ void main() {
     });
 
     test('should filter keyboard assertion errors', () {
-      final List<String> loggedMessages = [];
+      final loggedMessages = <String>[];
 
       // Mock the logger to capture debug messages
       void mockDebugLog(
@@ -21,7 +21,7 @@ void main() {
       }
 
       // Set up error handler that filters keyboard errors
-      FlutterError.onError = (FlutterErrorDetails details) {
+      FlutterError.onError = (details) {
         if (details.exception.toString().contains(
               'HardwareKeyboard._assertEventIsRegular',
             ) ||
@@ -51,8 +51,8 @@ void main() {
     });
 
     test('should not filter non-keyboard errors', () {
-      final List<String> loggedMessages = [];
-      final List<String> errorMessages = [];
+      final loggedMessages = <String>[];
+      final errorMessages = <String>[];
 
       // Mock logger methods
       void mockDebugLog(
@@ -72,7 +72,7 @@ void main() {
       }
 
       // Set up error handler
-      FlutterError.onError = (FlutterErrorDetails details) {
+      FlutterError.onError = (details) {
         if (details.exception.toString().contains(
               'HardwareKeyboard._assertEventIsRegular',
             ) ||
@@ -100,7 +100,7 @@ void main() {
     });
 
     test('should handle assertion errors specifically', () {
-      final List<String> loggedMessages = [];
+      final loggedMessages = <String>[];
 
       void mockDebugLog(
         String message, [
@@ -110,7 +110,7 @@ void main() {
         loggedMessages.add(message);
       }
 
-      FlutterError.onError = (FlutterErrorDetails details) {
+      FlutterError.onError = (details) {
         if (details.exception.toString().contains(
               'HardwareKeyboard._assertEventIsRegular',
             ) ||

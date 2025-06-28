@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:artifex/core/utils/error_boundary.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('App Initialization', () {
@@ -61,7 +61,7 @@ void main() {
 
         try {
           // When: Setting a custom error handler
-          FlutterError.onError = (FlutterErrorDetails details) {
+          FlutterError.onError = (details) {
             // Mock error handler implementation
           };
 
@@ -84,12 +84,12 @@ void main() {
 
       test('invokes custom error handler with FlutterErrorDetails', () {
         // Given: Custom error handler setup
-        bool handlerCalled = false;
+        var handlerCalled = false;
         final originalHandler = FlutterError.onError;
 
         try {
           // When: Setting up error handler and triggering error
-          FlutterError.onError = (FlutterErrorDetails details) {
+          FlutterError.onError = (details) {
             handlerCalled = true;
           };
 

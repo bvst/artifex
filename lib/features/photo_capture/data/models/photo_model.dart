@@ -1,6 +1,7 @@
 import 'dart:io';
-import 'package:uuid/uuid.dart';
+
 import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
+import 'package:uuid/uuid.dart';
 
 class PhotoModel extends Photo {
   const PhotoModel({
@@ -30,44 +31,38 @@ class PhotoModel extends Photo {
     );
   }
 
-  factory PhotoModel.fromJson(Map<String, dynamic> json) {
-    return PhotoModel(
-      id: json['id'] as String,
-      path: json['path'] as String,
-      name: json['name'] as String,
-      size: json['size'] as int,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      width: json['width'] as int?,
-      height: json['height'] as int?,
-      mimeType: json['mime_type'] as String?,
-    );
-  }
+  factory PhotoModel.fromJson(Map<String, dynamic> json) => PhotoModel(
+    id: json['id'] as String,
+    path: json['path'] as String,
+    name: json['name'] as String,
+    size: json['size'] as int,
+    createdAt: DateTime.parse(json['created_at'] as String),
+    width: json['width'] as int?,
+    height: json['height'] as int?,
+    mimeType: json['mime_type'] as String?,
+  );
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'path': path,
-      'name': name,
-      'size': size,
-      'created_at': createdAt.toIso8601String(),
-      'width': width,
-      'height': height,
-      'mime_type': mimeType,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'path': path,
+    'name': name,
+    'size': size,
+    'created_at': createdAt.toIso8601String(),
+    'width': width,
+    'height': height,
+    'mime_type': mimeType,
+  };
 
-  Photo toEntity() {
-    return Photo(
-      id: id,
-      path: path,
-      name: name,
-      size: size,
-      createdAt: createdAt,
-      width: width,
-      height: height,
-      mimeType: mimeType,
-    );
-  }
+  Photo toEntity() => Photo(
+    id: id,
+    path: path,
+    name: name,
+    size: size,
+    createdAt: createdAt,
+    width: width,
+    height: height,
+    mimeType: mimeType,
+  );
 
   static String? _getMimeTypeFromPath(String path) {
     final extension = path.toLowerCase().split('.').last;

@@ -1,21 +1,20 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:artifex/features/home/presentation/screens/home_screen.dart';
+import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
+import 'package:artifex/features/photo_capture/presentation/providers/photo_capture_provider.dart';
 import 'package:artifex/main.dart';
 import 'package:artifex/utils/preferences_helper.dart';
-import 'package:artifex/features/home/presentation/screens/home_screen.dart';
-import 'package:artifex/features/photo_capture/presentation/providers/photo_capture_provider.dart';
-import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../test_config.dart';
 
 void main() {
   group('Photo Capture Flow Integration Tests', () {
     // Test setup variables
 
-    setUpAll(() {
-      setupTestEnvironment();
-    });
+    setUpAll(setupTestEnvironment);
 
     setUp(() async {
       // Reset SharedPreferences and ensure home screen access
@@ -34,7 +33,7 @@ void main() {
     group('Photo Capture Provider Integration', () {
       testWidgets(
         'Photo capture provider state changes are reflected in UI',
-        (WidgetTester tester) async {
+        (tester) async {
           // Create a container to track provider state changes
           late ProviderContainer container;
 
@@ -87,7 +86,7 @@ void main() {
 
       testWidgets(
         'Gallery upload button triggers provider state change',
-        (WidgetTester tester) async {
+        (tester) async {
           late ProviderContainer container;
 
           await tester.pumpWidget(
@@ -136,7 +135,7 @@ void main() {
     group('Photo Capture Error Handling', () {
       testWidgets(
         'App handles photo capture cancellation gracefully',
-        (WidgetTester tester) async {
+        (tester) async {
           await tester.pumpWidget(
             const ProviderScope(
               child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
@@ -183,7 +182,7 @@ void main() {
 
       testWidgets(
         'App displays appropriate feedback for photo operations',
-        (WidgetTester tester) async {
+        (tester) async {
           await tester.pumpWidget(
             const ProviderScope(
               child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
@@ -211,7 +210,7 @@ void main() {
           expect(galleryIcon, findsOneWidget);
 
           // Test rapid successive taps (stress test)
-          for (int i = 0; i < 3; i++) {
+          for (var i = 0; i < 3; i++) {
             await tester.tap(cameraButton);
             await tester.pump(const Duration(milliseconds: 100));
           }
@@ -221,7 +220,7 @@ void main() {
           expect(galleryIcon, findsOneWidget);
 
           // Test gallery button similarly
-          for (int i = 0; i < 3; i++) {
+          for (var i = 0; i < 3; i++) {
             await tester.tap(galleryButton);
             await tester.pump(const Duration(milliseconds: 100));
           }
@@ -237,7 +236,7 @@ void main() {
     group('State Management Integration', () {
       testWidgets(
         'Provider state persists correctly across widget rebuilds',
-        (WidgetTester tester) async {
+        (tester) async {
           late ProviderContainer container;
 
           await tester.pumpWidget(
@@ -287,7 +286,7 @@ void main() {
 
       testWidgets(
         'Multiple provider interactions work correctly',
-        (WidgetTester tester) async {
+        (tester) async {
           late ProviderContainer container;
 
           await tester.pumpWidget(
@@ -342,7 +341,7 @@ void main() {
     group('UI Feedback and User Experience', () {
       testWidgets(
         'Buttons show proper visual feedback on interaction',
-        (WidgetTester tester) async {
+        (tester) async {
           await tester.pumpWidget(
             const ProviderScope(
               child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
@@ -389,7 +388,7 @@ void main() {
 
       testWidgets(
         'Screen layout remains consistent during photo operations',
-        (WidgetTester tester) async {
+        (tester) async {
           await tester.pumpWidget(
             const ProviderScope(
               child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),

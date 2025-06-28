@@ -4,9 +4,7 @@ import '../test_config.dart';
 
 void main() {
   group('Widget Fundamentals', () {
-    setUpAll(() {
-      setupTestEnvironment();
-    });
+    setUpAll(setupTestEnvironment);
 
     group('Basic Rendering', () {
       testWidgets('renders MaterialApp structure correctly', (tester) async {
@@ -27,7 +25,7 @@ void main() {
     group('User Interactions', () {
       testWidgets('handles button tap events correctly', (tester) async {
         // Given: Button with callback
-        bool wasPressed = false;
+        var wasPressed = false;
 
         await tester.pumpWidget(
           MaterialApp(
