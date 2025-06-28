@@ -6,37 +6,42 @@ import 'package:artifex/features/photo_capture/domain/repositories/photo_reposit
 import 'package:artifex/features/photo_capture/presentation/providers/photo_providers.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../fixtures/test_data.dart';
+import '../../../../helpers/test_app_wrapper.dart';
 import 'image_input_section_test.mocks.dart';
 
 @GenerateMocks([PhotoRepository])
 void main() {
+  Widget makeTestableWidget({required MockPhotoRepository mockRepository}) =>
+      TestAppWrapper.createApp(
+        child: const ImageInputSection(),
+        overrides: [photoRepositoryProvider.overrideWithValue(mockRepository)],
+      );
+
   group('ImageInputSection Tests', () {
     late MockPhotoRepository mockRepository;
-    late Widget testWidget;
 
     setUp(() {
       mockRepository = MockPhotoRepository();
-      testWidget = ProviderScope(
-        overrides: [photoRepositoryProvider.overrideWithValue(mockRepository)],
-        child: const MaterialApp(home: Scaffold(body: ImageInputSection())),
-      );
     });
 
     testWidgets('should display heading text', (tester) async {
-      await tester.pumpWidget(testWidget);
+      await tester.pumpWidget(
+        makeTestableWidget(mockRepository: mockRepository),
+      );
 
       // Verify heading exists by checking text widget structure
       expect(find.byType(Text), findsAtLeastNWidgets(1));
     });
 
     testWidgets('should display two ImageInputButtons', (tester) async {
-      await tester.pumpWidget(testWidget);
+      await tester.pumpWidget(
+        makeTestableWidget(mockRepository: mockRepository),
+      );
 
       expect(find.byType(ImageInputButton), findsNWidgets(2));
     });
@@ -48,7 +53,9 @@ void main() {
       final photo = TestData.createCameraPhoto();
       when(mockRepository.capturePhoto()).thenAnswer((_) async => right(photo));
 
-      await tester.pumpWidget(testWidget);
+      await tester.pumpWidget(
+        makeTestableWidget(mockRepository: mockRepository),
+      );
 
       // When: User taps the camera button (find by icon)
       final cameraIcon = find.byIcon(Icons.camera_alt_rounded);
@@ -72,7 +79,9 @@ void main() {
         mockRepository.pickImageFromGallery(),
       ).thenAnswer((_) async => right(photo));
 
-      await tester.pumpWidget(testWidget);
+      await tester.pumpWidget(
+        makeTestableWidget(mockRepository: mockRepository),
+      );
 
       // When: User taps the gallery button (find by icon)
       final galleryIcon = find.byIcon(Icons.photo_library_rounded);
@@ -98,7 +107,9 @@ void main() {
         ),
       );
 
-      await tester.pumpWidget(testWidget);
+      await tester.pumpWidget(
+        makeTestableWidget(mockRepository: mockRepository),
+      );
 
       // Tap camera button (find by icon)
       final cameraIcon = find.byIcon(Icons.camera_alt_rounded);
@@ -134,7 +145,9 @@ void main() {
         ),
       );
 
-      await tester.pumpWidget(testWidget);
+      await tester.pumpWidget(
+        makeTestableWidget(mockRepository: mockRepository),
+      );
 
       // Tap camera button to start loading (find by icon)
       final cameraIcon = find.byIcon(Icons.camera_alt_rounded);
@@ -170,7 +183,9 @@ void main() {
         mockRepository.capturePhoto(),
       ).thenAnswer((_) async => left(failure));
 
-      await tester.pumpWidget(testWidget);
+      await tester.pumpWidget(
+        makeTestableWidget(mockRepository: mockRepository),
+      );
 
       // Tap camera button (find by icon)
       final cameraIcon = find.byIcon(Icons.camera_alt_rounded);
@@ -193,7 +208,9 @@ void main() {
       final photo = TestData.createCameraPhoto();
       when(mockRepository.capturePhoto()).thenAnswer((_) async => right(photo));
 
-      await tester.pumpWidget(testWidget);
+      await tester.pumpWidget(
+        makeTestableWidget(mockRepository: mockRepository),
+      );
 
       // Tap camera button (find by icon)
       final cameraIcon = find.byIcon(Icons.camera_alt_rounded);
@@ -217,7 +234,9 @@ void main() {
         mockRepository.capturePhoto(),
       ).thenAnswer((_) async => left(failure));
 
-      await tester.pumpWidget(testWidget);
+      await tester.pumpWidget(
+        makeTestableWidget(mockRepository: mockRepository),
+      );
 
       // Tap camera button (find by icon)
       final cameraIcon = find.byIcon(Icons.camera_alt_rounded);
@@ -244,7 +263,9 @@ void main() {
         mockRepository.pickImageFromGallery(),
       ).thenAnswer((_) async => left(failure));
 
-      await tester.pumpWidget(testWidget);
+      await tester.pumpWidget(
+        makeTestableWidget(mockRepository: mockRepository),
+      );
 
       // Tap gallery button (find by icon)
       final galleryIcon = find.byIcon(Icons.photo_library_rounded);

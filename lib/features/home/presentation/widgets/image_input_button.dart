@@ -1,3 +1,4 @@
+import 'package:artifex/l10n/app_localizations.dart';
 import 'package:artifex/shared/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -12,47 +13,55 @@ class ImageInputButton extends StatelessWidget {
     this.isEnabled = true,
   });
 
-  ImageInputButton.camera({
+  factory ImageInputButton.camera({
+    required BuildContext context,
     required VoidCallback onPressed,
     Key? key,
     bool isEnabled = true,
-  }) : this(
-         key: key,
-         icon: Icons.camera_alt_rounded,
-         title: 'Take a Photo',
-         subtitle: 'Capture with your camera',
-         onPressed: onPressed,
-         isEnabled: isEnabled,
-         gradient: LinearGradient(
-           colors: [
-             AppTheme.colors.primary,
-             AppTheme.colors.primary.withValues(alpha: 0.8),
-           ],
-           begin: Alignment.topLeft,
-           end: Alignment.bottomRight,
-         ),
-       );
+  }) {
+    final l10n = AppLocalizations.of(context);
+    return ImageInputButton(
+      key: key,
+      icon: Icons.camera_alt_rounded,
+      title: l10n.cameraButtonTitle,
+      subtitle: l10n.cameraButtonDescription,
+      onPressed: onPressed,
+      isEnabled: isEnabled,
+      gradient: LinearGradient(
+        colors: [
+          AppTheme.colors.primary,
+          AppTheme.colors.primary.withValues(alpha: 0.8),
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    );
+  }
 
-  ImageInputButton.gallery({
+  factory ImageInputButton.gallery({
+    required BuildContext context,
     required VoidCallback onPressed,
     Key? key,
     bool isEnabled = true,
-  }) : this(
-         key: key,
-         icon: Icons.photo_library_rounded,
-         title: 'Upload Image',
-         subtitle: 'Choose from gallery',
-         onPressed: onPressed,
-         isEnabled: isEnabled,
-         gradient: LinearGradient(
-           colors: [
-             AppTheme.colors.secondary,
-             AppTheme.colors.secondary.withValues(alpha: 0.8),
-           ],
-           begin: Alignment.topLeft,
-           end: Alignment.bottomRight,
-         ),
-       );
+  }) {
+    final l10n = AppLocalizations.of(context);
+    return ImageInputButton(
+      key: key,
+      icon: Icons.photo_library_rounded,
+      title: l10n.galleryButtonTitle,
+      subtitle: l10n.galleryButtonDescription,
+      onPressed: onPressed,
+      isEnabled: isEnabled,
+      gradient: LinearGradient(
+        colors: [
+          AppTheme.colors.secondary,
+          AppTheme.colors.secondary.withValues(alpha: 0.8),
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    );
+  }
 
   final IconData icon;
   final String title;

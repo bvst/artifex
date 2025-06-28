@@ -1,0 +1,15 @@
+{
+  "@@locale": "no",
+  "appTitle": "Artifex",
+  "appTagline": "Din verden, nyforestilt",
+  "welcomeTitle": "Forvandle bildene dine med KI",
+  "welcomeDescription": "Gjør hverdagsbildene dine til ekstraordinære kunstverk ved hjelp av KI. Velg mellom ulike stiler og la kreativiteten flyte.",
+  "cameraButtonTitle": "Ta bilde",
+  "cameraButtonDescription": "Ta et nytt bilde med kameraet",
+  "galleryButtonTitle": "Velg fra galleri",
+  "galleryButtonDescription": "Velg et eksisterende bilde fra galleriet",
+  "choosePhotoPrompt": "Hvordan vil du legge til et bilde?",
+  "photoCaptureFailed": "Kunne ikke ta bilde",
+  "photoCaptureSuccess": "Bilde tatt!",
+  "photoCaptureError": "Feil ved bildeopptaking: {error}"
+}

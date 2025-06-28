@@ -25,7 +25,7 @@ final dioClientProvider = AutoDisposeProvider<Dio>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef DioClientRef = AutoDisposeProviderRef<Dio>;
-String _$databaseHash() => r'f2fd4db70c7c7ea9fa87da9353311851a6956153';
+String _$databaseHash() => r'4c9a4d17ec41b645e6df0cd6bf533b036df868bc';
 
 /// Provider for SQLite database
 ///
@@ -44,7 +44,7 @@ final databaseProvider = AutoDisposeFutureProvider<Database>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef DatabaseRef = AutoDisposeFutureProviderRef<Database>;
-String _$appLoggerHash() => r'7a3044f5a0d402b3650407c5580520f6e78a1e22';
+String _$appLoggerHash() => r'df8d663b25029b9f0a06806ba7ff51cc86d2ed83';
 
 /// Provider for AppLogger
 ///

@@ -52,10 +52,15 @@ void main() {
         // Given: A HomeScreen
         await tester.pumpAppScreen(const HomeScreen());
 
-        // Then: Should have styled Scaffold
-        final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
+        // Then: Should have styled Scaffold (find the HomeScreen's scaffold)
+        final homeScreenScaffold = tester.widget<Scaffold>(
+          find.descendant(
+            of: find.byType(HomeScreen),
+            matching: find.byType(Scaffold),
+          ),
+        );
         expect(
-          scaffold.backgroundColor,
+          homeScreenScaffold.backgroundColor,
           isNotNull,
           reason: 'Scaffold should have background color',
         );

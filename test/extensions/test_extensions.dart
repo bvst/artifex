@@ -1,10 +1,11 @@
 import 'package:artifex/features/photo_capture/domain/repositories/photo_repository.dart';
 import 'package:artifex/features/photo_capture/presentation/providers/photo_providers.dart';
-import 'package:artifex/shared/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+
+import '../helpers/test_app_wrapper.dart';
 
 /// Extension methods for cleaner test setup - very Dart idiomatic
 extension WidgetTestingExtensions on WidgetTester {
@@ -21,13 +22,7 @@ extension WidgetTestingExtensions on WidgetTester {
     }
 
     await pumpWidget(
-      ProviderScope(
-        overrides: overrides,
-        child: MaterialApp(
-          theme: theme ?? AppTheme.lightTheme,
-          home: Scaffold(body: widget),
-        ),
-      ),
+      TestAppWrapper.createApp(child: widget, overrides: overrides),
     );
   }
 
@@ -46,7 +41,7 @@ extension WidgetTestingExtensions on WidgetTester {
     await pumpWidget(
       ProviderScope(
         overrides: overrides,
-        child: MaterialApp(theme: theme ?? AppTheme.lightTheme, home: screen),
+        child: TestAppWrapper.createSimpleApp(child: screen),
       ),
     );
   }

@@ -24,7 +24,7 @@ final imagePickerProvider = AutoDisposeProvider<ImagePicker>.internal(
 // ignore: unused_element
 typedef ImagePickerRef = AutoDisposeProviderRef<ImagePicker>;
 String _$photoLocalDataSourceHash() =>
-    r'0bfe310b86b465b63a0e80a1d90204a5a51b369f';
+    r'3bfbe765e4dd2f7a5f70f0a88d2d7c0490868998';
 
 /// See also [photoLocalDataSource].
 @ProviderFor(photoLocalDataSource)
@@ -42,7 +42,7 @@ final photoLocalDataSourceProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef PhotoLocalDataSourceRef = AutoDisposeProviderRef<PhotoLocalDataSource>;
-String _$photoRepositoryHash() => r'15978b948017a8784d4bbbfe307451fca103fb0e';
+String _$photoRepositoryHash() => r'f1d72db2d6fe4efb5ed49be06cd10445aa88a0d7';
 
 /// See also [photoRepository].
 @ProviderFor(photoRepository)
@@ -60,7 +60,7 @@ final photoRepositoryProvider = AutoDisposeProvider<PhotoRepository>.internal(
 // ignore: unused_element
 typedef PhotoRepositoryRef = AutoDisposeProviderRef<PhotoRepository>;
 String _$capturePhotoUseCaseHash() =>
-    r'2dfe7d42bec08a4a34d701bb1300b9c078ee7c26';
+    r'36f3ffc7b603e3fff6e1c3a427d47b625073ed32';
 
 /// See also [capturePhotoUseCase].
 @ProviderFor(capturePhotoUseCase)
@@ -79,7 +79,7 @@ final capturePhotoUseCaseProvider =
 // ignore: unused_element
 typedef CapturePhotoUseCaseRef = AutoDisposeProviderRef<CapturePhotoUseCase>;
 String _$pickImageFromGalleryUseCaseHash() =>
-    r'2efed415535057efb095bf873de8c3d2c711adf6';
+    r'96f7e979ad4c550054fa52c7722bc797ca38d295';
 
 /// See also [pickImageFromGalleryUseCase].
 @ProviderFor(pickImageFromGalleryUseCase)
@@ -99,7 +99,7 @@ final pickImageFromGalleryUseCaseProvider =
 typedef PickImageFromGalleryUseCaseRef =
     AutoDisposeProviderRef<PickImageFromGalleryUseCase>;
 String _$getRecentPhotosUseCaseHash() =>
-    r'8b6756bed8af75c88ee86f44ac76b05bf102e323';
+    r'decc9e16304836bb2e8f9c4bffd6ea700cab141e';
 
 /// See also [getRecentPhotosUseCase].
 @ProviderFor(getRecentPhotosUseCase)

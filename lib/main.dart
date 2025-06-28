@@ -1,11 +1,13 @@
 import 'package:artifex/core/network/dio_client.dart';
 import 'package:artifex/core/utils/error_boundary.dart';
 import 'package:artifex/core/utils/logger.dart';
+import 'package:artifex/l10n/app_localizations.dart';
 import 'package:artifex/screens/splash_screen.dart';
 import 'package:artifex/shared/themes/app_theme.dart';
 import 'package:artifex/shared/widgets/custom_error_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
@@ -98,6 +100,19 @@ class ArtifexApp extends StatelessWidget {
     title: 'Artifex',
     theme: AppTheme.lightTheme,
     debugShowCheckedModeBanner: false,
+
+    // Internationalization setup
+    localizationsDelegates: const [
+      AppLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+    supportedLocales: const [
+      Locale('en', ''), // English
+      Locale('no', ''), // Norwegian
+    ],
+
     home: SplashScreen(splashDuration: splashDuration),
   );
 }

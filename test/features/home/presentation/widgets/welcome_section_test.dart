@@ -3,16 +3,14 @@ import 'package:artifex/shared/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../../helpers/test_app_wrapper.dart';
+
 void main() {
   group('WelcomeSection Tests', () {
-    late Widget testWidget;
-
-    setUp(() {
-      testWidget = const MaterialApp(home: Scaffold(body: WelcomeSection()));
-    });
-
     testWidgets('should display welcome title', (tester) async {
-      await tester.pumpWidget(testWidget);
+      await tester.pumpWidget(
+        TestAppWrapper.createSimpleApp(child: const WelcomeSection()),
+      );
 
       // Verify welcome section structure by widget types
       expect(find.byType(Column), findsOneWidget);
@@ -23,7 +21,9 @@ void main() {
     });
 
     testWidgets('should display tagline', (tester) async {
-      await tester.pumpWidget(testWidget);
+      await tester.pumpWidget(
+        TestAppWrapper.createSimpleApp(child: const WelcomeSection()),
+      );
 
       // Verify tagline exists by checking text widget count and structure
       final textWidgets = find.byType(Text);
@@ -31,7 +31,9 @@ void main() {
     });
 
     testWidgets('should display description text', (tester) async {
-      await tester.pumpWidget(testWidget);
+      await tester.pumpWidget(
+        TestAppWrapper.createSimpleApp(child: const WelcomeSection()),
+      );
 
       // Verify description exists by checking complete text widget structure
       final textWidgets = find.byType(Text);
@@ -39,7 +41,9 @@ void main() {
     });
 
     testWidgets('should use correct text styles', (tester) async {
-      await tester.pumpWidget(testWidget);
+      await tester.pumpWidget(
+        TestAppWrapper.createSimpleApp(child: const WelcomeSection()),
+      );
 
       final textWidgets = find.byType(Text);
       expect(textWidgets, findsNWidgets(3));
@@ -62,7 +66,9 @@ void main() {
     });
 
     testWidgets('should have correct spacing between elements', (tester) async {
-      await tester.pumpWidget(testWidget);
+      await tester.pumpWidget(
+        TestAppWrapper.createSimpleApp(child: const WelcomeSection()),
+      );
 
       // Find all SizedBox widgets
       final sizedBoxes = find.byType(SizedBox);
@@ -77,7 +83,9 @@ void main() {
     });
 
     testWidgets('should layout elements in a Column', (tester) async {
-      await tester.pumpWidget(testWidget);
+      await tester.pumpWidget(
+        TestAppWrapper.createSimpleApp(child: const WelcomeSection()),
+      );
 
       final column = tester.widget<Column>(find.byType(Column));
       expect(column.crossAxisAlignment, CrossAxisAlignment.start);

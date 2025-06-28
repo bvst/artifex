@@ -2,18 +2,18 @@ import 'package:artifex/features/home/presentation/widgets/image_input_button.da
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../../helpers/test_app_wrapper.dart';
+
 void main() {
   group('ImageInputButton Tests', () {
     testWidgets('should display all button components', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ImageInputButton(
-              icon: Icons.camera_alt,
-              title: 'Test Title',
-              subtitle: 'Test Subtitle',
-              onPressed: () {},
-            ),
+        TestAppWrapper.createSimpleApp(
+          child: ImageInputButton(
+            icon: Icons.camera_alt,
+            title: 'Test Title',
+            subtitle: 'Test Subtitle',
+            onPressed: () {},
           ),
         ),
       );
@@ -27,8 +27,11 @@ void main() {
 
     testWidgets('camera button should have correct properties', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: ImageInputButton.camera(onPressed: () {})),
+        TestAppWrapper.createSimpleApp(
+          child: Builder(
+            builder: (context) =>
+                ImageInputButton.camera(context: context, onPressed: () {}),
+          ),
         ),
       );
 
@@ -42,8 +45,11 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: ImageInputButton.gallery(onPressed: () {})),
+        TestAppWrapper.createSimpleApp(
+          child: Builder(
+            builder: (context) =>
+                ImageInputButton.gallery(context: context, onPressed: () {}),
+          ),
         ),
       );
 

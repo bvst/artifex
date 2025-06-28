@@ -1,0 +1,57 @@
+{
+  "@@locale": "en",
+  "appTitle": "Artifex",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "appTagline": "Your World, Reimagined",
+  "@appTagline": {
+    "description": "The application tagline"
+  },
+  "welcomeTitle": "Transform Your Photos with AI",
+  "@welcomeTitle": {
+    "description": "Welcome screen main title"
+  },
+  "welcomeDescription": "Turn your everyday photos into extraordinary works of art using the power of AI. Choose from various styles and let creativity flow.",
+  "@welcomeDescription": {
+    "description": "Welcome screen description text"
+  },
+  "cameraButtonTitle": "Take Photo",
+  "@cameraButtonTitle": {
+    "description": "Camera button title"
+  },
+  "cameraButtonDescription": "Capture a new photo with your camera",
+  "@cameraButtonDescription": {
+    "description": "Camera button description"
+  },
+  "galleryButtonTitle": "Choose from Gallery",
+  "@galleryButtonTitle": {
+    "description": "Gallery button title"
+  },
+  "galleryButtonDescription": "Select an existing photo from your gallery",
+  "@galleryButtonDescription": {
+    "description": "Gallery button description"
+  },
+  "choosePhotoPrompt": "How would you like to add a photo?",
+  "@choosePhotoPrompt": {
+    "description": "Prompt asking user how to add a photo"
+  },
+  "photoCaptureFailed": "Failed to capture photo",
+  "@photoCaptureFailed": {
+    "description": "Error message when photo capture fails"
+  },
+  "photoCaptureSuccess": "Photo captured successfully!",
+  "@photoCaptureSuccess": {
+    "description": "Success message when photo is captured"
+  },
+  "photoCaptureError": "Error capturing photo: {error}",
+  "@photoCaptureError": {
+    "description": "Error message with details when photo capture fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "The error message"
+      }
+    }
+  }
+}
