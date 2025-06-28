@@ -9,7 +9,7 @@
 /// Fast mode (default) runs:
 /// 1. dart format . - formats all code consistently
 /// 2. flutter analyze - checks for code issues
-/// 3. flutter test test/features test/unit test/widget - runs unit/widget tests only
+/// 3. flutter test test/features test/unit test/widget - runs unit/widget tests with parallelization
 ///
 /// Full mode (--all) additionally runs:
 /// 4. flutter pub outdated - checks for outdated dependencies
@@ -78,6 +78,8 @@ void main(List<String> arguments) async {
     'test/widget_test.dart',
     '--reporter=compact',
     '--dart-define=FLUTTER_TEST=true', // Enable test optimizations
+    '--concurrency=8', // Run tests in parallel (optimized for speed)
+    '--no-test-assets', // Skip building assets for faster startup
   ]);
 
   if (unitTestResult.exitCode == 0) {
@@ -220,6 +222,8 @@ void main(List<String> arguments) async {
       'test',
       'test/integration/',
       '--reporter=compact',
+      '--dart-define=FLUTTER_TEST=true',
+      '--concurrency=2', // Lower concurrency for integration tests (they use database)
     ]);
     integrationTestsRan = true;
 
