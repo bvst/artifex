@@ -94,20 +94,15 @@ void main(List<String> arguments) async {
       }
     }
 
-    final totalOutdated = directOutdated + devOutdated + transitiveOutdated;
+    final directDepsTotal = directOutdated + devOutdated;
 
-    if (totalOutdated > 0) {
-      print('⚠️  Found $totalOutdated outdated dependencies:');
+    if (directDepsTotal > 0) {
+      print('⚠️  Found $directDepsTotal outdated direct dependencies:');
       if (directOutdated > 0) {
-        print('   • $directOutdated direct dependencies');
+        print('   • $directOutdated production dependencies');
       }
       if (devOutdated > 0) {
         print('   • $devOutdated dev dependencies');
-      }
-      if (transitiveOutdated > 0) {
-        print(
-          '   • $transitiveOutdated transitive dependencies (auto-updated)',
-        );
       }
 
       // Check for constraint message
@@ -123,7 +118,7 @@ void main(List<String> arguments) async {
       }
       print('');
     } else {
-      print('✅ All dependencies are up to date\n');
+      print('✅ All direct dependencies are up to date\n');
     }
   } else {
     print('⚠️  Failed to check outdated dependencies:');

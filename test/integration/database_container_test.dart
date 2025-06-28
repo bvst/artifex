@@ -4,7 +4,7 @@ import 'package:postgres/postgres.dart';
 
 void main() {
   group('Database Container Integration Tests', () {
-    late PostgreSQLConnection connection;
+    late Connection connection;
 
     setUpAll(() async {
       // Wait for test database to be ready
@@ -13,14 +13,16 @@ void main() {
 
     setUp(() async {
       // Connect to test database
-      connection = PostgreSQLConnection(
-        'localhost',
-        5433,
-        'artifex_test',
-        username: 'artifex_test_user',
-        password: 'artifex_test_password',
+      connection = await Connection.open(
+        Endpoint(
+          host: 'localhost',
+          port: 5433,
+          database: 'artifex_test',
+          username: 'artifex_test_user',
+          password: 'artifex_test_password',
+        ),
+        settings: const ConnectionSettings(sslMode: SslMode.disable),
       );
-      await connection.open();
 
       // Clean up any existing data
       await connection.execute('DELETE FROM transformations');
@@ -44,15 +46,18 @@ void main() {
         };
 
         // Act - Insert transformation
-        await connection.query('''
+        await connection.execute(
+          Sql.named('''
             INSERT INTO transformations (id, imageUrl, thumbnailUrl, prompt, style, createdAt, localPath)
             VALUES (@id, @imageUrl, @thumbnailUrl, @prompt, @style, @createdAt, @localPath)
-          ''', substitutionValues: transformationData);
+          '''),
+          parameters: transformationData,
+        );
 
         // Act - Retrieve transformation
-        final result = await connection.query(
-          'SELECT * FROM transformations WHERE id = @id',
-          substitutionValues: {'id': 'test_transformation_1'},
+        final result = await connection.execute(
+          Sql.named('SELECT * FROM transformations WHERE id = @id'),
+          parameters: {'id': 'test_transformation_1'},
         );
 
         // Assert
@@ -100,14 +105,17 @@ void main() {
           ];
 
           for (final transformation in transformations) {
-            await connection.query('''
-              INSERT INTO transformations (id, imageUrl, thumbnailUrl, prompt, style, createdAt, localPath)
-              VALUES (@id, @imageUrl, @thumbnailUrl, @prompt, @style, @createdAt, @localPath)
-            ''', substitutionValues: transformation);
+            await connection.execute(
+              Sql.named('''
+                INSERT INTO transformations (id, imageUrl, thumbnailUrl, prompt, style, createdAt, localPath)
+                VALUES (@id, @imageUrl, @thumbnailUrl, @prompt, @style, @createdAt, @localPath)
+              '''),
+              parameters: transformation,
+            );
           }
 
           // Act - Retrieve transformations ordered by createdAt DESC
-          final result = await connection.query(
+          final result = await connection.execute(
             'SELECT id FROM transformations ORDER BY createdAt DESC',
           );
 
@@ -121,12 +129,12 @@ void main() {
 
       test('should update transformation with local path', () async {
         // Arrange - Insert initial transformation
-        await connection.query(
-          '''
+        await connection.execute(
+          Sql.named('''
             INSERT INTO transformations (id, imageUrl, thumbnailUrl, prompt, style, createdAt, localPath)
             VALUES (@id, @imageUrl, @thumbnailUrl, @prompt, @style, @createdAt, @localPath)
-          ''',
-          substitutionValues: {
+          '''),
+          parameters: {
             'id': 'test_update',
             'imageUrl': 'https://example.com/image.png',
             'thumbnailUrl': 'https://example.com/thumb.png',
@@ -138,18 +146,20 @@ void main() {
         );
 
         // Act - Update with local path
-        await connection.query(
-          'UPDATE transformations SET localPath = @localPath WHERE id = @id',
-          substitutionValues: {
+        await connection.execute(
+          Sql.named(
+            'UPDATE transformations SET localPath = @localPath WHERE id = @id',
+          ),
+          parameters: {
             'id': 'test_update',
             'localPath': '/local/cached/image.png',
           },
         );
 
         // Assert
-        final result = await connection.query(
-          'SELECT localPath FROM transformations WHERE id = @id',
-          substitutionValues: {'id': 'test_update'},
+        final result = await connection.execute(
+          Sql.named('SELECT localPath FROM transformations WHERE id = @id'),
+          parameters: {'id': 'test_update'},
         );
 
         expect(result.length, 1);
@@ -180,20 +190,25 @@ void main() {
         ];
 
         for (final transformation in transformations) {
-          await connection.query('''
+          await connection.execute(
+            Sql.named('''
               INSERT INTO transformations (id, imageUrl, thumbnailUrl, prompt, style, createdAt, localPath)
               VALUES (@id, @imageUrl, @thumbnailUrl, @prompt, @style, @createdAt, @localPath)
-            ''', substitutionValues: transformation);
+            '''),
+            parameters: transformation,
+          );
         }
 
         // Act - Delete one transformation
-        await connection.query(
-          'DELETE FROM transformations WHERE id = @id',
-          substitutionValues: {'id': 'test_delete_1'},
+        await connection.execute(
+          Sql.named('DELETE FROM transformations WHERE id = @id'),
+          parameters: {'id': 'test_delete_1'},
         );
 
         // Assert
-        final result = await connection.query('SELECT id FROM transformations');
+        final result = await connection.execute(
+          'SELECT id FROM transformations',
+        );
         expect(result.length, 1);
         expect(result.first[0], 'test_delete_2');
       });
@@ -202,7 +217,7 @@ void main() {
     group('Database Schema', () {
       test('should have correct table structure', () async {
         // Act - Query table info
-        final result = await connection.query('''
+        final result = await connection.execute('''
           SELECT column_name, data_type, is_nullable
           FROM information_schema.columns
           WHERE table_name = 'transformations'
@@ -222,12 +237,12 @@ void main() {
 
       test('should enforce primary key constraint', () async {
         // Arrange - Insert first transformation
-        await connection.query(
-          '''
+        await connection.execute(
+          Sql.named('''
             INSERT INTO transformations (id, imageUrl, thumbnailUrl, prompt, style, createdAt, localPath)
             VALUES (@id, @imageUrl, @thumbnailUrl, @prompt, @style, @createdAt, @localPath)
-          ''',
-          substitutionValues: {
+          '''),
+          parameters: {
             'id': 'duplicate_id',
             'imageUrl': 'https://example.com/image.png',
             'thumbnailUrl': 'https://example.com/thumb.png',
@@ -240,12 +255,12 @@ void main() {
 
         // Act & Assert - Try to insert duplicate ID
         expect(
-          () => connection.query(
-            '''
+          () => connection.execute(
+            Sql.named('''
               INSERT INTO transformations (id, imageUrl, thumbnailUrl, prompt, style, createdAt, localPath)
               VALUES (@id, @imageUrl, @thumbnailUrl, @prompt, @style, @createdAt, @localPath)
-            ''',
-            substitutionValues: {
+            '''),
+            parameters: {
               'id': 'duplicate_id', // Same ID
               'imageUrl': 'https://example.com/different.png',
               'thumbnailUrl': 'https://example.com/different_thumb.png',
@@ -255,13 +270,13 @@ void main() {
               'localPath': null,
             },
           ),
-          throwsA(isA<PostgreSQLException>()),
+          throwsA(isA<ServerException>()),
         );
 
         // Verify only one record exists
-        final result = await connection.query(
-          'SELECT COUNT(*) FROM transformations WHERE id = @id',
-          substitutionValues: {'id': 'duplicate_id'},
+        final result = await connection.execute(
+          Sql.named('SELECT COUNT(*) FROM transformations WHERE id = @id'),
+          parameters: {'id': 'duplicate_id'},
         );
         expect(result.first[0], 1);
       });
@@ -276,17 +291,19 @@ Future<void> _waitForDatabase() async {
 
   for (var attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
-      final connection = PostgreSQLConnection(
-        'localhost',
-        5433,
-        'artifex_test',
-        username: 'artifex_test_user',
-        password: 'artifex_test_password',
+      final connection = await Connection.open(
+        Endpoint(
+          host: 'localhost',
+          port: 5433,
+          database: 'artifex_test',
+          username: 'artifex_test_user',
+          password: 'artifex_test_password',
+        ),
+        settings: const ConnectionSettings(sslMode: SslMode.disable),
       );
-      await connection.open();
 
       // Test the connection
-      await connection.query('SELECT 1');
+      await connection.execute('SELECT 1');
       await connection.close();
 
       // Use testWidgets print which is allowed in tests
