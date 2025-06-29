@@ -23,12 +23,6 @@ class SettingsRepositoryImpl implements SettingsRepository {
     } on CacheException catch (e) {
       AppLogger.error('SettingsRepository: Cache error getting settings', e);
       return Left(CacheFailure(e.message));
-    } on Exception catch (e) {
-      AppLogger.error(
-        'SettingsRepository: Unexpected error getting settings',
-        e,
-      );
-      return Left(CacheFailure('Failed to get settings: ${e.toString()}'));
     }
   }
 
@@ -42,142 +36,100 @@ class SettingsRepositoryImpl implements SettingsRepository {
     } on CacheException catch (e) {
       AppLogger.error('SettingsRepository: Cache error saving settings', e);
       return Left(CacheFailure(e.message));
-    } on Exception catch (e) {
-      AppLogger.error(
-        'SettingsRepository: Unexpected error saving settings',
-        e,
-      );
-      return Left(CacheFailure('Failed to save settings: ${e.toString()}'));
     }
   }
 
   @override
   Future<Either<Failure, Unit>> updateLocale(Locale? locale) async {
-    try {
-      AppLogger.debug(
-        'SettingsRepository: Updating locale to ${locale?.toString() ?? 'system default'}',
+    AppLogger.debug(
+      'SettingsRepository: Updating locale to ${locale?.toString() ?? 'system default'}',
+    );
+
+    // Get current settings
+    final currentSettingsResult = await getSettings();
+    if (currentSettingsResult.isLeft()) {
+      return currentSettingsResult.fold(
+        Left.new,
+        (_) => throw StateError('Should not reach success when isLeft is true'),
       );
-
-      // Get current settings
-      final currentSettingsResult = await getSettings();
-      if (currentSettingsResult.isLeft()) {
-        return currentSettingsResult.fold(
-          Left.new,
-          (_) =>
-              throw StateError('Should not reach success when isLeft is true'),
-        );
-      }
-
-      final currentSettings = currentSettingsResult.getOrElse(
-        () => AppSettings.defaultSettings,
-      );
-
-      // Update with new locale
-      final updatedSettings = currentSettings.copyWith(
-        locale: locale == null ? const None() : Some(locale),
-      );
-
-      return saveSettings(updatedSettings);
-    } on Exception catch (e) {
-      AppLogger.error('SettingsRepository: Error updating locale', e);
-      return Left(CacheFailure('Failed to update locale: ${e.toString()}'));
     }
+
+    final currentSettings = currentSettingsResult.getOrElse(
+      () => AppSettings.defaultSettings,
+    );
+
+    // Update with new locale
+    final updatedSettings = currentSettings.copyWith(
+      locale: locale == null ? const None() : Some(locale),
+    );
+
+    return saveSettings(updatedSettings);
   }
 
   @override
   Future<Either<Failure, Unit>> updateThemeMode(ThemeMode themeMode) async {
-    try {
-      AppLogger.debug('SettingsRepository: Updating theme mode to $themeMode');
+    AppLogger.debug('SettingsRepository: Updating theme mode to $themeMode');
 
-      final currentSettingsResult = await getSettings();
-      if (currentSettingsResult.isLeft()) {
-        return currentSettingsResult.fold(
-          Left.new,
-          (_) =>
-              throw StateError('Should not reach success when isLeft is true'),
-        );
-      }
-
-      final currentSettings = currentSettingsResult.getOrElse(
-        () => AppSettings.defaultSettings,
+    final currentSettingsResult = await getSettings();
+    if (currentSettingsResult.isLeft()) {
+      return currentSettingsResult.fold(
+        Left.new,
+        (_) => throw StateError('Should not reach success when isLeft is true'),
       );
-      final updatedSettings = currentSettings.copyWith(themeMode: themeMode);
-
-      return saveSettings(updatedSettings);
-    } on Exception catch (e) {
-      AppLogger.error('SettingsRepository: Error updating theme mode', e);
-      return Left(CacheFailure('Failed to update theme mode: ${e.toString()}'));
     }
+
+    final currentSettings = currentSettingsResult.getOrElse(
+      () => AppSettings.defaultSettings,
+    );
+    final updatedSettings = currentSettings.copyWith(themeMode: themeMode);
+
+    return saveSettings(updatedSettings);
   }
 
   @override
   Future<Either<Failure, Unit>> updateAnalyticsEnabled(bool enabled) async {
-    try {
-      AppLogger.debug(
-        'SettingsRepository: Updating analytics enabled to $enabled',
-      );
+    AppLogger.debug(
+      'SettingsRepository: Updating analytics enabled to $enabled',
+    );
 
-      final currentSettingsResult = await getSettings();
-      if (currentSettingsResult.isLeft()) {
-        return currentSettingsResult.fold(
-          Left.new,
-          (_) =>
-              throw StateError('Should not reach success when isLeft is true'),
-        );
-      }
-
-      final currentSettings = currentSettingsResult.getOrElse(
-        () => AppSettings.defaultSettings,
-      );
-      final updatedSettings = currentSettings.copyWith(
-        enableAnalytics: enabled,
-      );
-
-      return saveSettings(updatedSettings);
-    } on Exception catch (e) {
-      AppLogger.error(
-        'SettingsRepository: Error updating analytics setting',
-        e,
-      );
-      return Left(
-        CacheFailure('Failed to update analytics setting: ${e.toString()}'),
+    final currentSettingsResult = await getSettings();
+    if (currentSettingsResult.isLeft()) {
+      return currentSettingsResult.fold(
+        Left.new,
+        (_) => throw StateError('Should not reach success when isLeft is true'),
       );
     }
+
+    final currentSettings = currentSettingsResult.getOrElse(
+      () => AppSettings.defaultSettings,
+    );
+    final updatedSettings = currentSettings.copyWith(enableAnalytics: enabled);
+
+    return saveSettings(updatedSettings);
   }
 
   @override
   Future<Either<Failure, Unit>> updateNotificationsEnabled(bool enabled) async {
-    try {
-      AppLogger.debug(
-        'SettingsRepository: Updating notifications enabled to $enabled',
-      );
+    AppLogger.debug(
+      'SettingsRepository: Updating notifications enabled to $enabled',
+    );
 
-      final currentSettingsResult = await getSettings();
-      if (currentSettingsResult.isLeft()) {
-        return currentSettingsResult.fold(
-          Left.new,
-          (_) =>
-              throw StateError('Should not reach success when isLeft is true'),
-        );
-      }
-
-      final currentSettings = currentSettingsResult.getOrElse(
-        () => AppSettings.defaultSettings,
-      );
-      final updatedSettings = currentSettings.copyWith(
-        enableNotifications: enabled,
-      );
-
-      return saveSettings(updatedSettings);
-    } on Exception catch (e) {
-      AppLogger.error(
-        'SettingsRepository: Error updating notifications setting',
-        e,
-      );
-      return Left(
-        CacheFailure('Failed to update notifications setting: ${e.toString()}'),
+    final currentSettingsResult = await getSettings();
+    if (currentSettingsResult.isLeft()) {
+      return currentSettingsResult.fold(
+        Left.new,
+        (_) => throw StateError('Should not reach success when isLeft is true'),
       );
     }
+
+    final currentSettings = currentSettingsResult.getOrElse(
+      () => AppSettings.defaultSettings,
+    );
+    final updatedSettings = currentSettings.copyWith(
+      enableNotifications: enabled,
+    );
+
+    return saveSettings(updatedSettings);
   }
 
   @override
@@ -189,12 +141,6 @@ class SettingsRepositoryImpl implements SettingsRepository {
     } on CacheException catch (e) {
       AppLogger.error('SettingsRepository: Cache error resetting settings', e);
       return Left(CacheFailure(e.message));
-    } on Exception catch (e) {
-      AppLogger.error(
-        'SettingsRepository: Unexpected error resetting settings',
-        e,
-      );
-      return Left(CacheFailure('Failed to reset settings: ${e.toString()}'));
     }
   }
 }

@@ -47,9 +47,6 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
       AppLogger.warning('Cache error during transformation: ${e.message}');
       // Still return success since API call worked, just caching failed
       return Left(CacheFailure(e.message));
-    } on Exception catch (e) {
-      AppLogger.error('Unexpected error during transformation: $e');
-      return Left(UnknownFailure('Unexpected error: ${e.toString()}'));
     }
   }
 
@@ -72,9 +69,6 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
     } on CacheException catch (e) {
       AppLogger.error('Cache error fetching history: ${e.message}');
       return Left(CacheFailure(e.message));
-    } on Exception catch (e) {
-      AppLogger.error('Unexpected error fetching history: $e');
-      return Left(UnknownFailure('Failed to fetch history: ${e.toString()}'));
     }
   }
 
@@ -105,9 +99,6 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
     } on CacheException catch (e) {
       AppLogger.error('Cache error downloading image: ${e.message}');
       return Left(CacheFailure(e.message));
-    } on Exception catch (e) {
-      AppLogger.error('Unexpected error downloading image: $e');
-      return Left(UnknownFailure('Failed to download image: ${e.toString()}'));
     }
   }
 
@@ -125,11 +116,6 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
     } on CacheException catch (e) {
       AppLogger.error('Cache error deleting transformation: ${e.message}');
       return Left(CacheFailure(e.message));
-    } on Exception catch (e) {
-      AppLogger.error('Unexpected error deleting transformation: $e');
-      return Left(
-        UnknownFailure('Failed to delete transformation: ${e.toString()}'),
-      );
     }
   }
 
@@ -153,11 +139,6 @@ class AITransformationRepositoryImpl implements AITransformationRepository {
     } on NetworkException catch (e) {
       AppLogger.error('Network error checking service health: ${e.message}');
       return Left(NetworkFailure(e.message));
-    } on Exception catch (e) {
-      AppLogger.error('Unexpected error checking service health: $e');
-      return Left(
-        UnknownFailure('Failed to check service health: ${e.toString()}'),
-      );
     }
   }
 }

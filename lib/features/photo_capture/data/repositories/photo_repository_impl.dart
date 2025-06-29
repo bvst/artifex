@@ -33,9 +33,6 @@ class PhotoRepositoryImpl implements PhotoRepository {
     } on PermissionException catch (e) {
       AppLogger.error('PhotoRepository: Permission error during capture', e);
       return Left(PermissionFailure(e.message));
-    } on Exception catch (e) {
-      AppLogger.error('PhotoRepository: Unexpected error during capture', e);
-      return Left(CacheFailure('Failed to capture photo: ${e.toString()}'));
     }
   }
 
@@ -67,12 +64,6 @@ class PhotoRepositoryImpl implements PhotoRepository {
         e,
       );
       return Left(PermissionFailure(e.message));
-    } on Exception catch (e) {
-      AppLogger.error(
-        'PhotoRepository: Unexpected error during gallery pick',
-        e,
-      );
-      return Left(CacheFailure('Failed to pick image: ${e.toString()}'));
     }
   }
 
@@ -86,12 +77,6 @@ class PhotoRepositoryImpl implements PhotoRepository {
     } on CacheException catch (e) {
       AppLogger.error('PhotoRepository: Cache error getting recent photos', e);
       return Left(CacheFailure(e.message));
-    } on Exception catch (e) {
-      AppLogger.error(
-        'PhotoRepository: Unexpected error getting recent photos',
-        e,
-      );
-      return Left(CacheFailure('Failed to get recent photos: ${e.toString()}'));
     }
   }
 
@@ -104,9 +89,6 @@ class PhotoRepositoryImpl implements PhotoRepository {
     } on FileException catch (e) {
       AppLogger.error('PhotoRepository: File error during delete', e);
       return Left(FileNotFoundFailure(e.message));
-    } on Exception catch (e) {
-      AppLogger.error('PhotoRepository: Unexpected error during delete', e);
-      return Left(CacheFailure('Failed to delete photo: ${e.toString()}'));
     }
   }
 
@@ -131,9 +113,6 @@ class PhotoRepositoryImpl implements PhotoRepository {
     } on FileException catch (e) {
       AppLogger.error('PhotoRepository: File error during save', e);
       return Left(FileNotFoundFailure(e.message));
-    } on Exception catch (e) {
-      AppLogger.error('PhotoRepository: Unexpected error during save', e);
-      return Left(CacheFailure('Failed to save photo: ${e.toString()}'));
     }
   }
 }
