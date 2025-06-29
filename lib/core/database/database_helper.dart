@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:artifex/core/database/database_config.dart';
@@ -12,13 +13,30 @@ class DatabaseHelper {
   static const int _databaseVersion = DatabaseConfig.sqliteVersion;
 
   static Database? _database;
+  static Completer<Database>? _databaseCompleter;
 
-  /// Get or create database instance
+  /// Get or create database instance (thread-safe)
   static Future<Database> getDatabase() async {
+    // If database already exists, return it
     if (_database != null) return _database!;
 
-    _database = await _initDatabase();
-    return _database!;
+    // If initialization is already in progress, wait for it
+    if (_databaseCompleter != null) {
+      return _databaseCompleter!.future;
+    }
+
+    // Start initialization (only one thread will enter here)
+    _databaseCompleter = Completer<Database>();
+
+    try {
+      _database = await _initDatabase();
+      _databaseCompleter!.complete(_database!);
+      return _database!;
+    } catch (e) {
+      _databaseCompleter!.completeError(e);
+      _databaseCompleter = null; // Reset to allow retry
+      rethrow;
+    }
   }
 
   static Future<Database> _initDatabase() async {
@@ -93,6 +111,7 @@ class DatabaseHelper {
       AppLogger.debug('Closing database connection');
       await _database!.close();
       _database = null;
+      _databaseCompleter = null; // Reset completer too
     }
   }
 
@@ -106,6 +125,7 @@ class DatabaseHelper {
       AppLogger.warning('Deleting database file: $path');
       await file.delete();
       _database = null;
+      _databaseCompleter = null; // Reset completer too
     }
   }
 }

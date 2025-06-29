@@ -1,11 +1,11 @@
 import 'package:artifex/screens/onboarding_screen.dart';
 import 'package:artifex/screens/splash_screen.dart';
-import 'package:artifex/utils/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'extensions/test_extensions.dart';
+import 'helpers/test_app_wrapper.dart';
 import 'helpers/test_helpers.dart';
 
 void main() {
@@ -19,11 +19,8 @@ void main() {
       testWidgets('displays brand elements correctly', (tester) async {
         // Given: Splash screen with minimal duration for testing
         await tester.pumpWidget(
-          MaterialApp(
-            theme: AppTheme.lightTheme,
-            home: const SplashScreen(
-              splashDuration: Duration(milliseconds: 10),
-            ),
+          const TestAppWrapper(
+            child: SplashScreen(splashDuration: Duration(milliseconds: 10)),
           ),
         );
 
@@ -35,8 +32,8 @@ void main() {
       testWidgets('cancels timer properly on dispose', (tester) async {
         // Given: Splash screen with long duration
         await tester.pumpWidget(
-          makeTestableScreen(
-            screen: const SplashScreen(splashDuration: Duration(seconds: 10)),
+          const TestAppWrapper(
+            child: SplashScreen(splashDuration: Duration(seconds: 10)),
           ),
         );
 
@@ -52,7 +49,7 @@ void main() {
       testWidgets('displays first page content and navigation', (tester) async {
         // Given: Onboarding screen
         await tester.pumpWidget(
-          makeTestableScreen(screen: const OnboardingScreen()),
+          const TestAppWrapper(child: OnboardingScreen()),
         );
 
         // Then: Should show first page content (structure-based)
@@ -73,10 +70,8 @@ void main() {
         SharedPreferences.setMockInitialValues({'onboarding_complete': false});
 
         await tester.pumpWidget(
-          makeTestableScreen(
-            screen: const SplashScreen(
-              splashDuration: Duration(milliseconds: 100),
-            ),
+          const TestAppWrapper(
+            child: SplashScreen(splashDuration: Duration(milliseconds: 100)),
           ),
         );
 

@@ -16,5 +16,11 @@
   "unexpectedErrorOccurred": "En uventet feil oppstod. Prøv igjen.",
   "cameraFallbackMessage": "Kamera åpner galleri på datamaskin",
   "processing": "Behandler...",
-  "retry": "Prøv igjen"
+  "retry": "Prøv igjen",
+  "settings": "Innstillinger",
+  "language": "Språk",
+  "systemDefault": "Systemstandard",
+  "english": "Engelsk",
+  "norwegian": "Norsk",
+  "languageChanged": "Språk endret til {language}"
 }

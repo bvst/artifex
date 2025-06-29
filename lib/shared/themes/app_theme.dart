@@ -46,7 +46,9 @@ class AppColors {
   Color get onPrimary => Colors.white;
   Color get onSecondary => Colors.white;
   Color get onSurface => const Color(0xFF1E192B);
+  Color get onBackground => const Color(0xFF1E192B);
   Color get surface => Colors.white;
+  Color get outline => const Color(0xFFE0E0E0);
   Color get shadow => Colors.black;
 
   // Status Colors
@@ -88,6 +90,14 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
     height: 24 / 18,
     fontFamily: 'Inter', // UI text uses Inter
+  );
+
+  // Title Medium: 16px, 500 weight, 22px line-height
+  TextStyle get titleMedium => const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    height: 22 / 16,
+    fontFamily: 'Inter',
   );
 
   // Body - Brand Guidelines: 16px, 400 weight, 24px line-height

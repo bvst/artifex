@@ -1,15 +1,13 @@
 import 'package:artifex/core/network/dio_client.dart';
 import 'package:artifex/core/utils/error_boundary.dart';
 import 'package:artifex/core/utils/logger.dart';
-import 'package:artifex/l10n/app_localizations.dart';
-import 'package:artifex/screens/splash_screen.dart';
-import 'package:artifex/shared/themes/app_theme.dart';
+import 'package:artifex/features/settings/presentation/widgets/app_with_settings.dart';
 import 'package:artifex/shared/widgets/custom_error_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   // Initialize Flutter binding first
@@ -84,6 +82,10 @@ Future<void> _initializeApp() async {
   try {
     AppLogger.debug('Initializing Artifex application');
 
+    // Initialize SharedPreferences first (required for settings)
+    await SharedPreferences.getInstance();
+    AppLogger.debug('SharedPreferences initialized');
+
     // Initialize network client
     DioClient().initialize();
 
@@ -102,23 +104,6 @@ class ArtifexApp extends StatelessWidget {
   final Duration splashDuration;
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
-    onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
-    theme: AppTheme.lightTheme,
-    debugShowCheckedModeBanner: false,
-
-    // Internationalization setup
-    localizationsDelegates: const [
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: const [
-      Locale('en', ''), // English
-      Locale('no', ''), // Norwegian
-    ],
-
-    home: SplashScreen(splashDuration: splashDuration),
-  );
+  Widget build(BuildContext context) =>
+      AppWithSettings(splashDuration: splashDuration);
 }

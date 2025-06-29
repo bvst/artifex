@@ -1,4 +1,6 @@
 import 'package:artifex/features/home/presentation/screens/home_screen.dart';
+import 'package:artifex/features/settings/data/datasources/settings_local_datasource.dart';
+import 'package:artifex/features/settings/presentation/providers/settings_providers.dart';
 import 'package:artifex/main.dart';
 import 'package:artifex/screens/onboarding_screen.dart';
 import 'package:artifex/screens/splash_screen.dart';
@@ -14,7 +16,11 @@ void main() {
   group('App Flow Integration Tests', () {
     late SharedPreferences mockPrefs;
 
-    setUpAll(setupTestEnvironment);
+    setUpAll(() {
+      setupTestEnvironment();
+      // Initialize SharedPreferences mock before any test runs
+      SharedPreferences.setMockInitialValues({});
+    });
 
     setUp(() async {
       // Reset SharedPreferences for each test
@@ -24,10 +30,47 @@ void main() {
 
     // Helper to properly wait for splash screen navigation
     Future<void> waitForSplashNavigation(WidgetTester tester) async {
-      // Wait for splash screen timer (1ms) plus additional time for navigation
-      await tester.pump(const Duration(milliseconds: 10));
-      await tester.pump(const Duration(milliseconds: 10));
-      await tester.pumpAndSettle();
+      // Wait for splash screen timer (100ms) plus additional time for navigation
+      await tester.pump(const Duration(milliseconds: 150));
+      await tester.pump(const Duration(milliseconds: 50));
+      // Use custom pumpAndSettle with timeout to avoid hanging
+      for (var i = 0; i < 10; i++) {
+        await tester.pump(const Duration(milliseconds: 100));
+        if (!tester.binding.hasScheduledFrame) {
+          break;
+        }
+      }
+    }
+
+    // Helper to create a ProviderScope with SharedPreferences override
+    Widget createTestApp({
+      required SharedPreferences prefs,
+      Duration splashDuration = const Duration(milliseconds: 100),
+    }) => ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWith((ref) async => prefs),
+        settingsLocalDataSourceProvider.overrideWith(
+          (ref) => SettingsLocalDataSourceImpl(prefs),
+        ),
+      ],
+      child: ArtifexApp(splashDuration: splashDuration),
+    );
+
+    // Helper to wait for app to finish loading (handles both loading state and splash screen)
+    Future<void> waitForAppToLoad(WidgetTester tester) async {
+      // First pump - settings might be loading
+      await tester.pump();
+
+      // Check what we have now - could be loading state or splash screen
+      final splashScreens = find.byType(SplashScreen);
+
+      if (splashScreens.evaluate().isNotEmpty) {
+        // We have a splash screen, wait for it to navigate
+        await waitForSplashNavigation(tester);
+      } else {
+        // No splash screen, pump until we get to final state
+        await tester.pumpAndSettle();
+      }
     }
 
     group('App Launch Flow', () {
@@ -37,18 +80,9 @@ void main() {
           // Ensure onboarding not completed for first-time user
           await mockPrefs.clear();
 
-          await tester.pumpWidget(
-            const ProviderScope(
-              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
-            ),
-          );
+          await tester.pumpWidget(createTestApp(prefs: mockPrefs));
 
-          // Initially should show splash screen
-          expect(find.byType(SplashScreen), findsOneWidget);
-          // Don't test splash text - it will change with locale
-
-          // Wait for splash screen navigation
-          await waitForSplashNavigation(tester);
+          await waitForAppToLoad(tester);
 
           // Should navigate to onboarding for first-time user
           expect(find.byType(OnboardingScreen), findsOneWidget);
@@ -103,17 +137,9 @@ void main() {
           // Mark onboarding as completed for returning user
           await PreferencesHelper.setOnboardingComplete();
 
-          await tester.pumpWidget(
-            const ProviderScope(
-              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
-            ),
-          );
+          await tester.pumpWidget(createTestApp(prefs: mockPrefs));
 
-          // Initially should show splash screen
-          expect(find.byType(SplashScreen), findsOneWidget);
-
-          // Wait for splash screen navigation
-          await waitForSplashNavigation(tester);
+          await waitForAppToLoad(tester);
 
           // Should skip onboarding and go directly to home
           expect(find.byType(HomeScreen), findsOneWidget);
@@ -128,13 +154,13 @@ void main() {
         await mockPrefs.clear();
 
         await tester.pumpWidget(
-          const ProviderScope(
-            child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
+          createTestApp(
+            prefs: mockPrefs,
+            splashDuration: const Duration(milliseconds: 1),
           ),
         );
 
-        // Wait for splash screen navigation
-        await waitForSplashNavigation(tester);
+        await waitForAppToLoad(tester);
 
         expect(find.byType(OnboardingScreen), findsOneWidget);
 
@@ -165,14 +191,9 @@ void main() {
       testWidgets(
         'Home screen displays welcome content and photo input options',
         (tester) async {
-          await tester.pumpWidget(
-            const ProviderScope(
-              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
-            ),
-          );
+          await tester.pumpWidget(createTestApp(prefs: mockPrefs));
 
-          // Wait for splash screen navigation
-          await waitForSplashNavigation(tester);
+          await waitForAppToLoad(tester);
 
           // Verify home screen content by widget type
           expect(find.byType(HomeScreen), findsOneWidget);
@@ -190,14 +211,9 @@ void main() {
       testWidgets(
         'Photo capture button shows proper UI feedback',
         (tester) async {
-          await tester.pumpWidget(
-            const ProviderScope(
-              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
-            ),
-          );
+          await tester.pumpWidget(createTestApp(prefs: mockPrefs));
 
-          // Wait for splash screen navigation
-          await waitForSplashNavigation(tester);
+          await waitForAppToLoad(tester);
 
           // Find the camera button by its icon
           final cameraIcon = find.byIcon(Icons.camera_alt_rounded);
@@ -227,14 +243,9 @@ void main() {
       testWidgets(
         'Gallery upload button shows proper UI feedback',
         (tester) async {
-          await tester.pumpWidget(
-            const ProviderScope(
-              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
-            ),
-          );
+          await tester.pumpWidget(createTestApp(prefs: mockPrefs));
 
-          // Wait for splash screen navigation
-          await waitForSplashNavigation(tester);
+          await waitForAppToLoad(tester);
 
           // Find the gallery button by its icon
           final galleryIcon = find.byIcon(Icons.photo_library_rounded);
@@ -265,14 +276,9 @@ void main() {
           // Start with fresh state
           await mockPrefs.clear();
 
-          await tester.pumpWidget(
-            const ProviderScope(
-              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
-            ),
-          );
+          await tester.pumpWidget(createTestApp(prefs: mockPrefs));
 
-          // Go through complete onboarding flow
-          await waitForSplashNavigation(tester);
+          await waitForAppToLoad(tester);
 
           // Complete onboarding using button navigation
           expect(find.byType(OnboardingScreen), findsOneWidget);
@@ -292,14 +298,9 @@ void main() {
           expect(find.byType(HomeScreen), findsOneWidget);
 
           // Simulate app restart by rebuilding the widget tree
-          await tester.pumpWidget(
-            const ProviderScope(
-              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
-            ),
-          );
+          await tester.pumpWidget(createTestApp(prefs: mockPrefs));
 
-          // Wait for splash screen navigation
-          await waitForSplashNavigation(tester);
+          await waitForAppToLoad(tester);
 
           // Should skip onboarding and go directly to home
           expect(find.byType(HomeScreen), findsOneWidget);
@@ -314,14 +315,9 @@ void main() {
         (tester) async {
           await mockPrefs.clear();
 
-          await tester.pumpWidget(
-            const ProviderScope(
-              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
-            ),
-          );
+          await tester.pumpWidget(createTestApp(prefs: mockPrefs));
 
-          // Navigate to onboarding
-          await waitForSplashNavigation(tester);
+          await waitForAppToLoad(tester);
 
           expect(find.byType(OnboardingScreen), findsOneWidget);
           // Don't test page titles - they will change with locale
@@ -363,14 +359,9 @@ void main() {
           await mockPrefs.clear();
           await mockPrefs.setString('onboarding_complete', 'invalid_boolean');
 
-          await tester.pumpWidget(
-            const ProviderScope(
-              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
-            ),
-          );
+          await tester.pumpWidget(createTestApp(prefs: mockPrefs));
 
-          // App should handle this gracefully and show onboarding
-          await waitForSplashNavigation(tester);
+          await waitForAppToLoad(tester);
 
           // Should default to showing onboarding for safety
           expect(find.byType(OnboardingScreen), findsOneWidget);
@@ -382,13 +373,13 @@ void main() {
         await PreferencesHelper.setOnboardingComplete();
 
         await tester.pumpWidget(
-          const ProviderScope(
-            child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
+          createTestApp(
+            prefs: mockPrefs,
+            splashDuration: const Duration(milliseconds: 1),
           ),
         );
 
-        // Wait for splash screen navigation
-        await waitForSplashNavigation(tester);
+        await waitForAppToLoad(tester);
 
         expect(find.byType(HomeScreen), findsOneWidget);
 

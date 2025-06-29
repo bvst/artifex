@@ -63,4 +63,24 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get retry => 'Prøv igjen';
+
+  @override
+  String get settings => 'Innstillinger';
+
+  @override
+  String get language => 'Språk';
+
+  @override
+  String get systemDefault => 'Systemstandard';
+
+  @override
+  String get english => 'Engelsk';
+
+  @override
+  String get norwegian => 'Norsk';
+
+  @override
+  String languageChanged(String language) {
+    return 'Språk endret til $language';
+  }
 }

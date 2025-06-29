@@ -73,5 +73,35 @@
   "retry": "Retry",
   "@retry": {
     "description": "Retry button text"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings screen title"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Language setting label"
+  },
+  "systemDefault": "System Default",
+  "@systemDefault": {
+    "description": "Option to use system default language"
+  },
+  "english": "English",
+  "@english": {
+    "description": "English language option"
+  },
+  "norwegian": "Norwegian",
+  "@norwegian": {
+    "description": "Norwegian language option"
+  },
+  "languageChanged": "Language changed to {language}",
+  "@languageChanged": {
+    "description": "Message shown when language is changed",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "description": "The name of the selected language"
+      }
+    }
   }
 }

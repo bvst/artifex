@@ -12,24 +12,33 @@ class PhotoCapture extends _$PhotoCapture {
   AsyncValue<Photo?> build() => const AsyncValue.data(null);
 
   Future<void> captureFromCamera() async {
+    // Prevent multiple simultaneous operations
+    if (state.isLoading) return;
+
     state = const AsyncValue.loading();
 
     final useCase = CapturePhotoUseCase(ref.read(photoRepositoryProvider));
     final result = await useCase();
 
-    state = result.fold((failure) {
-      // Handle user cancellation gracefully - just reset to initial state
-      if (failure is UserCancelledFailure) {
-        return const AsyncValue.data(null);
-      }
-      return AsyncValue.error(
-        _mapFailureToMessage(failure),
-        StackTrace.current,
-      );
-    }, AsyncValue.data);
+    // Only update state if we're still in loading state (not cancelled)
+    if (state.isLoading) {
+      state = result.fold((failure) {
+        // Handle user cancellation gracefully - just reset to initial state
+        if (failure is UserCancelledFailure) {
+          return const AsyncValue.data(null);
+        }
+        return AsyncValue.error(
+          _mapFailureToMessage(failure),
+          StackTrace.current,
+        );
+      }, AsyncValue.data);
+    }
   }
 
   Future<void> pickFromGallery() async {
+    // Prevent multiple simultaneous operations
+    if (state.isLoading) return;
+
     state = const AsyncValue.loading();
 
     final useCase = PickImageFromGalleryUseCase(
@@ -37,16 +46,19 @@ class PhotoCapture extends _$PhotoCapture {
     );
     final result = await useCase();
 
-    state = result.fold((failure) {
-      // Handle user cancellation gracefully - just reset to initial state
-      if (failure is UserCancelledFailure) {
-        return const AsyncValue.data(null);
-      }
-      return AsyncValue.error(
-        _mapFailureToMessage(failure),
-        StackTrace.current,
-      );
-    }, AsyncValue.data);
+    // Only update state if we're still in loading state (not cancelled)
+    if (state.isLoading) {
+      state = result.fold((failure) {
+        // Handle user cancellation gracefully - just reset to initial state
+        if (failure is UserCancelledFailure) {
+          return const AsyncValue.data(null);
+        }
+        return AsyncValue.error(
+          _mapFailureToMessage(failure),
+          StackTrace.current,
+        );
+      }, AsyncValue.data);
+    }
   }
 
   void reset() {

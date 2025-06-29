@@ -1,8 +1,10 @@
 import 'package:artifex/features/home/presentation/screens/home_screen.dart';
 import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
 import 'package:artifex/features/photo_capture/presentation/providers/photo_capture_provider.dart';
+import 'package:artifex/features/settings/data/datasources/settings_local_datasource.dart';
+import 'package:artifex/features/settings/presentation/providers/settings_providers.dart';
 import 'package:artifex/main.dart';
-import 'package:artifex/utils/preferences_helper.dart';
+import 'package:artifex/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,22 +14,63 @@ import '../test_config.dart';
 
 void main() {
   group('Photo Capture Flow Integration Tests', () {
-    // Test setup variables
+    late SharedPreferences mockPrefs;
 
-    setUpAll(setupTestEnvironment);
+    setUpAll(() {
+      setupTestEnvironment();
+      // Initialize SharedPreferences mock before any test runs
+      SharedPreferences.setMockInitialValues({});
+    });
 
     setUp(() async {
       // Reset SharedPreferences and ensure home screen access
-      SharedPreferences.setMockInitialValues({});
-      await PreferencesHelper.setOnboardingComplete();
+      SharedPreferences.setMockInitialValues({'onboarding_complete': true});
+      mockPrefs = await SharedPreferences.getInstance();
     });
+
+    // Helper to create a ProviderScope with SharedPreferences override
+    Widget createTestApp({
+      required SharedPreferences prefs,
+      Duration splashDuration = const Duration(milliseconds: 100),
+    }) => ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWith((ref) async => prefs),
+        settingsLocalDataSourceProvider.overrideWith(
+          (ref) => SettingsLocalDataSourceImpl(prefs),
+        ),
+      ],
+      child: ArtifexApp(splashDuration: splashDuration),
+    );
 
     // Helper to properly wait for splash screen navigation
     Future<void> waitForSplashNavigation(WidgetTester tester) async {
-      // Wait for splash screen timer (1ms) plus additional time for navigation
-      await tester.pump(const Duration(milliseconds: 10));
-      await tester.pump(const Duration(milliseconds: 10));
-      await tester.pumpAndSettle();
+      // Wait for splash screen timer (100ms) plus additional time for navigation
+      await tester.pump(const Duration(milliseconds: 150));
+      await tester.pump(const Duration(milliseconds: 50));
+      // Use custom pumpAndSettle with timeout to avoid hanging
+      for (var i = 0; i < 10; i++) {
+        await tester.pump(const Duration(milliseconds: 100));
+        if (!tester.binding.hasScheduledFrame) {
+          break;
+        }
+      }
+    }
+
+    // Helper to wait for app to finish loading (handles both loading state and splash screen)
+    Future<void> waitForAppToLoad(WidgetTester tester) async {
+      // First pump - settings might be loading
+      await tester.pump();
+
+      // Check what we have now - could be loading state or splash screen
+      final splashScreens = find.byType(SplashScreen);
+
+      if (splashScreens.evaluate().isNotEmpty) {
+        // We have a splash screen, wait for it to navigate
+        await waitForSplashNavigation(tester);
+      } else {
+        // No splash screen, pump until we get to final state
+        await tester.pumpAndSettle();
+      }
     }
 
     group('Photo Capture Provider Integration', () {
@@ -39,19 +82,27 @@ void main() {
 
           await tester.pumpWidget(
             ProviderScope(
+              overrides: [
+                sharedPreferencesProvider.overrideWith(
+                  (ref) async => mockPrefs,
+                ),
+                settingsLocalDataSourceProvider.overrideWith(
+                  (ref) => SettingsLocalDataSourceImpl(mockPrefs),
+                ),
+              ],
               child: Builder(
                 builder: (context) {
                   container = ProviderScope.containerOf(context);
                   return const ArtifexApp(
-                    splashDuration: Duration(milliseconds: 1),
+                    splashDuration: Duration(milliseconds: 100),
                   );
                 },
               ),
             ),
           );
 
-          // Wait for splash screen navigation
-          await waitForSplashNavigation(tester);
+          // Wait for app to load
+          await waitForAppToLoad(tester);
 
           expect(find.byType(HomeScreen), findsOneWidget);
 
@@ -91,19 +142,27 @@ void main() {
 
           await tester.pumpWidget(
             ProviderScope(
+              overrides: [
+                sharedPreferencesProvider.overrideWith(
+                  (ref) async => mockPrefs,
+                ),
+                settingsLocalDataSourceProvider.overrideWith(
+                  (ref) => SettingsLocalDataSourceImpl(mockPrefs),
+                ),
+              ],
               child: Builder(
                 builder: (context) {
                   container = ProviderScope.containerOf(context);
                   return const ArtifexApp(
-                    splashDuration: Duration(milliseconds: 1),
+                    splashDuration: Duration(milliseconds: 100),
                   );
                 },
               ),
             ),
           );
 
-          // Wait for splash screen navigation
-          await waitForSplashNavigation(tester);
+          // Wait for app to load
+          await waitForAppToLoad(tester);
 
           // Find the gallery button by its icon
           final galleryIcon = find.byIcon(Icons.photo_library_rounded);
@@ -136,14 +195,10 @@ void main() {
       testWidgets(
         'App handles photo capture cancellation gracefully',
         (tester) async {
-          await tester.pumpWidget(
-            const ProviderScope(
-              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
-            ),
-          );
+          await tester.pumpWidget(createTestApp(prefs: mockPrefs));
 
-          // Wait for splash screen navigation
-          await waitForSplashNavigation(tester);
+          // Wait for app to load
+          await waitForAppToLoad(tester);
 
           // Verify initial UI state by icons
           final cameraIcon = find.byIcon(Icons.camera_alt_rounded);
@@ -183,14 +238,10 @@ void main() {
       testWidgets(
         'App displays appropriate feedback for photo operations',
         (tester) async {
-          await tester.pumpWidget(
-            const ProviderScope(
-              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
-            ),
-          );
+          await tester.pumpWidget(createTestApp(prefs: mockPrefs));
 
-          // Wait for splash screen navigation
-          await waitForSplashNavigation(tester);
+          // Wait for app to load
+          await waitForAppToLoad(tester);
 
           // Test button interactions and verify UI remains consistent
           final cameraIcon = find.byIcon(Icons.camera_alt_rounded);
@@ -241,19 +292,27 @@ void main() {
 
           await tester.pumpWidget(
             ProviderScope(
+              overrides: [
+                sharedPreferencesProvider.overrideWith(
+                  (ref) async => mockPrefs,
+                ),
+                settingsLocalDataSourceProvider.overrideWith(
+                  (ref) => SettingsLocalDataSourceImpl(mockPrefs),
+                ),
+              ],
               child: Builder(
                 builder: (context) {
                   container = ProviderScope.containerOf(context);
                   return const ArtifexApp(
-                    splashDuration: Duration(milliseconds: 1),
+                    splashDuration: Duration(milliseconds: 100),
                   );
                 },
               ),
             ),
           );
 
-          // Wait for splash screen navigation
-          await waitForSplashNavigation(tester);
+          // Wait for app to load
+          await waitForAppToLoad(tester);
 
           // Check initial provider state
           final initialState = container.read(photoCaptureProvider);
@@ -291,19 +350,27 @@ void main() {
 
           await tester.pumpWidget(
             ProviderScope(
+              overrides: [
+                sharedPreferencesProvider.overrideWith(
+                  (ref) async => mockPrefs,
+                ),
+                settingsLocalDataSourceProvider.overrideWith(
+                  (ref) => SettingsLocalDataSourceImpl(mockPrefs),
+                ),
+              ],
               child: Builder(
                 builder: (context) {
                   container = ProviderScope.containerOf(context);
                   return const ArtifexApp(
-                    splashDuration: Duration(milliseconds: 1),
+                    splashDuration: Duration(milliseconds: 100),
                   );
                 },
               ),
             ),
           );
 
-          // Wait for splash screen navigation
-          await waitForSplashNavigation(tester);
+          // Wait for app to load
+          await waitForAppToLoad(tester);
 
           final cameraIcon = find.byIcon(Icons.camera_alt_rounded);
           final galleryIcon = find.byIcon(Icons.photo_library_rounded);
@@ -342,14 +409,10 @@ void main() {
       testWidgets(
         'Buttons show proper visual feedback on interaction',
         (tester) async {
-          await tester.pumpWidget(
-            const ProviderScope(
-              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
-            ),
-          );
+          await tester.pumpWidget(createTestApp(prefs: mockPrefs));
 
-          // Wait for splash screen navigation
-          await waitForSplashNavigation(tester);
+          // Wait for app to load
+          await waitForAppToLoad(tester);
 
           final cameraIcon = find.byIcon(Icons.camera_alt_rounded);
           final galleryIcon = find.byIcon(Icons.photo_library_rounded);
@@ -389,14 +452,10 @@ void main() {
       testWidgets(
         'Screen layout remains consistent during photo operations',
         (tester) async {
-          await tester.pumpWidget(
-            const ProviderScope(
-              child: ArtifexApp(splashDuration: Duration(milliseconds: 1)),
-            ),
-          );
+          await tester.pumpWidget(createTestApp(prefs: mockPrefs));
 
-          // Wait for splash screen navigation
-          await waitForSplashNavigation(tester);
+          // Wait for app to load
+          await waitForAppToLoad(tester);
 
           // Capture initial layout elements by icons and widget types
           final cameraIcon = find.byIcon(Icons.camera_alt_rounded);

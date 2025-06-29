@@ -91,7 +91,9 @@
     ├── PLAN.md             # Development plan and progress tracking
     ├── architecture-strategy.md # Comprehensive architecture guide
     ├── artifex-checklist.md # Feature requirements
-    └── brand-guidelines.md # Brand identity guide
+    ├── brand-guidelines.md # Brand identity guide
+    ├── race-conditions-and-concurrency.md # Race condition patterns and fixes
+    └── test-driven-development-guide.md # TDD methodology and practices
 ```
 
 ## Commands to Remember
@@ -270,6 +272,34 @@ flutter packages pub run build_runner build --delete-conflicting-outputs
 - `.github/workflows/flutter-ci.yml` - Enhanced CI/CD with warning capture
 - `bin/check.dart` - Custom quality assurance command with fast/full modes
 
+## Development Methodology
+
+### Test-Driven Development (TDD) - MANDATORY
+**CRITICAL: Always write tests BEFORE implementation!**
+1. **RED**: Write a failing test first
+2. **GREEN**: Write minimal code to pass
+3. **REFACTOR**: Improve code with tests passing
+
+**For new features:**
+- FIRST write integration test for the complete flow
+- THEN break down into unit tests
+- FINALLY implement the code
+
+See `docs/test-driven-development-guide.md` for detailed TDD practices.
+
+### Race Conditions and Concurrency
+**Be aware of potential race conditions:**
+- SharedPreferences initialization (FIXED)
+- Database singleton pattern (FIXED with Completer)
+- Photo capture operations (FIXED with state checks)
+- See `docs/race-conditions-and-concurrency.md` for patterns
+
+**Key patterns to prevent race conditions:**
+- Always `await` async initialization
+- Use `Completer` for singleton initialization
+- Check state before starting operations
+- Synchronize file system operations
+
 ## Notes
 - User prefers concise responses
 - Focus on practical implementation
@@ -282,4 +312,4 @@ flutter packages pub run build_runner build --delete-conflicting-outputs
   - Test structure mirrors source: `lib/[path]` → `test/[path]`
   - **Follow testing best practices**: `.claude/commands/testing-best-practices.md`
   - **Language-agnostic tests**: No text dependencies, use semantic finders
-  - Current test count: 142 tests (all passing, all i18n-ready)
+  - Current test count: 186+ tests (all passing, all i18n-ready)
