@@ -16,33 +16,30 @@ Future<SharedPreferences> sharedPreferences(Ref ref) async =>
 
 /// Provider for settings local data source
 @riverpod
-SettingsLocalDataSource settingsLocalDataSource(Ref ref) {
-  final prefs = ref.watch(sharedPreferencesProvider);
-  return prefs.when(
-    data: SettingsLocalDataSourceImpl.new,
-    loading: () => throw StateError('SharedPreferences not yet initialized'),
-    error: (e, _) =>
-        throw StateError('Failed to initialize SharedPreferences: $e'),
-  );
+Future<SettingsLocalDataSource> settingsLocalDataSource(Ref ref) async {
+  final prefs = await ref.watch(sharedPreferencesProvider.future);
+  return SettingsLocalDataSourceImpl(prefs);
 }
 
 /// Provider for settings repository
 @riverpod
-SettingsRepository settingsRepository(Ref ref) {
-  final localDataSource = ref.watch(settingsLocalDataSourceProvider);
+Future<SettingsRepository> settingsRepository(Ref ref) async {
+  final localDataSource = await ref.watch(
+    settingsLocalDataSourceProvider.future,
+  );
   return SettingsRepositoryImpl(localDataSource);
 }
 
 /// Provider for get settings use case
 @riverpod
-GetSettingsUseCase getSettingsUseCase(Ref ref) {
-  final repository = ref.watch(settingsRepositoryProvider);
+Future<GetSettingsUseCase> getSettingsUseCase(Ref ref) async {
+  final repository = await ref.watch(settingsRepositoryProvider.future);
   return GetSettingsUseCase(repository);
 }
 
 /// Provider for update locale use case
 @riverpod
-UpdateLocaleUseCase updateLocaleUseCase(Ref ref) {
-  final repository = ref.watch(settingsRepositoryProvider);
+Future<UpdateLocaleUseCase> updateLocaleUseCase(Ref ref) async {
+  final repository = await ref.watch(settingsRepositoryProvider.future);
   return UpdateLocaleUseCase(repository);
 }

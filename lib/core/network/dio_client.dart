@@ -8,10 +8,14 @@ class DioClient {
   static final DioClient _instance = DioClient._internal();
 
   late final Dio _dio;
+  bool _initialized = false;
 
   Dio get dio => _dio;
 
   void initialize() {
+    if (_initialized) return;
+    _initialized = true;
+
     _dio = Dio(
       BaseOptions(
         baseUrl: AppConstants.baseUrl,

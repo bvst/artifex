@@ -243,8 +243,21 @@ class PhotoLocalDataSourceImpl implements PhotoLocalDataSource {
     final appDir = await getApplicationDocumentsDirectory();
     final photosDir = Directory('${appDir.path}/photos');
 
-    if (!photosDir.existsSync()) {
+    // Use idempotent create operation - it's safe to call multiple times
+    // Only catch specific "directory already exists" errors, let other errors bubble up
+    try {
       await photosDir.create(recursive: true);
+    } on FileSystemException catch (e) {
+      // Only ignore the error if it's specifically about the directory already existing
+      // Let permission errors, disk space errors, etc. bubble up as they are real problems
+      if (e.osError?.errorCode == 17 || // EEXIST on Unix-like systems
+          e.message.toLowerCase().contains('already exists') ||
+          e.message.toLowerCase().contains('file exists')) {
+        // Directory already exists - this is fine, operation is idempotent
+      } else {
+        // This is a real error (permissions, disk space, etc.) - rethrow it
+        rethrow;
+      }
     }
 
     return photosDir;

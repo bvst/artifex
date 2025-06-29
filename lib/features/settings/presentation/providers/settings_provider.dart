@@ -17,9 +17,8 @@ class Settings extends _$Settings {
 
   /// Load settings from storage
   Future<void> _loadSettings() async {
-    // Wait for SharedPreferences to be available before reading use case
-    await ref.read(sharedPreferencesProvider.future);
-    final useCase = ref.read(getSettingsUseCaseProvider);
+    // Wait for use case to be available (which waits for SharedPreferences)
+    final useCase = await ref.read(getSettingsUseCaseProvider.future);
     final result = await useCase();
 
     result.fold(
@@ -43,9 +42,8 @@ class Settings extends _$Settings {
     );
     state = AsyncValue.data(newSettings);
 
-    // Wait for SharedPreferences to be available before reading use case
-    await ref.read(sharedPreferencesProvider.future);
-    final useCase = ref.read(updateLocaleUseCaseProvider);
+    // Wait for use case to be available (which waits for SharedPreferences)
+    final useCase = await ref.read(updateLocaleUseCaseProvider.future);
     final result = await useCase(locale);
 
     result.fold(
@@ -76,7 +74,7 @@ class Settings extends _$Settings {
 
   /// Reset settings to defaults
   Future<void> resetToDefaults() async {
-    final repository = ref.read(settingsRepositoryProvider);
+    final repository = await ref.read(settingsRepositoryProvider.future);
     final result = await repository.resetToDefaults();
 
     result.fold(
