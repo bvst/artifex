@@ -14,6 +14,8 @@ Imagine two people trying to go through the same door simultaneously:
 
 ### 1. SharedPreferences Initialization (FIXED)
 **Problem**: App tried to read SharedPreferences before it was initialized
+
+**Issue A - App Startup**: App tried to use settings before SharedPreferences was ready
 ```dart
 // RACE CONDITION:
 main() async {
@@ -22,13 +24,28 @@ main() async {
 }
 ```
 
-**Solution**: Wait for initialization to complete
+**Solution A**: Wait for initialization to complete
 ```dart
 main() async {
   await _initializeApp(); // WAIT for completion
   runApp(ArtifexApp()); // Now safe to use
 }
 ```
+
+**Issue B - Language Switching**: updateLocale() synchronously read providers before SharedPreferences was ready
+```dart
+// RACE CONDITION in settings_provider.dart:51:
+final useCase = ref.read(updateLocaleUseCaseProvider); // Could fail!
+```
+
+**Solution B**: Wait for SharedPreferences before reading use case
+```dart
+// Wait for SharedPreferences to be available before reading use case
+await ref.read(sharedPreferencesProvider.future);
+final useCase = ref.read(updateLocaleUseCaseProvider); // Now safe!
+```
+
+**Test Coverage**: Added TDD test to catch language switching race condition
 
 ### 2. Database Singleton Pattern (FIXED)
 **Problem**: Multiple concurrent calls could create multiple database instances

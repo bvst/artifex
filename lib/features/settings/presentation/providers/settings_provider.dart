@@ -48,6 +48,8 @@ class Settings extends _$Settings {
     state = AsyncValue.data(newSettings);
 
     try {
+      // Wait for SharedPreferences to be available before reading use case
+      await ref.read(sharedPreferencesProvider.future);
       final useCase = ref.read(updateLocaleUseCaseProvider);
       final result = await useCase(locale);
 
