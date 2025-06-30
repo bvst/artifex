@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 /// A card widget displaying a transformation filter option
 class FilterCard extends StatelessWidget {
-  const FilterCard({super.key, required this.filter, required this.onTap});
+  const FilterCard({required this.filter, required this.onTap, super.key});
 
   final TransformationFilter filter;
   final VoidCallback onTap;

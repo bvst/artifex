@@ -29,7 +29,7 @@ void main() {
 
     test('should have exactly 5 available filters', () {
       // Act
-      final filters = TransformationFilter.availableFilters;
+      const filters = TransformationFilter.availableFilters;
 
       // Assert
       expect(filters.length, equals(5));
@@ -37,7 +37,7 @@ void main() {
 
     test('should have all required filter types in availableFilters', () {
       // Act
-      final filters = TransformationFilter.availableFilters;
+      const filters = TransformationFilter.availableFilters;
       final filterIds = filters.map((f) => f.id).toSet();
 
       // Assert
@@ -50,7 +50,7 @@ void main() {
 
     test('each available filter should have unique id', () {
       // Act
-      final filters = TransformationFilter.availableFilters;
+      const filters = TransformationFilter.availableFilters;
       final filterIds = filters.map((f) => f.id).toList();
 
       // Assert
@@ -59,7 +59,7 @@ void main() {
 
     test('each available filter should have valid properties', () {
       // Act
-      final filters = TransformationFilter.availableFilters;
+      const filters = TransformationFilter.availableFilters;
 
       // Assert
       for (final filter in filters) {
@@ -74,7 +74,7 @@ void main() {
 
     test('filter prompts should contain transformation instructions', () {
       // Act
-      final filters = TransformationFilter.availableFilters;
+      const filters = TransformationFilter.availableFilters;
 
       // Assert
       for (final filter in filters) {

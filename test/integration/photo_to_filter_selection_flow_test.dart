@@ -11,7 +11,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @GenerateMocks([ImagePicker, PhotoLocalDataSource])
@@ -120,7 +119,7 @@ void main() {
       addTearDown(() => tester.view.reset());
 
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: FilterSelectionScreen(imagePath: testImagePath),
           localizationsDelegates: const [AppLocalizations.delegate],
           supportedLocales: const [Locale('en'), Locale('no')],
@@ -149,7 +148,7 @@ void main() {
       // For now, we test that the back button exists and is tappable
 
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: FilterSelectionScreen(imagePath: '/test/image.jpg'),
           localizationsDelegates: const [AppLocalizations.delegate],
           supportedLocales: const [Locale('en'), Locale('no')],

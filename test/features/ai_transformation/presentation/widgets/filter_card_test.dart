@@ -89,7 +89,7 @@ void main() {
 
     testWidgets('should handle long text with ellipsis', (tester) async {
       // Arrange
-      final longTextFilter = TransformationFilter(
+      const longTextFilter = TransformationFilter(
         id: 'test',
         name: 'This is a very long filter name that should be truncated',
         description:

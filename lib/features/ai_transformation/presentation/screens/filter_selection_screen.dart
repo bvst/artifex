@@ -8,18 +8,17 @@ import 'package:flutter/material.dart';
 
 /// Screen for selecting transformation filters
 class FilterSelectionScreen extends StatelessWidget {
-  const FilterSelectionScreen({super.key, required this.imagePath});
+  const FilterSelectionScreen({required this.imagePath, super.key});
 
   final String imagePath;
 
-  void _onFilterSelected(BuildContext context, TransformationFilter filter) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) =>
-            ProcessingScreen(imagePath: imagePath, filter: filter),
-      ),
-    );
-  }
+  void _onFilterSelected(BuildContext context, TransformationFilter filter) =>
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (context) =>
+              ProcessingScreen(imagePath: imagePath, filter: filter),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -61,16 +60,14 @@ class FilterSelectionScreen extends StatelessWidget {
                 child: Image.file(
                   File(imagePath),
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return ColoredBox(
-                      color: theme.colorScheme.surfaceContainerHighest,
-                      child: Icon(
-                        Icons.image_not_supported,
-                        size: 64,
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    );
-                  },
+                  errorBuilder: (context, error, stackTrace) => ColoredBox(
+                    color: theme.colorScheme.surfaceContainerHighest,
+                    child: Icon(
+                      Icons.image_not_supported,
+                      size: 64,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
                 ),
               ),
             ),
