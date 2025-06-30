@@ -23,6 +23,9 @@ class SettingsRepositoryImpl implements SettingsRepository {
     } on CacheException catch (e) {
       AppLogger.error('SettingsRepository: Cache error getting settings', e);
       return Left(CacheFailure(e.message));
+    } on Exception catch (e) {
+      AppLogger.error('SettingsRepository: Unexpected error getting settings', e);
+      return Left(CacheFailure('Failed to get settings: $e'));
     }
   }
 
@@ -36,6 +39,9 @@ class SettingsRepositoryImpl implements SettingsRepository {
     } on CacheException catch (e) {
       AppLogger.error('SettingsRepository: Cache error saving settings', e);
       return Left(CacheFailure(e.message));
+    } on Exception catch (e) {
+      AppLogger.error('SettingsRepository: Unexpected error saving settings', e);
+      return Left(CacheFailure('Failed to save settings: $e'));
     }
   }
 
@@ -141,6 +147,9 @@ class SettingsRepositoryImpl implements SettingsRepository {
     } on CacheException catch (e) {
       AppLogger.error('SettingsRepository: Cache error resetting settings', e);
       return Left(CacheFailure(e.message));
+    } on Exception catch (e) {
+      AppLogger.error('SettingsRepository: Unexpected error resetting settings', e);
+      return Left(CacheFailure('Failed to reset settings: $e'));
     }
   }
 }

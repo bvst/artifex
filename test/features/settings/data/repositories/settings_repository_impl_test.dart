@@ -132,12 +132,11 @@ void main() {
         // Assert
         expect(result, const Right<Failure, Unit>(unit));
         verify(mockDataSource.getSettings()).called(1);
-        verify(mockDataSource.saveSettings(any)).called(1);
 
         // Verify the saved settings have the new locale
-        final capturedSettings =
-            verify(mockDataSource.saveSettings(captureAny)).captured.single
-                as AppSettingsModel;
+        final capturedArgument = verify(mockDataSource.saveSettings(captureAny)).captured.single;
+        expect(capturedArgument, isA<AppSettingsModel>());
+        final capturedSettings = capturedArgument as AppSettingsModel;
         expect(capturedSettings.locale, const Some(newLocale));
       });
 
