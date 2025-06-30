@@ -103,5 +103,13 @@
         "description": "The name of the selected language"
       }
     }
+  },
+  "selectFilter": "Select Filter",
+  "@selectFilter": {
+    "description": "Title for filter selection screen"
+  },
+  "chooseYourVision": "Choose Your Vision",
+  "@chooseYourVision": {
+    "description": "Subtitle prompting user to select a transformation filter"
   }
 }

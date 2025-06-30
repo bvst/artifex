@@ -83,4 +83,10 @@ class AppLocalizationsNo extends AppLocalizations {
   String languageChanged(String language) {
     return 'Språk endret til $language';
   }
+
+  @override
+  String get selectFilter => 'Velg Filter';
+
+  @override
+  String get chooseYourVision => 'Velg Din Visjon';
 }

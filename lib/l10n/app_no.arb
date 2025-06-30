@@ -22,5 +22,7 @@
   "systemDefault": "Systemstandard",
   "english": "Engelsk",
   "norwegian": "Norsk",
-  "languageChanged": "Språk endret til {language}"
+  "languageChanged": "Språk endret til {language}",
+  "selectFilter": "Velg Filter",
+  "chooseYourVision": "Velg Din Visjon"
 }

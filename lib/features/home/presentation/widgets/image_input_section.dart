@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:artifex/features/ai_transformation/presentation/screens/filter_selection_screen.dart';
 import 'package:artifex/features/home/presentation/widgets/image_input_button.dart';
 import 'package:artifex/features/photo_capture/domain/entities/photo.dart';
 import 'package:artifex/features/photo_capture/presentation/providers/photo_capture_provider.dart';
@@ -22,7 +23,13 @@ class ImageInputSection extends ConsumerWidget {
         data: (photo) {
           if (photo != null) {
             _showSuccessMessage(context, l10n.photoCaptureSuccess);
-            // TODO(artifex): Navigate to photo transformation screen
+            // Navigate to filter selection screen
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (context) =>
+                    FilterSelectionScreen(imagePath: photo.path),
+              ),
+            );
           }
         },
         error: (error, stackTrace) {

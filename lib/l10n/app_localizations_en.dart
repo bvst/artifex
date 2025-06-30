@@ -84,4 +84,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String languageChanged(String language) {
     return 'Language changed to $language';
   }
+
+  @override
+  String get selectFilter => 'Select Filter';
+
+  @override
+  String get chooseYourVision => 'Choose Your Vision';
 }

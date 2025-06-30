@@ -235,6 +235,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Language changed to {language}'**
   String languageChanged(String language);
+
+  /// Title for filter selection screen
+  ///
+  /// In en, this message translates to:
+  /// **'Select Filter'**
+  String get selectFilter;
+
+  /// Subtitle prompting user to select a transformation filter
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Vision'**
+  String get chooseYourVision;
 }
 
 class _AppLocalizationsDelegate
