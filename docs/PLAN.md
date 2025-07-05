@@ -52,11 +52,25 @@
 
 ## In Progress 🔄
 
-### Next Priority: Core Features
+### Next Priority: Testing Architecture Improvements
+- [ ] Implement Flutter testing best practices recommendations
+- [ ] Refactor tests following testing pyramid (70% unit, 20% widget, 10% integration)
+- [ ] Add proper mocking for external services
+
+### After Testing: Core Features
 - [ ] Create filter selection UI
 - [ ] Integrate DALL-E 3 API
 
 ## Upcoming Tasks 📋
+
+### Testing Architecture Improvements (HIGH PRIORITY)
+- [ ] **Follow testing pyramid**: Ensure 70% unit tests, 20% widget tests, 10% integration tests
+- [ ] **Separate test types**: Move individual screen tests to `test/widget/` directory
+- [ ] **Mock external services**: Use mockito to mock camera, gallery, and API calls
+- [ ] **Reduce test file size**: Break large test files (500+ lines) into smaller, focused ones
+- [ ] **Add golden tests**: For visual regression testing of UI components
+- [ ] **Fix test classification**: Label true integration tests vs widget tests correctly
+- [ ] **Remove flakiness**: Replace timing-dependent code with proper async patterns
 
 ### Core Features
 - [x] ~~Implement basic navigation structure~~ ✅ 
@@ -311,7 +325,18 @@
   - Proper Either<Failure, Success> pattern implementation maintained
 - **Updated race condition documentation** in docs/race-conditions-and-concurrency.md
 - **All tests passing** ✅ (186+ tests, all internationalization-ready)
-- **Ready for next session**: Implement filter selection UI and DALL-E 3 integration
+- **Ready for next session**: Implement testing architecture improvements following Flutter best practices
+
+### 2025-07-05 Session 8 - Testing Architecture Improvements
+- **Analyzed current testing practices** against Flutter best practices:
+  - Identified strengths: Language-agnostic tests, proper provider setup, testing user behavior
+  - Found areas for improvement: Test classification confusion, missing mocking, file complexity
+- **Updated PLAN.md** with comprehensive testing improvement roadmap:
+  - Testing pyramid enforcement (70% unit, 20% widget, 10% integration)
+  - Test type separation and proper classification
+  - External service mocking with mockito
+  - Test file size reduction and golden test implementation
+- **Started testing architecture improvements** following best practices
 
 ---
 
