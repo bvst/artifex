@@ -24,5 +24,10 @@
   "norwegian": "Norsk",
   "languageChanged": "Språk endret til {language}",
   "selectFilter": "Velg Filter",
-  "chooseYourVision": "Velg Din Visjon"
+  "chooseYourVision": "Velg Din Visjon",
+  "transformingYourPhoto": "Transformerer bildet ditt...",
+  "pleaseWait": "Vennligst vent",
+  "transformationComplete": "Transformering fullført!",
+  "transformationFailed": "Transformering mislyktes",
+  "tryAgain": "Prøv Igjen"
 }

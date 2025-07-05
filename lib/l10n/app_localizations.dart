@@ -247,6 +247,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose Your Vision'**
   String get chooseYourVision;
+
+  /// Message shown while photo is being transformed
+  ///
+  /// In en, this message translates to:
+  /// **'Transforming your photo...'**
+  String get transformingYourPhoto;
+
+  /// Please wait message during processing
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait'**
+  String get pleaseWait;
+
+  /// Success message when transformation is finished
+  ///
+  /// In en, this message translates to:
+  /// **'Transformation complete!'**
+  String get transformationComplete;
+
+  /// Error message when transformation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Transformation failed'**
+  String get transformationFailed;
+
+  /// Button text to retry failed transformation
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get tryAgain;
 }
 
 class _AppLocalizationsDelegate

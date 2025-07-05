@@ -111,5 +111,25 @@
   "chooseYourVision": "Choose Your Vision",
   "@chooseYourVision": {
     "description": "Subtitle prompting user to select a transformation filter"
+  },
+  "transformingYourPhoto": "Transforming your photo...",
+  "@transformingYourPhoto": {
+    "description": "Message shown while photo is being transformed"
+  },
+  "pleaseWait": "Please wait",
+  "@pleaseWait": {
+    "description": "Please wait message during processing"
+  },
+  "transformationComplete": "Transformation complete!",
+  "@transformationComplete": {
+    "description": "Success message when transformation is finished"
+  },
+  "transformationFailed": "Transformation failed",
+  "@transformationFailed": {
+    "description": "Error message when transformation fails"
+  },
+  "tryAgain": "Try Again",
+  "@tryAgain": {
+    "description": "Button text to retry failed transformation"
   }
 }

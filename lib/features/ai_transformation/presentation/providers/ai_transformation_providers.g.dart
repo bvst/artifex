@@ -91,5 +91,27 @@ final aiTransformationRepositoryProvider =
 // ignore: unused_element
 typedef AiTransformationRepositoryRef =
     AutoDisposeFutureProviderRef<AITransformationRepository>;
+String _$transformationProcessorHash() =>
+    r'b32d4c97aca53b754639cf3dd9a437df6b32a4b5';
+
+/// Provider for transformation processing state
+///
+/// Copied from [TransformationProcessor].
+@ProviderFor(TransformationProcessor)
+final transformationProcessorProvider =
+    AutoDisposeNotifierProvider<
+      TransformationProcessor,
+      AsyncValue<String?>
+    >.internal(
+      TransformationProcessor.new,
+      name: r'transformationProcessorProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$transformationProcessorHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$TransformationProcessor = AutoDisposeNotifier<AsyncValue<String?>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -89,4 +89,19 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get chooseYourVision => 'Velg Din Visjon';
+
+  @override
+  String get transformingYourPhoto => 'Transformerer bildet ditt...';
+
+  @override
+  String get pleaseWait => 'Vennligst vent';
+
+  @override
+  String get transformationComplete => 'Transformering fullført!';
+
+  @override
+  String get transformationFailed => 'Transformering mislyktes';
+
+  @override
+  String get tryAgain => 'Prøv Igjen';
 }

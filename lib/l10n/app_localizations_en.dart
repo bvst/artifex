@@ -90,4 +90,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chooseYourVision => 'Choose Your Vision';
+
+  @override
+  String get transformingYourPhoto => 'Transforming your photo...';
+
+  @override
+  String get pleaseWait => 'Please wait';
+
+  @override
+  String get transformationComplete => 'Transformation complete!';
+
+  @override
+  String get transformationFailed => 'Transformation failed';
+
+  @override
+  String get tryAgain => 'Try Again';
 }
