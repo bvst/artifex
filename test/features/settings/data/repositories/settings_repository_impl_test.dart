@@ -134,7 +134,9 @@ void main() {
         verify(mockDataSource.getSettings()).called(1);
 
         // Verify the saved settings have the new locale
-        final capturedArgument = verify(mockDataSource.saveSettings(captureAny)).captured.single;
+        final capturedArgument = verify(
+          mockDataSource.saveSettings(captureAny),
+        ).captured.single;
         expect(capturedArgument, isA<AppSettingsModel>());
         final capturedSettings = capturedArgument as AppSettingsModel;
         expect(capturedSettings.locale, const Some(newLocale));
