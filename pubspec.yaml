@@ -83,9 +83,9 @@ dev_dependencies:
   
   # Code Generation
   riverpod_generator: ^2.6.5
-  retrofit_generator: ^9.2.0
+  retrofit_generator: ^9.3.0
   json_serializable: ^6.9.5
-  build_runner: ^2.4.0
+  build_runner: ^2.4.15
   
   # Testing
   mockito: ^5.4.6

@@ -164,12 +164,11 @@ void main(List<String> arguments) async {
   if (outdatedResult.exitCode == 0) {
     final output = outdatedResult.stdout.toString();
 
-    // Parse the output to count outdated dependencies
+    // Parse the output to find outdated dependencies and their names
     final lines = output.split('\n');
-    var directOutdated = 0;
-    var devOutdated = 0;
-    var transitiveOutdated = 0;
     var currentSection = '';
+    final List<String> directOutdatedPackages = [];
+    final List<String> devOutdatedPackages = [];
 
     for (final line in lines) {
       if (line.contains('direct dependencies:')) {
@@ -186,34 +185,43 @@ void main(List<String> arguments) async {
           !line.contains('indicates versions') &&
           !line.contains('Package Name') &&
           RegExp(r'^\w').hasMatch(line.trim())) {
-        // This line has an outdated dependency
-        if (currentSection == 'direct')
-          directOutdated++;
-        else if (currentSection == 'dev')
-          devOutdated++;
-        else if (currentSection == 'transitive')
-          transitiveOutdated++;
+        // Extract package name from line like "package_name  *1.0.0  1.1.0  1.1.0  1.2.0"
+        final packageName = line.trim().split(RegExp(r'\s+')).first;
+
+        if (currentSection == 'direct') {
+          directOutdatedPackages.add(packageName);
+        } else if (currentSection == 'dev') {
+          devOutdatedPackages.add(packageName);
+        }
       }
     }
 
-    final directDepsTotal = directOutdated + devOutdated;
+    final directDepsTotal =
+        directOutdatedPackages.length + devOutdatedPackages.length;
 
     if (directDepsTotal > 0) {
       print('⚠️  Found $directDepsTotal outdated direct dependencies:');
-      if (directOutdated > 0) {
-        print('   • $directOutdated production dependencies');
+
+      if (directOutdatedPackages.isNotEmpty) {
+        print(
+          '   • Production packages (${directOutdatedPackages.length}): ${directOutdatedPackages.join(', ')}',
+        );
       }
-      if (devOutdated > 0) {
-        print('   • $devOutdated dev dependencies');
+
+      if (devOutdatedPackages.isNotEmpty) {
+        print(
+          '   • Dev packages (${devOutdatedPackages.length}): ${devOutdatedPackages.join(', ')}',
+        );
       }
 
       // Check for constraint message
-      if (output.contains('dependencies are constrained')) {
+      if (output.contains('dependencies are constrained') ||
+          output.contains('locked to older versions')) {
         print('');
         print(
           '   💡 Some updates require manual version changes in pubspec.yaml',
         );
-        print('   Run `flutter pub outdated` to see details');
+        print('   Run `flutter pub outdated` to see version details');
       } else {
         print('');
         print('   Run `flutter pub upgrade` to update compatible versions');
