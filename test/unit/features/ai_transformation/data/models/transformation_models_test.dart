@@ -4,7 +4,7 @@ import 'package:artifex/features/ai_transformation/data/models/transformation_re
 import 'package:artifex/features/ai_transformation/domain/entities/transformation_request.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../test_data/openai_responses.dart';
+import '../../../../../features/ai_transformation/data/test_data/openai_responses.dart';
 
 void main() {
   group('Transformation Models Tests', () {

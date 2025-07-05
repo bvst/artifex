@@ -20,19 +20,17 @@ void main() {
         'app should launch and reach home screen when onboarding is complete',
         (tester) async {
           // Arrange - user has completed onboarding
-          SharedPreferences.setMockInitialValues({
-            'onboarding_complete': true,
-          });
+          SharedPreferences.setMockInitialValues({'onboarding_complete': true});
 
           // Act - launch the app
           await tester.pumpWidget(
-            ProviderScope(
+            const ProviderScope(
               child: ArtifexApp(splashDuration: Duration(milliseconds: 50)),
             ),
           );
 
           // Wait for splash screen transition
-          await tester.pump(Duration(milliseconds: 100));
+          await tester.pump(const Duration(milliseconds: 100));
           await tester.pumpAndSettle();
 
           // Assert - should reach home screen
@@ -40,28 +38,27 @@ void main() {
         },
       );
 
-      testWidgets(
-        'app should show onboarding when not completed',
-        (tester) async {
-          // Arrange - fresh install (no onboarding completion)
-          SharedPreferences.setMockInitialValues({});
+      testWidgets('app should show onboarding when not completed', (
+        tester,
+      ) async {
+        // Arrange - fresh install (no onboarding completion)
+        SharedPreferences.setMockInitialValues({});
 
-          // Act - launch the app
-          await tester.pumpWidget(
-            ProviderScope(
-              child: ArtifexApp(splashDuration: Duration(milliseconds: 50)),
-            ),
-          );
+        // Act - launch the app
+        await tester.pumpWidget(
+          const ProviderScope(
+            child: ArtifexApp(splashDuration: Duration(milliseconds: 50)),
+          ),
+        );
 
-          // Wait for splash screen transition
-          await tester.pump(Duration(milliseconds: 100));
-          await tester.pumpAndSettle();
+        // Wait for splash screen transition
+        await tester.pump(const Duration(milliseconds: 100));
+        await tester.pumpAndSettle();
 
-          // Assert - should show onboarding (not home screen)
-          expect(find.byType(HomeScreen), findsNothing);
-          // Note: We don't test exact onboarding widgets to avoid brittleness
-        },
-      );
+        // Assert - should show onboarding (not home screen)
+        expect(find.byType(HomeScreen), findsNothing);
+        // Note: We don't test exact onboarding widgets to avoid brittleness
+      });
     });
 
     group('Filter Selection Flow', () {
@@ -73,7 +70,7 @@ void main() {
 
           // Act - navigate directly to filter selection
           await tester.pumpWidget(
-            MaterialApp(
+            const MaterialApp(
               home: FilterSelectionScreen(imagePath: imagePath),
               localizationsDelegates: [AppLocalizations.delegate],
               supportedLocales: [Locale('en'), Locale('no')],
@@ -93,122 +90,114 @@ void main() {
         },
       );
 
-      testWidgets(
-        'user can interact with filter selection screen',
-        (tester) async {
-          // Arrange
-          await tester.pumpWidget(
-            MaterialApp(
-              home: FilterSelectionScreen(imagePath: '/test/photo.jpg'),
-              localizationsDelegates: [AppLocalizations.delegate],
-              supportedLocales: [Locale('en'), Locale('no')],
-            ),
-          );
+      testWidgets('user can interact with filter selection screen', (
+        tester,
+      ) async {
+        // Arrange
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: FilterSelectionScreen(imagePath: '/test/photo.jpg'),
+            localizationsDelegates: [AppLocalizations.delegate],
+            supportedLocales: [Locale('en'), Locale('no')],
+          ),
+        );
 
-          // Act & Assert - basic interactions work
-          // Back navigation should be available
-          expect(find.byIcon(Icons.arrow_back), findsOneWidget);
+        // Act & Assert - basic interactions work
+        // Back navigation should be available
+        expect(find.byIcon(Icons.arrow_back), findsOneWidget);
 
-          // Filter cards should be tappable (at least one)
-          final firstFilter = find.byType(FilterCard).first;
-          expect(firstFilter, findsOneWidget);
+        // Filter cards should be tappable (at least one)
+        final firstFilter = find.byType(FilterCard).first;
+        expect(firstFilter, findsOneWidget);
 
-          // Should be able to tap without crashing
-          await tester.tap(firstFilter);
-          await tester.pump();
-        },
-      );
+        // Should be able to tap without crashing
+        await tester.tap(firstFilter);
+        await tester.pump();
+      });
     });
 
     group('Core Navigation Flow', () {
-      testWidgets(
-        'essential screens can be navigated to without crashing',
-        (tester) async {
-          // This tests that the core screens can be instantiated and rendered
-          // without testing specific navigation paths that might change
+      testWidgets('essential screens can be navigated to without crashing', (
+        tester,
+      ) async {
+        // This tests that the core screens can be instantiated and rendered
+        // without testing specific navigation paths that might change
 
-          // Home Screen
-          await tester.pumpWidget(
-            ProviderScope(
-              child: MaterialApp(
-                home: HomeScreen(),
-                localizationsDelegates: [AppLocalizations.delegate],
-                supportedLocales: [Locale('en'), Locale('no')],
-              ),
-            ),
-          );
-          expect(find.byType(HomeScreen), findsOneWidget);
-
-          // Filter Selection Screen
-          await tester.pumpWidget(
-            MaterialApp(
-              home: FilterSelectionScreen(imagePath: '/test/photo.jpg'),
+        // Home Screen
+        await tester.pumpWidget(
+          const ProviderScope(
+            child: MaterialApp(
+              home: HomeScreen(),
               localizationsDelegates: [AppLocalizations.delegate],
               supportedLocales: [Locale('en'), Locale('no')],
             ),
-          );
-          expect(find.byType(FilterSelectionScreen), findsOneWidget);
-        },
-      );
+          ),
+        );
+        expect(find.byType(HomeScreen), findsOneWidget);
+
+        // Filter Selection Screen
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: FilterSelectionScreen(imagePath: '/test/photo.jpg'),
+            localizationsDelegates: [AppLocalizations.delegate],
+            supportedLocales: [Locale('en'), Locale('no')],
+          ),
+        );
+        expect(find.byType(FilterSelectionScreen), findsOneWidget);
+      });
     });
 
     group('Essential UI Elements', () {
-      testWidgets(
-        'home screen provides photo input options',
-        (tester) async {
-          // Arrange
-          SharedPreferences.setMockInitialValues({
-            'onboarding_complete': true,
-          });
+      testWidgets('home screen provides photo input options', (tester) async {
+        // Arrange
+        SharedPreferences.setMockInitialValues({'onboarding_complete': true});
 
-          await tester.pumpWidget(
-            ProviderScope(
-              child: MaterialApp(
-                home: HomeScreen(),
-                localizationsDelegates: [AppLocalizations.delegate],
-                supportedLocales: [Locale('en'), Locale('no')],
-              ),
-            ),
-          );
-
-          // Assert - essential photo input functionality exists
-          // Don't test specific button text or icons to avoid i18n brittleness
-          // Instead, test that interactive elements are present
-          final tappableElements = find.byType(InkWell);
-          expect(tappableElements, findsWidgets);
-
-          // Settings should be accessible
-          expect(find.byIcon(Icons.settings), findsOneWidget);
-        },
-      );
-
-      testWidgets(
-        'filter selection provides expected filter count',
-        (tester) async {
-          // Set larger screen size to ensure all filters are visible
-          tester.view.physicalSize = Size(400, 800);
-          tester.view.devicePixelRatio = 1.0;
-          addTearDown(() => tester.view.reset());
-
-          await tester.pumpWidget(
-            MaterialApp(
-              home: FilterSelectionScreen(imagePath: '/test/photo.jpg'),
+        await tester.pumpWidget(
+          const ProviderScope(
+            child: MaterialApp(
+              home: HomeScreen(),
               localizationsDelegates: [AppLocalizations.delegate],
               supportedLocales: [Locale('en'), Locale('no')],
             ),
-          );
+          ),
+        );
 
-          // Ensure scrollable content is visible
-          if (find.byType(GridView).evaluate().isNotEmpty) {
-            await tester.drag(find.byType(GridView), Offset(0, -100));
-            await tester.pump();
-          }
+        // Assert - essential photo input functionality exists
+        // Don't test specific button text or icons to avoid i18n brittleness
+        // Instead, test that interactive elements are present
+        final tappableElements = find.byType(InkWell);
+        expect(tappableElements, findsWidgets);
 
-          // Assert - expected number of filters (business requirement)
-          // This tests the core business logic, not UI implementation
-          expect(find.byType(FilterCard), findsNWidgets(5));
-        },
-      );
+        // Settings should be accessible
+        expect(find.byIcon(Icons.settings), findsOneWidget);
+      });
+
+      testWidgets('filter selection provides expected filter count', (
+        tester,
+      ) async {
+        // Set larger screen size to ensure all filters are visible
+        tester.view.physicalSize = const Size(400, 800);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(() => tester.view.reset());
+
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: FilterSelectionScreen(imagePath: '/test/photo.jpg'),
+            localizationsDelegates: [AppLocalizations.delegate],
+            supportedLocales: [Locale('en'), Locale('no')],
+          ),
+        );
+
+        // Ensure scrollable content is visible
+        if (find.byType(GridView).evaluate().isNotEmpty) {
+          await tester.drag(find.byType(GridView), const Offset(0, -100));
+          await tester.pump();
+        }
+
+        // Assert - expected number of filters (business requirement)
+        // This tests the core business logic, not UI implementation
+        expect(find.byType(FilterCard), findsNWidgets(5));
+      });
     });
   });
 }

@@ -4,7 +4,7 @@ import 'package:artifex/features/ai_transformation/presentation/widgets/filter_c
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../helpers/test_app_wrapper.dart';
+import '../../../../../helpers/test_app_wrapper.dart';
 
 void main() {
   group('FilterSelectionScreen', () {

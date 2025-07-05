@@ -10,8 +10,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../../../fixtures/test_data.dart';
-import '../../../../helpers/test_app_wrapper.dart';
+import '../../../../../fixtures/test_data.dart';
+import '../../../../../helpers/test_app_wrapper.dart';
 import 'image_input_section_test.mocks.dart';
 
 @GenerateMocks([PhotoRepository])

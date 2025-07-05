@@ -4,7 +4,7 @@ import 'package:artifex/features/ai_transformation/data/models/openai_image_resp
 import 'package:artifex/features/ai_transformation/data/models/openai_models_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../test_data/openai_responses.dart';
+import '../../../../../features/ai_transformation/data/test_data/openai_responses.dart';
 
 void main() {
   group('OpenAI Models Tests', () {

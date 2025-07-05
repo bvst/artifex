@@ -187,6 +187,158 @@ class PhotoBuilder {
 final largePhoto = PhotoBuilder().withSize(10485760).build();
 ```
 
+## Mocking External Services
+
+### Overview
+When practicing TDD in Flutter, external services must be mocked to ensure tests are fast, reliable, and deterministic. Artifex provides comprehensive mock helpers for all external dependencies.
+
+### Mock Infrastructure
+
+#### 1. Image Picker Mocking (`test/mocks/mock_image_picker.dart`)
+```dart
+// Mock camera capture
+final mockImagePicker = MockImagePickerHelper.create();
+MockImagePickerHelper.setupSuccessfulCameraCapture(
+  mockImagePicker,
+  imagePath: '/test/photo.jpg',
+);
+
+// Mock user cancellation
+MockImagePickerHelper.setupUserCancellation(mockImagePicker);
+
+// Mock permission errors
+MockImagePickerHelper.setupException(
+  mockImagePicker,
+  Exception('Camera permission denied'),
+);
+```
+
+#### 2. Photo Data Source Mocking (`test/mocks/mock_photo_datasource.dart`)
+```dart
+final mockDataSource = MockPhotoDataSourceHelper.create();
+final testPhoto = PhotoModel(
+  id: 'test-id',
+  name: 'test.jpg',
+  path: '/test/path.jpg',
+  size: 1024,
+  createdAt: DateTime.now(),
+);
+
+// Mock successful operations
+MockPhotoDataSourceHelper.setupSuccessfulCapture(mockDataSource, testPhoto);
+MockPhotoDataSourceHelper.setupRecentPhotos(mockDataSource, [testPhoto]);
+
+// Mock failures
+MockPhotoDataSourceHelper.setupException(
+  mockDataSource,
+  const FileException('Storage full'),
+  forCapture: true,
+);
+```
+
+#### 3. AI Service Mocking (`test/mocks/mock_ai_datasource.dart`)
+```dart
+final mockAIDataSource = MockAIDataSourceHelper.create();
+final mockResult = TransformationResultModel(
+  id: 'transformation-id',
+  imageUrl: 'https://example.com/transformed.jpg',
+  thumbnailUrl: 'https://example.com/thumbnail.jpg',
+  prompt: 'Make it cyberpunk',
+  style: 'cyberpunk',
+  createdAt: DateTime.now(),
+);
+
+MockAIDataSourceHelper.setupSuccessfulTransformation(mockAIDataSource, mockResult);
+MockAIDataSourceHelper.setupHealthyService(mockAIDataSource);
+```
+
+#### 4. SharedPreferences Mocking (`test/mocks/mock_shared_preferences.dart`)
+```dart
+final mockPrefs = MockSharedPreferencesHelper.create();
+
+// Mock app settings
+MockSharedPreferencesHelper.setupAppSettings(
+  mockPrefs,
+  onboardingComplete: true,
+  locale: 'en',
+);
+
+// Mock empty preferences (fresh install)
+MockSharedPreferencesHelper.setupEmpty(mockPrefs);
+
+// Mock write failures
+MockSharedPreferencesHelper.setupWriteFailures(mockPrefs);
+```
+
+### TDD with Mocks Example
+
+```dart
+// 1. RED: Write failing test with mocks
+testWidgets('should show error when photo capture fails', (tester) async {
+  // Arrange
+  final mockImagePicker = MockImagePickerHelper.create();
+  MockImagePickerHelper.setupException(
+    mockImagePicker,
+    Exception('Camera permission denied'),
+  );
+  
+  // Act
+  await tester.pumpWidget(
+    ProviderScope(
+      overrides: [
+        imagePickerProvider.overrideWith((_) => mockImagePicker),
+      ],
+      child: const PhotoCaptureScreen(),
+    ),
+  );
+  
+  await tester.tap(find.byIcon(Icons.camera));
+  await tester.pump();
+  
+  // Assert
+  expect(find.text('Camera permission denied'), findsOneWidget);
+});
+
+// 2. GREEN: Implement error handling
+// 3. REFACTOR: Improve error UX
+```
+
+### Best Practices for Mocking
+
+1. **Always mock external dependencies**
+   - Camera/Gallery (ImagePicker)
+   - Network calls (Dio, API clients)
+   - File system operations
+   - Platform services (SharedPreferences)
+
+2. **Use helper methods for common scenarios**
+   ```dart
+   // Good: Reusable mock setup
+   MockImagePickerHelper.setupSuccessfulCameraCapture(mock);
+   
+   // Avoid: Inline mock setup in every test
+   when(mock.pickImage(...)).thenAnswer(...);
+   ```
+
+3. **Test all scenarios**
+   - Success cases
+   - Failure cases (network errors, permissions)
+   - Edge cases (cancellation, empty data)
+
+4. **Inject mocks properly**
+   ```dart
+   // For unit tests
+   final dataSource = PhotoLocalDataSourceImpl(imagePicker: mockImagePicker);
+   
+   // For widget tests
+   ProviderScope(
+     overrides: [
+       photoDataSourceProvider.overrideWith((_) => mockDataSource),
+     ],
+     child: MyWidget(),
+   );
+   ```
+
 ## Common TDD Scenarios
 
 ### Scenario 1: Adding Validation

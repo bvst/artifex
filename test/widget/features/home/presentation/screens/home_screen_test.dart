@@ -4,7 +4,7 @@ import 'package:artifex/features/home/presentation/widgets/welcome_section.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../extensions/test_extensions.dart';
+import '../../../../../extensions/test_extensions.dart';
 
 void main() {
   group('HomeScreen', () {

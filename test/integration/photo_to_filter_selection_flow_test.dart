@@ -61,30 +61,29 @@ void main() {
       },
     );
 
-    testWidgets(
-      'should support basic user interactions without errors',
-      (tester) async {
-        await tester.pumpWidget(
-          const MaterialApp(
-            home: FilterSelectionScreen(imagePath: '/test/photo.jpg'),
-            localizationsDelegates: [AppLocalizations.delegate],
-            supportedLocales: [Locale('en'), Locale('no')],
-          ),
-        );
+    testWidgets('should support basic user interactions without errors', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: FilterSelectionScreen(imagePath: '/test/photo.jpg'),
+          localizationsDelegates: [AppLocalizations.delegate],
+          supportedLocales: [Locale('en'), Locale('no')],
+        ),
+      );
 
-        // Act & Assert - basic interactions should work without crashes
-        
-        // Back navigation should be available
-        expect(find.byIcon(Icons.arrow_back), findsOneWidget);
-        await tester.tap(find.byIcon(Icons.arrow_back));
-        await tester.pump();
+      // Act & Assert - basic interactions should work without crashes
 
-        // Filter selection should be interactive
-        final firstFilter = find.byType(FilterCard).first;
-        expect(firstFilter, findsOneWidget);
-        await tester.tap(firstFilter);
-        await tester.pump();
-      },
-    );
+      // Back navigation should be available
+      expect(find.byIcon(Icons.arrow_back), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.arrow_back));
+      await tester.pump();
+
+      // Filter selection should be interactive
+      final firstFilter = find.byType(FilterCard).first;
+      expect(firstFilter, findsOneWidget);
+      await tester.tap(firstFilter);
+      await tester.pump();
+    });
   });
 }

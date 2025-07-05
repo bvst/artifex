@@ -7,7 +7,7 @@
 ///   dart run artifex:check --all     # Full check (includes dependencies, integration tests)
 ///
 /// Fast mode (default) runs:
-/// 1. dart format . - formats all code consistently
+/// 1. dart fix --apply & dart format . - applies automatic fixes and formats code
 /// 2. flutter analyze - checks for code issues
 /// 3. flutter test test/features test/unit test/widget - runs unit/widget tests with parallelization
 ///
@@ -31,8 +31,29 @@ void main(List<String> arguments) async {
   var hasErrors = false;
   var currentStep = 1;
 
-  // Run Dart format
-  print('✨ Step ${currentStep++}/$totalSteps: Formatting code...');
+  // Run Dart format and fix
+  print(
+    '✨ Step ${currentStep++}/$totalSteps: Formatting code and applying fixes...',
+  );
+
+  // First run dart fix to automatically fix common issues
+  final fixResult = await Process.run('dart', ['fix', '--apply']);
+  if (fixResult.exitCode != 0) {
+    print('⚠️  Warning: dart fix encountered issues:');
+    print(fixResult.stdout);
+    if (fixResult.stderr.isNotEmpty) {
+      print('Error output:');
+      print(fixResult.stderr);
+    }
+    // Don't fail on dart fix errors, continue with formatting
+  } else {
+    final fixOutput = fixResult.stdout.toString();
+    if (fixOutput.contains('fixes made')) {
+      print('   Applied automatic fixes');
+    }
+  }
+
+  // Then run dart format
   final formatResult = await Process.run('dart', ['format', '.']);
 
   if (formatResult.exitCode == 0) {
