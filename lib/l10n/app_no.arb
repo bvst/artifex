@@ -29,5 +29,7 @@
   "pleaseWait": "Vennligst vent",
   "transformationComplete": "Transformering fullført!",
   "transformationFailed": "Transformering mislyktes",
-  "tryAgain": "Prøv Igjen"
+  "tryAgain": "Prøv Igjen",
+  "makeKidsDrawingReal": "Gjør barnetegninger virkelige",
+  "makeKidsDrawingRealDescription": "Transformer skisser til realistiske bilder"
 }

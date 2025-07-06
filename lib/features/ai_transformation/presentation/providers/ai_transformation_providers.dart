@@ -82,16 +82,16 @@ class TransformationProcessor extends _$TransformationProcessor {
     required String prompt,
   }) async {
     state = const AsyncValue.loading();
-    
+
     try {
-      // TODO: Replace with actual API call
+      // FIXME: Replace with actual API call
       // For now, simulate processing to make tests pass
-      await Future.delayed(const Duration(milliseconds: 100));
-      
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+
       // Mock successful transformation result
       const resultImageUrl = 'https://example.com/transformed-image.jpg';
       state = const AsyncValue.data(resultImageUrl);
-    } catch (error, stackTrace) {
+    } on Exception catch (error, stackTrace) {
       state = AsyncValue.error(error, stackTrace);
     }
   }

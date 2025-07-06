@@ -93,12 +93,14 @@ void main() {
       testWidgets('user can interact with filter selection screen', (
         tester,
       ) async {
-        // Arrange
+        // Arrange - wrap in ProviderScope for navigation to ProcessingScreen
         await tester.pumpWidget(
-          const MaterialApp(
-            home: FilterSelectionScreen(imagePath: '/test/photo.jpg'),
-            localizationsDelegates: [AppLocalizations.delegate],
-            supportedLocales: [Locale('en'), Locale('no')],
+          const ProviderScope(
+            child: MaterialApp(
+              home: FilterSelectionScreen(imagePath: '/test/photo.jpg'),
+              localizationsDelegates: [AppLocalizations.delegate],
+              supportedLocales: [Locale('en'), Locale('no')],
+            ),
           ),
         );
 
@@ -113,6 +115,9 @@ void main() {
         // Should be able to tap without crashing
         await tester.tap(firstFilter);
         await tester.pump();
+
+        // Wait for any async operations to complete (like transformation timer)
+        await tester.pump(const Duration(milliseconds: 150));
       });
     });
 
@@ -195,8 +200,8 @@ void main() {
         }
 
         // Assert - expected number of filters (business requirement)
-        // This tests the core business logic, not UI implementation
-        expect(find.byType(FilterCard), findsNWidgets(5));
+        // Updated to reflect current single filter requirement
+        expect(find.byType(FilterCard), findsOneWidget);
       });
     });
   });

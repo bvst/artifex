@@ -25,7 +25,9 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
     super.initState();
     // Start transformation when screen loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(transformationProcessorProvider.notifier).startTransformation(
+      ref
+          .read(transformationProcessorProvider.notifier)
+          .startTransformation(
             imagePath: widget.imagePath,
             filterId: widget.filter.id,
             prompt: widget.filter.prompt,
@@ -38,7 +40,7 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final transformationState = ref.watch(transformationProcessorProvider);
-    
+
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
@@ -66,7 +68,7 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              
+
               Text(
                 widget.filter.name,
                 style: theme.textTheme.headlineMedium?.copyWith(
@@ -75,26 +77,25 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
-              
+
               Text(
                 l10n.transformingYourPhoto,
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.textTheme.bodyLarge?.color?.withValues(alpha: 0.7),
+                  color: theme.textTheme.bodyLarge?.color?.withValues(
+                    alpha: 0.7,
+                  ),
                 ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 48),
-              
+
               // Processing state
               transformationState.when(
                 loading: () => Column(
                   children: [
                     const CircularProgressIndicator(),
                     const SizedBox(height: 16),
-                    Text(
-                      l10n.pleaseWait,
-                      style: theme.textTheme.bodyMedium,
-                    ),
+                    Text(l10n.pleaseWait, style: theme.textTheme.bodyMedium),
                   ],
                 ),
                 data: (resultUrl) {
@@ -102,7 +103,7 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
                     // Transformation completed successfully
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       if (mounted) {
-                        // TODO: Navigate to results screen
+                        // FIXME: Navigate to results screen
                         // For now, just show success message
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -112,7 +113,7 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
                         );
                       }
                     });
-                    return Icon(
+                    return const Icon(
                       Icons.check_circle,
                       size: 64,
                       color: Colors.green,
@@ -123,11 +124,7 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
                 },
                 error: (error, stackTrace) => Column(
                   children: [
-                    Icon(
-                      Icons.error,
-                      size: 64,
-                      color: theme.colorScheme.error,
-                    ),
+                    Icon(Icons.error, size: 64, color: theme.colorScheme.error),
                     const SizedBox(height: 16),
                     Text(
                       l10n.transformationFailed,
@@ -139,7 +136,8 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        ref.read(transformationProcessorProvider.notifier)
+                        ref
+                            .read(transformationProcessorProvider.notifier)
                             .startTransformation(
                               imagePath: widget.imagePath,
                               filterId: widget.filter.id,

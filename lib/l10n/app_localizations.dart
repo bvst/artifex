@@ -277,6 +277,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Try Again'**
   String get tryAgain;
+
+  /// Filter name for kids drawing transformation
+  ///
+  /// In en, this message translates to:
+  /// **'Make Kids Drawing Real'**
+  String get makeKidsDrawingReal;
+
+  /// Description for kids drawing transformation filter
+  ///
+  /// In en, this message translates to:
+  /// **'Transform sketches into realistic images'**
+  String get makeKidsDrawingRealDescription;
 }
 
 class _AppLocalizationsDelegate

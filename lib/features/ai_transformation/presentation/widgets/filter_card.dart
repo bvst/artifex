@@ -1,4 +1,5 @@
 import 'package:artifex/features/ai_transformation/domain/entities/transformation_filter.dart';
+import 'package:artifex/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 /// A card widget displaying a transformation filter option
@@ -11,6 +12,7 @@ class FilterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
 
     return Card(
       elevation: 4,
@@ -44,7 +46,7 @@ class FilterCard extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                filter.name,
+                filter.getLocalizedName(l10n),
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -54,7 +56,7 @@ class FilterCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                filter.description,
+                filter.getLocalizedDescription(l10n),
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.textTheme.bodySmall?.color?.withValues(
                     alpha: 0.7,

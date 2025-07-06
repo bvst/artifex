@@ -104,4 +104,11 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get tryAgain => 'Prøv Igjen';
+
+  @override
+  String get makeKidsDrawingReal => 'Gjør barnetegninger virkelige';
+
+  @override
+  String get makeKidsDrawingRealDescription =>
+      'Transformer skisser til realistiske bilder';
 }

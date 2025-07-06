@@ -3,6 +3,8 @@ import 'package:artifex/features/ai_transformation/presentation/widgets/filter_c
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../../../helpers/localization_test_helper.dart';
+
 void main() {
   group('FilterCard', () {
     late TransformationFilter testFilter;
@@ -21,10 +23,8 @@ void main() {
     testWidgets('should display filter information correctly', (tester) async {
       // Arrange
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: FilterCard(filter: testFilter, onTap: () {}),
-          ),
+        LocalizationTestHelper.wrapWithMaterialApp(
+          child: FilterCard(filter: testFilter, onTap: () {}),
         ),
       );
 
@@ -37,10 +37,8 @@ void main() {
     testWidgets('should apply filter color to icon', (tester) async {
       // Arrange
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: FilterCard(filter: testFilter, onTap: () {}),
-          ),
+        LocalizationTestHelper.wrapWithMaterialApp(
+          child: FilterCard(filter: testFilter, onTap: () {}),
         ),
       );
 
@@ -55,10 +53,8 @@ void main() {
       // Arrange
       var tapped = false;
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: FilterCard(filter: testFilter, onTap: () => tapped = true),
-          ),
+        LocalizationTestHelper.wrapWithMaterialApp(
+          child: FilterCard(filter: testFilter, onTap: () => tapped = true),
         ),
       );
 
@@ -75,10 +71,8 @@ void main() {
     ) async {
       // Arrange
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: FilterCard(filter: testFilter, onTap: () {}),
-          ),
+        LocalizationTestHelper.wrapWithMaterialApp(
+          child: FilterCard(filter: testFilter, onTap: () {}),
         ),
       );
 
@@ -100,13 +94,11 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SizedBox(
-              width: 200,
-              height: 250, // Increased height to avoid overflow
-              child: FilterCard(filter: longTextFilter, onTap: () {}),
-            ),
+        LocalizationTestHelper.wrapWithMaterialApp(
+          child: SizedBox(
+            width: 200,
+            height: 250, // Increased height to avoid overflow
+            child: FilterCard(filter: longTextFilter, onTap: () {}),
           ),
         ),
       );
@@ -129,10 +121,8 @@ void main() {
     ) async {
       // Arrange
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: FilterCard(filter: testFilter, onTap: () {}),
-          ),
+        LocalizationTestHelper.wrapWithMaterialApp(
+          child: FilterCard(filter: testFilter, onTap: () {}),
         ),
       );
 

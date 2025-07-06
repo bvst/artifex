@@ -105,4 +105,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tryAgain => 'Try Again';
+
+  @override
+  String get makeKidsDrawingReal => 'Make Kids Drawing Real';
+
+  @override
+  String get makeKidsDrawingRealDescription =>
+      'Transform sketches into realistic images';
 }
