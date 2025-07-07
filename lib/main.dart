@@ -1,3 +1,4 @@
+import 'package:artifex/core/config/app_config.dart';
 import 'package:artifex/core/network/dio_client.dart';
 import 'package:artifex/core/utils/error_boundary.dart';
 import 'package:artifex/core/utils/logger.dart';
@@ -82,12 +83,23 @@ Future<void> _initializeApp() async {
   try {
     AppLogger.debug('Initializing Artifex application');
 
+    // Load environment configuration
+    await AppConfig.initialize();
+    AppLogger.debug('Environment configuration loaded');
+
     // Initialize SharedPreferences first (required for settings)
     await SharedPreferences.getInstance();
     AppLogger.debug('SharedPreferences initialized');
 
     // Initialize network client
     DioClient().initialize();
+
+    // Verify AI configuration
+    if (!AppConfig.isConfigured) {
+      AppLogger.warning(
+        'AI configuration not found. Create a .env file from .env.example',
+      );
+    }
 
     AppLogger.debug('Application initialization completed');
   } catch (e, stackTrace) {

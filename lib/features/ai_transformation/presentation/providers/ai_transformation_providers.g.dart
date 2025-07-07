@@ -92,7 +92,7 @@ final aiTransformationRepositoryProvider =
 typedef AiTransformationRepositoryRef =
     AutoDisposeFutureProviderRef<AITransformationRepository>;
 String _$transformationProcessorHash() =>
-    r'b32d4c97aca53b754639cf3dd9a437df6b32a4b5';
+    r'b7b195de8ff577166ec4adf686c90be2ae3b3a45';
 
 /// Provider for transformation processing state
 ///

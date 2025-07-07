@@ -66,3 +66,8 @@ class APIFailure extends Failure {
 class UnknownFailure extends Failure {
   const UnknownFailure([super.message = 'An unknown error occurred']);
 }
+
+// Data parsing failures
+class ParsingFailure extends Failure {
+  const ParsingFailure([super.message = 'Failed to parse response data']);
+}
