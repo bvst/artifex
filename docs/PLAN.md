@@ -88,6 +88,26 @@
 
 ## Upcoming Tasks 📋
 
+### CI/CD Security Implementation (HIGH PRIORITY)
+- [ ] **Environment-Specific Configuration**:
+  - [ ] Create `.env.development` for local development with placeholder keys
+  - [ ] Create `.env.staging` template for staging environment
+  - [ ] Create `.env.production` template for production environment
+  - [ ] Update AppConfig to load environment-specific files based on build mode
+- [ ] **GitHub Actions Secret Management**:
+  - [ ] Add OPENAI_API_KEY_STAGING to GitHub repository secrets
+  - [ ] Add OPENAI_API_KEY_PRODUCTION to GitHub repository secrets
+  - [ ] Update flutter-ci.yml to inject secrets during build process
+  - [ ] Add secure APK/IPA builds with production API keys
+- [ ] **Alternative: Build-Time Environment Variables**:
+  - [ ] Implement --dart-define approach for maximum security
+  - [ ] Update AppConfig to read from const String.fromEnvironment()
+  - [ ] Add CI build commands with --dart-define flags
+- [ ] **Documentation Updates**:
+  - [ ] Update docs/ai-provider-setup.md with production deployment guide
+  - [ ] Add security best practices for API key management
+  - [ ] Create production build commands reference
+
 ### Testing Architecture Improvements (HIGH PRIORITY)
 - [ ] **Follow testing pyramid**: Ensure 70% unit tests, 20% widget tests, 10% integration tests
 - [ ] **Separate test types**: Move individual screen tests to `test/widget/` directory
@@ -132,6 +152,12 @@
 ### Deployment Preparation
 - [ ] Configure Android signing
 - [ ] Set up iOS provisioning (when on Mac)
+- [ ] **Implement secure API key injection for CI/CD**:
+  - [ ] Create environment-specific .env files (.env.development, .env.staging, .env.production)
+  - [ ] Update GitHub Actions to inject API keys via secrets during build
+  - [ ] Add --dart-define support for build-time environment variables
+  - [ ] Implement conditional .env loading based on build mode
+  - [ ] Update documentation for production deployment
 - [ ] Create Play Store listing
 - [ ] Prepare App Store submission
 
@@ -391,21 +417,29 @@
   - Comprehensive error handling and Dio error mapping
   - Cost estimation feature ($0.04 standard, $0.08 HD)
   - Service health checking capability
-- **Created environment configuration system**:
+- **Created robust environment configuration system**:
   - Added flutter_dotenv for secure API key management
   - Created .env.example template for easy setup
+  - **Fixed startup crash**: Proper error handling for missing .env files
+  - **Multi-platform .env loading**: Works on Linux, iOS, Android via assets bundle
+  - **Multiple fallback locations**: Robust file discovery across platforms
   - Integrated AppConfig loader in main.dart
   - Added comprehensive setup documentation (docs/ai-provider-setup.md)
 - **Achieved 100% test coverage** for new components:
   - 112+ unit/widget tests all passing
   - Complete mock coverage for external dependencies
-  - Fixed all type inference warnings
+  - Fixed all analysis warnings and type inference issues
 - **Architecture ready for provider switching**:
   ```dart
   // Easy to add new providers:
   final provider = factory.createProvider(AIProviderType.gemini);
   ```
-- **Next steps**: Connect ProcessingScreen to use real API, implement results screen
+- **App successfully starts on all platforms** without crashing on missing .env
+- **Identified CI/CD security requirements** for production deployment:
+  - Need environment-specific .env files for different build stages
+  - GitHub Actions must inject API keys securely via repository secrets
+  - Alternative --dart-define approach for maximum security
+- **Next steps**: Implement secure CI/CD API key injection, connect ProcessingScreen to real API
 
 ---
 
