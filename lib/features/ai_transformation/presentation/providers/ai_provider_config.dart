@@ -4,18 +4,18 @@ import 'package:artifex/features/ai_transformation/data/providers/ai_provider_fa
 import 'package:artifex/features/ai_transformation/domain/entities/ai_configuration.dart';
 import 'package:artifex/features/ai_transformation/domain/repositories/ai_provider_factory.dart';
 import 'package:artifex/features/ai_transformation/domain/usecases/transform_photo_usecase.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'ai_provider_config.g.dart';
 
 /// Provider for AI configuration
 @riverpod
-AIConfiguration aiConfiguration(AiConfigurationRef ref) =>
-    AppConfig.aiConfiguration;
+AIConfiguration aiConfiguration(Ref ref) => AppConfig.aiConfiguration;
 
 /// Provider for AI provider factory
 @riverpod
-AIProviderFactory aiProviderFactory(AiProviderFactoryRef ref) {
+AIProviderFactory aiProviderFactory(Ref ref) {
   final config = ref.watch(aiConfigurationProvider);
   final dio = DioClient().dio;
 
@@ -24,7 +24,7 @@ AIProviderFactory aiProviderFactory(AiProviderFactoryRef ref) {
 
 /// Provider for transform photo use case
 @riverpod
-TransformPhotoUseCase transformPhotoUseCase(TransformPhotoUseCaseRef ref) {
+TransformPhotoUseCase transformPhotoUseCase(Ref ref) {
   final factory = ref.watch(aiProviderFactoryProvider);
   return TransformPhotoUseCase(factory);
 }

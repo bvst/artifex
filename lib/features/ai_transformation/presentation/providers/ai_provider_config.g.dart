@@ -6,7 +6,7 @@ part of 'ai_provider_config.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$aiConfigurationHash() => r'b6e68cf8d4dd57c6ad1944beb51906b29786eada';
+String _$aiConfigurationHash() => r'7595d83c28d668917415f1a2bf6ce772635651fe';
 
 /// Provider for AI configuration
 ///
@@ -25,7 +25,7 @@ final aiConfigurationProvider = AutoDisposeProvider<AIConfiguration>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef AiConfigurationRef = AutoDisposeProviderRef<AIConfiguration>;
-String _$aiProviderFactoryHash() => r'd3ac798e1465212a177f29cf626e168c4e611e8a';
+String _$aiProviderFactoryHash() => r'8edb726e9276907863e4ad902b3b85c9bec89867';
 
 /// Provider for AI provider factory
 ///
@@ -46,7 +46,7 @@ final aiProviderFactoryProvider =
 // ignore: unused_element
 typedef AiProviderFactoryRef = AutoDisposeProviderRef<AIProviderFactory>;
 String _$transformPhotoUseCaseHash() =>
-    r'951d26d5f95c5406204dbd90d72fd7973ff52305';
+    r'7135de31bfe127df43fbdf852b58b45203d46175';
 
 /// Provider for transform photo use case
 ///
