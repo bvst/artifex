@@ -44,6 +44,15 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Environment files
+.env                    # Local development environment (contains real API keys)
+.env.local             # Local overrides (contains real API keys)
+.env.staging           # Staging environment (contains real API keys)
+.env.production        # Production environment (contains real API keys)
+
+# Environment templates - THESE SHOULD BE COMMITTED
+# .env.example          # Template file (safe to commit)
+# .env.development      # Development template (safe to commit if using placeholder keys)
+
 # Docker
-.env
 docker-compose.override.yml
